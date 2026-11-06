@@ -20,7 +20,7 @@
 2. `git switch -c feature/map-pin`
 3. 작게 자주 커밋한다.
 4. push 전에 최신 develop을 합쳐 충돌을 먼저 해결한다: `git merge develop`
-5. `develop`으로 PR을 올린다. 작성자 외 1명 이상 승인 후 병합한다.
+5. `develop`으로 PR을 올린다. 승인은 필수가 아니지만, 팀원이 한 번씩 훑어보고 병합하는 것을 권장한다.
 6. 병합한 브랜치는 삭제한다.
 
 ## 커밋 메시지
