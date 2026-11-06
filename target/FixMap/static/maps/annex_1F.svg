@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 500" width="1000" height="500" font-family="sans-serif">
+  <!-- 임시 배치도 (별관 1층). 실제 배치도로 교체할 것. 영역 좌표는 data.sql의 place와 같다 -->
+  <rect width="1000" height="500" fill="#fafafa"/>
+  <text x="16" y="28" font-size="18" fill="#999">별관 1층 (임시 배치도)</text>
+  <rect x="100" y="50" width="350" height="200" fill="#fff" stroke="#888" stroke-width="2" data-place="컴퓨터실 1"/>
+  <text x="275" y="155" font-size="14" text-anchor="middle" fill="#555">컴퓨터실 1</text>
+  <rect x="550" y="50" width="350" height="200" fill="#fff" stroke="#888" stroke-width="2" data-place="과학실"/>
+  <text x="725" y="155" font-size="14" text-anchor="middle" fill="#555">과학실</text>
+</svg>

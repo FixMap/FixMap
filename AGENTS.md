@@ -7,7 +7,7 @@ Claude Code는 `CLAUDE.md`가 이 파일을 불러온다.
 ## 지켜야 할 제약 (학교 규칙)
 
 - **Eclipse Dynamic Web Project** 구조를 유지한다. Spring Boot 프로젝트로 바꾸지 않는다.
-- 화면은 **JSP**로 서버에서 렌더링하고, JS/CSS/HTML은 직접 작성한다. React, Vue 등 프론트 빌드 도구는 쓰지 않는다.
+- 화면은 **JSP**로 서버에서 렌더링하고, JS/CSS/HTML을 직접 작성한다. 프론트 프레임워크, 빌드 도구, 새 라이브러리는 팀과 정하기 전에 도입하지 않는다.
 - DB는 **Oracle**만 쓴다. MySQL 문법을 쓰지 않는다. 예약어를 피해 이름을 정했다: `building_floor`, `floor_level`, `place_type`, `report_comment`, `file_size`.
 - Java 21, Tomcat 10.1 (`jakarta.*` 패키지. `javax.servlet`을 쓰지 않는다).
 
@@ -15,7 +15,8 @@ Claude Code는 `CLAUDE.md`가 이 파일을 불러온다.
 
 - URL: 확정된 것은 사용자 화면 `/`, 관리자 화면 `/admin`, 관리자 API는 `/api/admin/` 하위로 나눈다는 것뿐이다. 신고, 신고 조회 등 나머지 화면과 API의 URL은 아직 미정이므로 임의로 정하지 말고 팀과 먼저 정한다. MVP에는 로그인이 없다.
 - 지도: 층별 SVG 배치도 위에 핀 좌표를 0~1 비율로 저장한다.
-- 패키지 `com.fixmap`: `controller`(화면, `api`는 JSON), `service`, `dao`, `dto`
+- 현재 패키지 `com.fixmap`: `controller`(화면, `api`는 JSON), `dao`, `dto`, `filter`, `util`. 서블릿 기반이다.
+- Spring, Maven 같은 프레임워크나 빌드 도구 도입 여부는 아직 정해지지 않았다. 팀이 정하기 전에 프로젝트 구조를 바꾸지 않는다.
 - JSP는 `WEB-INF/views/`, 정적 파일은 `static/`
 
 ## 작업 규칙
@@ -24,9 +25,8 @@ Claude Code는 `CLAUDE.md`가 이 파일을 불러온다.
 - 사용자(팀원)가 요청하지 않은 PR 생성, push, 브랜치 삭제는 하지 않는다. 먼저 묻는다.
 - 커밋 메시지는 `종류: 내용` (feat, fix, style, refactor, docs, chore).
 - `db.properties`, 비밀번호, 개인 키를 커밋하지 않는다. `target/`도 커밋하지 않는다.
-- 변경은 요청한 기능 범위로 작게 유지한다. 같이 쓰는 파일(`pom.xml`, `config/*`, `common.css`, `web.xml`)을 바꿀 때는 이유를 PR에 적는다.
+- 변경은 요청한 기능 범위로 작게 유지한다. 같이 쓰는 파일(`web.xml`, `common.css`, `.classpath` 등 프로젝트 설정)을 바꿀 때는 이유를 PR에 적는다.
 - API를 바꾸면 Notion 기능 명세서와 맞는지 확인한다.
-- 설명과 주석은 한국어로 쓴다.
 
 ## 빌드와 실행
 
