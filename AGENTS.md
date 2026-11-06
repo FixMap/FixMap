@@ -6,9 +6,9 @@ Claude Code는 `CLAUDE.md`가 이 파일을 불러온다.
 
 ## 지켜야 할 제약
 
-- **Eclipse Dynamic Web Project** 구조를 유지한다 (학교 규칙). Spring Boot 프로젝트로 바꾸지 않는다.
-- 화면은 **JSP**로 서버에서 렌더링하고, JS/CSS/HTML을 직접 작성한다. 프론트 프레임워크, 빌드 도구, 새 라이브러리는 팀과 정하기 전에 도입하지 않는다.
-- DB는 **Oracle**만 쓴다 (학교 규칙). MySQL 문법을 쓰지 않는다. 예약어를 피해 이름을 정했다: `building_floor`, `floor_level`, `place_type`, `report_comment`, `file_size`.
+- **Eclipse Dynamic Web Project** 구조를 유지한다 (수행 규칙). Spring Boot 프로젝트로 바꾸지 않는다.
+- 화면은 **JSP**로 서버에서 렌더링하고 (수행 규칙), JS/CSS/HTML을 직접 작성한다. 프론트 프레임워크, 빌드 도구, 새 라이브러리는 팀과 정하기 전에 도입하지 않는다.
+- DB는 **Oracle**만 쓴다 (수행 규칙). MySQL 문법을 쓰지 않는다. 예약어를 피해 이름을 정했다: `building_floor`, `floor_level`, `place_type`, `report_comment`, `file_size`.
 - Java 21, Tomcat 10.1 (`jakarta.*` 패키지. `javax.servlet`을 쓰지 않는다).
 
 ## 구조
