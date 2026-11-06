@@ -13,7 +13,7 @@ Claude Code는 `CLAUDE.md`가 이 파일을 불러온다.
 
 ## 구조
 
-- URL: 사용자 `/`, 관리자 `/admin`, 관리자 API는 `/api/admin/`. MVP에는 로그인이 없다.
+- URL: 확정된 것은 사용자 화면 `/`, 관리자 화면 `/admin`, 관리자 API는 `/api/admin/` 하위로 나눈다는 것뿐이다. 신고, 신고 조회 등 나머지 화면과 API의 URL은 아직 미정이므로 임의로 정하지 말고 팀과 먼저 정한다. MVP에는 로그인이 없다.
 - 지도: 층별 SVG 배치도 위에 핀 좌표를 0~1 비율로 저장한다.
 - 패키지 `com.fixmap`: `controller`(화면, `api`는 JSON), `service`, `dao`, `dto`
 - JSP는 `WEB-INF/views/`, 정적 파일은 `static/`
