@@ -11,37 +11,50 @@
 | --- | --- |
 | Java | 21 |
 | 서버 | Apache Tomcat **10.1** (Jakarta EE, `jakarta.servlet`). Tomcat 9 이하는 동작하지 않음 |
-| 프로젝트 | Eclipse Dynamic Web Project (Dynamic Web Module 5.0) |
+| 프로젝트 | Eclipse Dynamic Web Project (Dynamic Web Module 6.0) + **Maven** (m2e) |
+| 프레임워크 | Spring MVC 6 (Boot 없음), JSP + JSTL, Spring JDBC(JdbcTemplate), HikariCP |
 | DB | Oracle (12c 이상) |
+
+라이브러리는 `pom.xml`에서 관리하며 jar 파일을 직접 넣지 않는다. Maven이 `WEB-INF/lib`에 자동 배포한다.
 
 ## 처음 세팅하기
 
-1. 저장소를 클론하고 Eclipse에서 `File > Import > Existing Projects into Workspace`로 연다.
-2. `Window > Preferences > Server > Runtime Environments`에 Tomcat 10.1을 추가하고, 프로젝트의 Targeted Runtime으로 지정한다.
-3. `src/main/webapp/WEB-INF/lib`에 `ojdbc11.jar`를 넣는다. ([lib 안내](src/main/webapp/WEB-INF/lib/README.md))
-4. `src/main/java/db.properties.example`을 같은 폴더에 `db.properties`로 복사하고 DB 접속 정보를 채운다. (커밋되지 않음)
+1. 저장소를 클론하고 Eclipse에서 `File > Import > Maven > Existing Maven Projects`로 연다. (Eclipse IDE for Enterprise Java and Web Developers 필요)
+2. `Window > Preferences > Server > Runtime Environments`에 Tomcat 10.1을 추가하고, 프로젝트 우클릭 > `Properties > Targeted Runtimes`에서 지정한다.
+3. `pom.xml`을 바꾼 뒤에는 프로젝트 우클릭 > `Maven > Update Project` (Alt+F5)를 실행한다.
+4. `src/main/resources/db.properties.example`을 같은 폴더에 `db.properties`로 복사하고 DB 접속 정보를 채운다. (커밋되지 않음)
 5. Oracle에서 `db/schema.sql` → `db/data.sql` 순서로 실행한다.
 6. 프로젝트를 Tomcat에 올리고 `http://localhost:8080/FixMap/`에 접속한다.
+
+명령줄 빌드: `mvn package` → `target/FixMap.war`
 
 ## 폴더 구조
 
 ```
 db/                         Oracle DDL, 테스트 데이터, 예시 쿼리
-src/main/java/
-  com/fixmap/
-    controller/             화면 서블릿 (/, /admin)
-    controller/api/         JSON API 서블릿 (/api/...)
-    dao/                    DB 접근 (SQL)
-    dto/                    테이블과 1:1로 대응하는 데이터 클래스
-    filter/                 공통 필터 (UTF-8 인코딩)
-    util/                   DB 연결, 설정, JSON 도구
-  db.properties.example     DB·업로드 설정 예시
+pom.xml                     Maven 의존성 (Spring, Jackson, ojdbc, JSTL 등)
+src/main/java/com/fixmap/
+  config/                   Spring 설정 (WebAppInitializer, RootConfig, WebConfig)
+  controller/               화면 컨트롤러 (/, /admin) -> JSP 반환
+  controller/api/           JSON API (@RestController) + 예외 처리
+  service/                  업무 로직, 트랜잭션
+  dao/                      DB 접근 (JdbcTemplate + SQL)
+  dto/                      테이블과 대응하는 데이터 클래스
+src/main/resources/         db.properties(.example)
 src/main/webapp/
-  WEB-INF/views/            JSP 화면 (직접 접근 불가, 서블릿이 forward)
-  WEB-INF/lib/              jar 라이브러리
-  static/css, static/js     정적 파일
+  WEB-INF/views/            JSP 화면 (직접 접근 불가, 컨트롤러가 반환)
+  static/css, static/js     직접 작성하는 정적 파일
+  static/lib/               내려받아 쓰는 프론트 라이브러리 (선택)
   static/maps/              층별 배치도 SVG (현재는 임시 도면)
 ```
+
+## 프론트 라이브러리
+
+React/Vue 같은 빌드 도구는 쓰지 않는다. JSP가 HTML을 만들고, 브라우저 JS는 `fetch`로 `/api/...`를 호출한다.
+
+- **JSTL**: JSP 상단에 `taglib prefix="c" uri="jakarta.tags.core"` 선언 후 `c:forEach`, `c:if` 사용
+- **Bootstrap 5 / Bootstrap Icons, svg-pan-zoom**: JSP의 head/body 끝에서 CDN 주소로 불러오거나, `static/lib/`에 내려받아 `${pageContext.request.contextPath}/static/lib/...`로 참조
+- 공통 스타일은 `static/css/common.css`, 화면별 스크립트는 `static/js/`에 둔다.
 
 ## 지금 동작하는 것
 

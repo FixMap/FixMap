@@ -35,7 +35,7 @@
   async function selectFloor(building, floor) {
     currentFloor = floor;
     renderTabs(floorTabs, building.floors, floor.id, f => selectFloor(building, f));
-    mapImage.src = floor.mapImageUrl;
+    mapImage.src = ctx + floor.mapImageUrl;
     const pins = await getJson(`/api/reports/map?floor=${floor.id}`);
     pinLayer.innerHTML = '';
     reportList.innerHTML = '';
