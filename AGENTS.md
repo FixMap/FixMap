@@ -6,8 +6,8 @@ Claude Code는 `CLAUDE.md`가 이 파일을 불러온다.
 
 ## 지켜야 할 제약
 
-- **Eclipse Dynamic Web Project** 구조를 유지한다 (수행 규칙). Spring Boot 프로젝트로 바꾸지 않는다.
-- 화면은 **JSP**로 서버에서 렌더링하고 (수행 규칙), JS/CSS/HTML을 직접 작성한다. 프론트 프레임워크, 빌드 도구, 새 라이브러리는 팀과 정하기 전에 도입하지 않는다.
+- **Eclipse Dynamic Web Project** 구조를 유지한다 (수행 규칙). Spring Boot는 쓰지 않는다. Boot 없이 Spring MVC만 쓴다.
+- 화면은 **JSP**로 서버에서 렌더링하고 (수행 규칙), JS/CSS/HTML을 직접 작성한다. 화면과 API는 JSP + JSON API를 섞어 쓴다. 프론트 프레임워크나 목록에 없는 새 라이브러리는 팀과 정하기 전에 도입하지 않는다.
 - DB는 **Oracle**만 쓴다 (수행 규칙). MySQL 문법을 쓰지 않는다. 예약어를 피해 이름을 정했다: `building_floor`, `floor_level`, `place_type`, `report_comment`, `file_size`.
 - Java 21, Tomcat 10.1 (`jakarta.*` 패키지. `javax.servlet`을 쓰지 않는다).
 
@@ -16,7 +16,8 @@ Claude Code는 `CLAUDE.md`가 이 파일을 불러온다.
 - URL 구조는 아직 정해지지 않았다. 사용자 화면과 관리자 화면을 URL로 나누는 안이 논의 중일 뿐이다. URL은 임의로 정하지 말고 팀과 먼저 정한다. MVP에는 로그인이 없다.
 - 지도: 층별 SVG 배치도 위에 핀 좌표를 0~1 비율로 저장한다.
 - 현재 패키지 `com.fixmap`: `controller`(화면, `api`는 JSON), `dao`, `dto`, `filter`, `util`. 서블릿 기반이다.
-- Spring, Maven 같은 프레임워크나 빌드 도구 도입 여부는 아직 정해지지 않았다. 팀이 정하기 전에 프로젝트 구조를 바꾸지 않는다.
+- **Spring MVC 6(Boot 없이) + Maven + JPA(Hibernate)를 쓰기로 정했다.** 사용할 라이브러리 목록은 Notion Backend Skill 페이지를 따른다.
+- 위 내용은 정해졌지만 **코드에는 아직 반영되지 않았다**(현재 서블릿 기반). 적용은 별도 PR(`feature/spring-setup`)로 하며, 그 PR이 병합되기 전에는 구조를 바꾸지 않는다.
 - JSP는 `WEB-INF/views/`, 정적 파일은 `static/`
 
 ## 작업 규칙
