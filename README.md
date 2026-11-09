@@ -30,13 +30,17 @@ db/                         Oracle 초기 데이터와 예시 쿼리 (schema.sql
 pom.xml                     Maven 설정 (Spring, JPA, Oracle 드라이버 등)
 src/main/java/com/fixmap/
   config/                   Spring 설정 (WebAppInitializer, RootConfig, WebConfig)
+  controller/               화면(JSP)과 JSON API 컨트롤러
+  service/                  업무 로직, 트랜잭션
+  repository/               DB 접근 (Spring Data JPA)
+  domain/                   JPA 엔티티
 src/main/resources/         db.properties.example (DB·JPA 설정 예시)
 src/main/webapp/
   WEB-INF/views/            JSP 화면 (추가 예정)
   static/                   css, js 등 정적 파일 (추가 예정)
 ```
 
-패키지 구성(`controller`, `service`, `repository`, `domain` 등)은 아직 팀에서 정하지 않았습니다. `RootConfig`는 `com.fixmap.service`, `com.fixmap.repository`, `com.fixmap.domain`을, `WebConfig`는 `com.fixmap.controller`를 읽도록 임시로 잡아 두었습니다.
+패키지 이름은 설정에서 읽는 이름에 맞춘 임시 구성입니다. 팀에서 바꾸기로 하면 폴더와 `RootConfig`, `WebConfig`의 패키지 문자열을 함께 바꿉니다.
 
 ## 브랜치 규칙 (제안)
 
