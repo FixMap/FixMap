@@ -4,8 +4,6 @@ db.url=jdbc:oracle:thin:@localhost:1521/XEPDB1
 db.user=fixmap
 db.password=change-me
 
-# 첨부 파일 저장 폴더 (절대 경로)
-upload.dir=C:/fixmap/uploads
-
-# /admin 접근 비밀번호 (로그인 기능 전 임시 보호)
-admin.password=change-me
+# JPA(Hibernate)가 테이블을 만드는 방식: none, validate, update, create, create-drop
+# 비워 두면 update. 개발 초기에는 update로 두고, 스키마를 새로 만들 때만 create를 쓴다.
+jpa.ddl-auto=update

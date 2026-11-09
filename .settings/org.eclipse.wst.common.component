@@ -2,7 +2,8 @@
     <wb-module deploy-name="FixMap">
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
         <property name="context-root" value="FixMap"/>
-        <property name="java-output-path" value="/FixMap/build/classes"/>
+        <property name="java-output-path" value="/FixMap/target/classes"/>
     </wb-module>
 </project-modules>
