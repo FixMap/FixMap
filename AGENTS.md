@@ -4,32 +4,70 @@
 이 파일은 팀원이 어떤 AI 도구를 써도 같은 규칙으로 작업하게 하기 위한 공통 지침이다.
 Claude Code는 `CLAUDE.md`가 이 파일을 불러온다.
 
+## 먼저 읽을 것: 정해진 것과 아직 아닌 것
+
+AI 도구는 **정해지지 않은 것을 확정처럼 쓰거나 코드에 박지 않는다.** 모르겠으면 "미정"이라고 하고 팀원에게 묻는다.
+
+| 구분 | 내용 |
+| --- | --- |
+| 수행 규칙 (바꿀 수 없음) | Eclipse Dynamic Web Project, Oracle, JSP |
+| 팀이 정함 | Spring MVC 6(Boot 없이) + Maven + JPA(Hibernate, `ddl-auto`), 화면은 JSP + JSON API 혼합, Lombok 사용, MVP에 로그인 없음 |
+| 팀이 정함 (Git) | `main` / `develop` / `feature/*`. `main`은 팀장 승인 필수 |
+| **아직 미정** | URL 대부분(`docs/URL_PLAN.md`는 제안), 첨부 파일 저장 위치, 지도를 그리는 방식(SVG / DB 값으로 직접), Bootstrap 사용, `svg-pan-zoom`, 글꼴, PR 병합 방식(Merge / Squash), CSS 파일 구조 |
+
+용어: Eclipse, Oracle, JSP 같은 제약은 "학교 규칙"이 아니라 **"수행 규칙"**(수행평가 규정)이다.
+
 ## 지켜야 할 제약
 
-- **Eclipse Dynamic Web Project** 구조를 유지한다 (수행 규칙). Spring Boot는 쓰지 않는다. Boot 없이 Spring MVC만 쓴다.
-- 화면은 **JSP**로 서버에서 렌더링하고 (수행 규칙), JS/CSS/HTML을 직접 작성한다. 화면과 API는 JSP + JSON API를 섞어 쓴다. 프론트 프레임워크나 목록에 없는 새 라이브러리는 팀과 정하기 전에 도입하지 않는다.
-- DB는 **Oracle**만 쓴다 (수행 규칙). MySQL 문법을 쓰지 않는다. 예약어를 피해 이름을 정했다: `building_floor`, `floor_level`, `place_type`, `report_comment`, `file_size`.
+- **Eclipse Dynamic Web Project** 구조를 유지한다. Spring Boot는 쓰지 않는다.
+- 화면은 **JSP**로 서버에서 렌더링하고, JS/CSS/HTML을 직접 작성한다. 지도, 핀, 폼 전송처럼 화면을 새로 그리지 않는 부분만 JSON API를 부른다.
+- DB는 **Oracle**만 쓴다. MySQL 문법을 쓰지 않는다. 예약어를 피해 이름을 정했다: `building_floor`, `floor_level`, `place_type`, `report_comment`, `file_size`.
 - Java 21, Tomcat 10.1 (`jakarta.*` 패키지. `javax.servlet`을 쓰지 않는다).
+- 첨부 파일은 디스크(또는 S3)에 두고 DB(`report_file`)에는 메타데이터만 둔다. 저장 위치는 미정이다.
 
 ## 구조
 
-- URL 구조는 아직 정해지지 않았다. 사용자 화면과 관리자 화면을 URL로 나누는 안이 논의 중일 뿐이다. URL은 임의로 정하지 말고 팀과 먼저 정한다. MVP에는 로그인이 없다.
-- 지도: 층별 SVG 배치도 위에 핀 좌표를 0~1 비율로 저장한다.
-- 현재 패키지 `com.fixmap`: `controller`(화면, `api`는 JSON), `dao`, `dto`, `filter`, `util`. 서블릿 기반이다.
-- **Spring MVC 6(Boot 없이) + Maven + JPA(Hibernate)를 쓰기로 정했다.** 사용할 라이브러리 목록은 Notion Backend Skill 페이지를 따른다.
-- 위 내용은 정해졌지만 **코드에는 아직 반영되지 않았다**(현재 서블릿 기반). 적용은 별도 PR(`feature/spring-setup`)로 하며, 그 PR이 병합되기 전에는 구조를 바꾸지 않는다.
-- JSP는 `WEB-INF/views/`, 정적 파일은 `static/`
+- **Spring MVC 6 + Maven + JPA를 쓰기로 정했지만 코드에는 아직 반영되지 않았다.** 현재 코드는 서블릿 기반이다. 적용은 별도 PR(`feature/spring-setup`)로 하고, 그 PR이 병합되기 전에는 구조를 바꾸지 않는다.
+- 현재 패키지 `com.fixmap`: `controller`(화면, `api`는 JSON), `dao`, `dto`, `filter`, `util`.
+- JSP는 `WEB-INF/views/`, 정적 파일은 `static/`.
+- 지도의 핀 좌표는 층 기준 0~1 비율로 저장한다.
+- URL은 임의로 만들지 않는다. 제안은 `docs/URL_PLAN.md`에 있고, 확정되기 전까지 새 URL이 필요하면 팀에 먼저 묻는다.
 
 ## 작업 규칙
 
+### Git
+
 - Git 규칙은 `docs/GIT_CONVENTION.md`를 따른다. `main`, `develop`에 직접 push하지 않고, 기능마다 `feature/*` 브랜치에서 PR로 합친다.
-- 사용자(팀원)가 요청하지 않은 PR 생성, push, 브랜치 삭제는 하지 않는다. 먼저 묻는다.
 - 커밋 메시지는 `종류: 내용` (feat, fix, style, refactor, docs, chore).
-- `db.properties`, 비밀번호, 개인 키를 커밋하지 않는다. `target/`도 커밋하지 않는다.
-- 변경은 요청한 기능 범위로 작게 유지한다. 같이 쓰는 파일(`web.xml`, `common.css`, `.classpath` 등 프로젝트 설정)을 바꿀 때는 이유를 PR에 적는다.
-- API를 바꾸면 Notion 기능 명세서와 맞는지 확인한다.
+- 커밋 전에 `git status`로 올라갈 파일을 확인한다. `target/`, `build/`, `bin/`, `.class`, `.war`, `.jar`(의존성), IDE 설정, `db.properties`, 비밀번호, 개인 키는 커밋하지 않는다.
+- 변경은 요청한 기능 범위로 작게 유지한다.
+
+### Notion과 맞추기 (명세가 기준이다)
+
+기능 명세는 Notion이 기준이다. 코드를 바꾸면 아래에 해당하는 Notion 페이지와 맞는지 확인하고, 달라지면 먼저 팀과 정한 뒤 Notion을 고친다.
+
+| 바꾼 것 | 확인하거나 고칠 Notion |
+| --- | --- |
+| **API** (URL, 요청 필드, 응답 JSON) | 기능 명세서 (FE와 BE가 같은 규약을 쓰도록 구현 전에 먼저 적는다) |
+| **화면** (페이지 구성, 버튼, 입력 항목, 동작 순서) | 기능 명세서와 와이어프레임, Frontend 페이지 |
+| **DB** (테이블, 컬럼) | ERD 설계 (Oracle 이름 기준) |
+| **라이브러리 추가·변경** (`pom.xml`, JS/CSS 라이브러리) | Backend / Frontend 페이지의 Skill 하위 페이지 (사용할 것만 적는다) |
+| 팀에서 논의한 결정, 비교한 선택지 | 기술 논의 사항 페이지 |
+
+### 라이브러리와 공유 파일
+
+- Skill 페이지 목록에 없는 라이브러리는 팀과 정한 뒤에 추가하고, 추가한 이유와 함께 Skill 페이지에 적는다.
+- 같이 쓰는 파일(`pom.xml`, `web.xml`, `common.css`, `.classpath` 등 프로젝트 설정)을 바꿀 때는 이유를 PR에 적고 작은 PR로 먼저 합친다. (`common.css`는 임시 파일이고 CSS 구조는 미정이다.)
+- FE는 `WEB-INF/views/`, `static/`을, BE는 `controller`, `service`, `dao`, `dto`, `db/`를 주로 맡는다. 상대 영역을 고칠 때는 그 팀원에게 알린다.
+
+### AI 도구 작업 방식
+
+- 사용자(팀원)가 요청하지 않은 PR 생성, push, 브랜치 삭제는 하지 않는다. 먼저 묻는다.
+- 요청받은 곳만 고친다. Notion을 고치라는 요청에 코드나 PR을 건드리지 않고, 코드를 고치라는 요청에 Notion을 임의로 고치지 않는다.
+- 팀과 합의하지 않은 내용을 문서나 코드 주석에 확정처럼 쓰지 않는다.
+- 실수를 발견하면 숨기지 말고 무엇이 틀렸는지 알리고 고친다.
 
 ## 빌드와 실행
 
 - Eclipse에서 Tomcat 10.1에 올려 `http://localhost:8080/FixMap/`로 확인한다.
-- DB 스크립트는 `db/schema.sql` → `db/data.sql` 순서로 Oracle에서 실행한다.
+- 현재는 DB 스크립트를 `db/schema.sql` → `db/data.sql` 순서로 Oracle에서 실행한다. Spring과 JPA를 적용한 뒤에는 테이블을 JPA(`ddl-auto`)가 만들고, 초기 데이터 SQL만 실행하는 방식으로 바뀐다.
