@@ -59,7 +59,21 @@ AI 도구는 **정해지지 않은 것을 확정처럼 쓰거나 코드에 박�
 
 - Skill 페이지 목록에 없는 라이브러리는 팀과 정한 뒤에 추가하고, 추가한 이유와 함께 Skill 페이지에 적는다.
 - 같이 쓰는 파일(`pom.xml`, `web.xml`, `.classpath` 등 프로젝트 설정)을 바꿀 때는 이유를 PR에 적고 작은 PR로 먼저 합친다. CSS 파일 구조는 아직 미정이다.
-- FE는 `WEB-INF/views/`, `static/`을, BE는 `controller`, `service`, `repository`, `domain`, `db/`를 주로 맡는다. 상대 영역을 고칠 때는 그 팀원에게 알린다.
+
+### FE / BE 작업 구분
+
+한 repo에서 같이 작업하므로 맡은 영역을 나눈다. 상대 영역의 파일은 직접 고치지 않고 그 팀원에게 알리거나 PR에 요청을 남긴다.
+
+| | FE (프론트) | BE (백엔드) |
+| --- | --- | --- |
+| 폴더 | `src/main/webapp/WEB-INF/views/`, `src/main/webapp/static/` | `src/main/java/com/fixmap/`(`config`, `controller`, `service`, `repository`, `domain`), `src/main/resources/`, `db/` |
+| 하는 일 | JSP 화면(레이아웃, JSTL), JS(지도·핀 그리기, API 호출, 폼 전송), CSS, 이미지 등 정적 파일, 화면 입력 확인(사용자 편의용) | JSON API(`@RestController`) 구현, 업무 로직과 트랜잭션, 엔티티와 리포지토리, DB 스크립트, 서버 쪽 입력 검증, 파일 저장, 페이지 컨트롤러(`@Controller`: URL을 JSP 이름에 연결하고 화면에 넘길 데이터를 담는 얇은 코드) |
+| 하지 않는 일 | Java, SQL, DB 구조, `pom.xml` | JSP, JS, CSS |
+| Notion | 화면 변경은 기능 명세서, 와이어프레임, Frontend 페이지 | API와 DB 변경은 기능 명세서, ERD 설계, Backend 페이지 |
+
+- **API 규약**(URL, 요청 필드, 응답 JSON)은 구현 전에 Notion 기능 명세서에 먼저 적는다. BE는 그 명세대로 구현하고, FE는 명세만 보고 호출한다. 응답 형식을 바꾸려면 두 쪽이 먼저 합의한다.
+- **같이 건드리는 파일**(`pom.xml`, `web.xml`, `.classpath` 등 프로젝트 설정)은 수정 전에 팀에 알리고 이유를 적은 작은 PR로 먼저 합친다.
+- AI 도구는 요청한 팀원의 영역만 고친다. 상대 영역에 필요한 변경이 보이면 고치지 말고 무엇이 필요한지 알린다.
 
 ### AI 도구 작업 방식
 
