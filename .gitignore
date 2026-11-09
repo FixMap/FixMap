@@ -18,3 +18,14 @@ src/main/java/db.properties
 # OS
 .DS_Store
 Thumbs.db
+
+# User-page local build and previous local data
+/target/
+/.tools/
+/.m2/
+/data/
+/tmp/
+/.idea/
+*.iml
+.DS_Store
+src/main/webapp/WEB-INF/lib/*.jar

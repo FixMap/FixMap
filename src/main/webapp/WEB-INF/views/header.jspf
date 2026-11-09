@@ -1,0 +1,19 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FixMap · 학교 시설 문의/신고</title>
+  <link rel="stylesheet" href="<%= request.getContextPath() %>/static/user/app.css">
+  <script type="module" src="<%= request.getContextPath() %>/static/user/app.js"></script>
+</head>
+<body data-context="<%= request.getContextPath() %>" data-page="<%= request.getAttribute("page") %>" data-report-id="<%= request.getAttribute("reportId") == null ? "" : request.getAttribute("reportId") %>">
+<a class="skip" href="#main">본문으로 건너뛰기</a>
+<header class="site-header"><div class="header-inner">
+  <a class="brand" href="<%= request.getContextPath() %>/"><span class="brand-icon" aria-hidden="true">F<span>•</span></span><span>FixMap<small>광주소프트웨어마이스터고등학교</small></span></a>
+  <nav aria-label="주 메뉴"><a data-nav="map" href="<%= request.getContextPath() %>/">학교 지도</a><a data-nav="list" href="<%= request.getContextPath() %>/reports">신고 조회</a></nav>
+  <span class="user-label">학생·교직원용</span>
+</div></header>
+<main id="main" class="container">
+<div id="global-error" class="notice error" role="alert" hidden></div>
+<noscript><p class="notice error">지도 선택과 신고 기능을 사용하려면 JavaScript를 활성화해 주세요.</p></noscript>

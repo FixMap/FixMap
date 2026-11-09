@@ -1,0 +1,11 @@
+<%@ page pageEncoding="UTF-8" %>
+<%@ include file="header.jspf" %>
+<div class="page-heading"><div><p class="eyebrow">CAMPUS REPORTS</p><h1>신고 조회</h1><p>학교의 불편한 점과 처리 현황을 확인하세요.</p></div><a class="button primary" href="<%= request.getContextPath() %>/">＋ 문의/신고 작성</a></div>
+<section class="panel filters-panel" aria-label="검색 및 필터">
+  <form id="filter-form">
+    <div class="search-row"><label class="search-input"><span class="sr-only">검색어</span><input name="q" maxlength="100" placeholder="제목, 내용, 건물 또는 층 검색"></label><button type="submit" class="button primary">검색</button><label><span class="sr-only">정렬</span><select name="sort"><option value="newest">최신순</option><option value="oldest">오래된순</option><option value="status">처리 상태순</option></select></label></div>
+    <div class="filter-row"><label>상태<select name="status" id="filter-status"><option value="">전체 상태</option></select></label><label>건물<select name="building" id="filter-building"><option value="">전체 건물</option></select></label><label>층<select name="floor" id="filter-floor"><option value="">전체 층</option></select></label><label>카테고리<select name="category" id="filter-category"><option value="">전체 카테고리</option></select></label><label>시작일<input type="date" name="from"></label><label>종료일<input type="date" name="to"></label><button id="filter-reset" type="button" class="text-button">초기화</button></div>
+  </form>
+</section>
+<div class="reports-grid"><section class="panel table-panel"><div class="section-heading"><h2>신고 목록 <span id="report-total" class="count">0</span></h2><span class="muted small">행을 선택하면 상세 내용을 볼 수 있어요.</span></div><div class="table-scroll"><table><caption class="sr-only">문의/신고 목록</caption><thead><tr><th scope="col">번호</th><th scope="col">제목</th><th scope="col">위치</th><th scope="col">카테고리</th><th scope="col">작성일</th><th scope="col">상태</th></tr></thead><tbody id="report-rows"></tbody></table></div><div id="list-empty" class="empty" hidden></div><nav id="pagination" class="pagination" aria-label="신고 목록 페이지"></nav><p id="list-status" class="sr-only" role="status"></p></section><aside class="panel detail-preview" id="detail-preview"><div class="empty"><span class="empty-symbol" aria-hidden="true">↖</span><h2>어떤 신고가 궁금한가요?</h2><p>목록에서 신고를 선택하면<br>자세한 내용과 사진을 볼 수 있습니다.</p></div></aside></div>
+<%@ include file="footer.jspf" %>
