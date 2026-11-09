@@ -27,8 +27,9 @@ AI 도구는 **정해지지 않은 것을 확정처럼 쓰거나 코드에 박�
 
 ## 구조
 
-- **Spring MVC 6 + Maven + JPA를 쓰기로 정했지만 코드에는 아직 반영되지 않았다.** 현재 코드는 서블릿 기반이다. 적용은 별도 PR(`feature/spring-setup`)로 하고, 그 PR이 병합되기 전에는 구조를 바꾸지 않는다.
-- 현재 패키지 `com.fixmap`: `controller`(화면, `api`는 JSON), `dao`, `dto`, `filter`, `util`.
+- **기준 구조는 Spring MVC 6(Boot 없이) + Maven + JPA다.** 팀이 정했으므로 새 코드는 이 구조를 기준으로 작성한다. 컨트롤러는 Spring MVC(`@Controller`는 JSP 화면, `@RestController`는 JSON API), DB 접근은 JPA(Hibernate)로 한다.
+- **코드는 아직 서블릿 기반이다.** 전환은 별도 PR(`feature/spring-setup`)로 하고, 그 PR이 병합되기 전에는 기존 서블릿 코드와 프로젝트 설정(`pom.xml`, `web.xml` 등)을 임의로 바꾸지 않는다. 전환 PR이 병합된 뒤의 새 기능부터 Spring 기준으로 작성한다.
+- 현재 패키지 `com.fixmap`: `controller`(화면, `api`는 JSON), `dao`, `dto`, `filter`, `util`. 전환 후 패키지 구성(`service`, `repository`, `entity` 등)은 전환 PR에서 팀과 정한다.
 - JSP는 `WEB-INF/views/`, 정적 파일은 `static/`.
 - 지도의 핀 좌표는 층 기준 0~1 비율로 저장한다.
 - URL은 임의로 만들지 않는다. 제안은 `docs/URL_PLAN.md`에 있고, 확정되기 전까지 새 URL이 필요하면 팀에 먼저 묻는다.
