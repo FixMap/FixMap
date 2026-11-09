@@ -1,5 +1,6 @@
 # Eclipse 빌드 결과물
 /build/
+/target/
 /bin/
 *.class
 
@@ -10,7 +11,7 @@
 .metadata/
 
 # 로컬 DB 접속 정보 (db.properties.example을 복사해서 사용)
-src/main/java/db.properties
+src/main/resources/db.properties
 
 # 업로드 파일 (로컬 테스트용)
 /uploads/
