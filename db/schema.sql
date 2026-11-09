@@ -44,7 +44,6 @@ CREATE TABLE building_floor (
   building_id    NUMBER(19)          NOT NULL,
   floor_level    NUMBER(3)           NOT NULL,
   name           VARCHAR2(20 CHAR)   NOT NULL,
-  map_image_url  VARCHAR2(255 CHAR)  NOT NULL,
   map_width      NUMBER(6),
   map_height     NUMBER(6),
   CONSTRAINT pk_building_floor        PRIMARY KEY (id),
@@ -54,7 +53,6 @@ CREATE TABLE building_floor (
 COMMENT ON TABLE  building_floor               IS '층';
 COMMENT ON COLUMN building_floor.floor_level   IS '1, 2, 3 (지하는 -1)';
 COMMENT ON COLUMN building_floor.name          IS '화면 표시용 (1층, B1)';
-COMMENT ON COLUMN building_floor.map_image_url IS '배치도 경로 (/static/maps/main_2F.svg)';
 COMMENT ON COLUMN building_floor.map_width     IS '원본 배치도 가로(px)';
 COMMENT ON COLUMN building_floor.map_height    IS '원본 배치도 세로(px)';
 

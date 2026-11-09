@@ -2,7 +2,6 @@
 -- 초기 데이터 (Oracle, schema.sql 실행 후)
 -- 광주소프트웨어마이스터고 배치도(본관·실습동, 금봉관, 동행관)를 바탕으로 만든 값입니다.
 -- 모든 영역은 직각 사각형(x, y, width, height 비율)이고, 방 사이에는 일정한 간격이 있습니다. ㄱ자 방은 같은 이름의 사각형 여러 개입니다.
--- 각 층의 SVG는 school-map/svg 폴더의 파일과 짝이 맞습니다 (map_image_url 참고).
 -- =========================================================
 
 -- 건물
@@ -11,19 +10,19 @@ INSERT INTO building (id, code, name, sort_order) VALUES (2, 'geumbong', '금봉
 INSERT INTO building (id, code, name, sort_order) VALUES (3, 'donghaeng', '동행관(기숙사)', 3);
 
 -- 층
-INSERT INTO building_floor (id, building_id, floor_level, name, map_image_url, map_width, map_height) VALUES (1, 1, 1, '1층', '/static/maps/main_1F.svg', 468, 139);
-INSERT INTO building_floor (id, building_id, floor_level, name, map_image_url, map_width, map_height) VALUES (2, 1, 2, '2층', '/static/maps/main_2F.svg', 468, 120);
-INSERT INTO building_floor (id, building_id, floor_level, name, map_image_url, map_width, map_height) VALUES (3, 1, 3, '3층', '/static/maps/main_3F.svg', 468, 119);
-INSERT INTO building_floor (id, building_id, floor_level, name, map_image_url, map_width, map_height) VALUES (4, 1, 4, '4층', '/static/maps/main_4F.svg', 352, 99);
-INSERT INTO building_floor (id, building_id, floor_level, name, map_image_url, map_width, map_height) VALUES (5, 2, 1, '1층', '/static/maps/geumbong_1F.svg', 344, 143);
-INSERT INTO building_floor (id, building_id, floor_level, name, map_image_url, map_width, map_height) VALUES (6, 2, 2, '2층', '/static/maps/geumbong_2F.svg', 344, 143);
-INSERT INTO building_floor (id, building_id, floor_level, name, map_image_url, map_width, map_height) VALUES (7, 2, 3, '3층', '/static/maps/geumbong_3F.svg', 408, 137);
-INSERT INTO building_floor (id, building_id, floor_level, name, map_image_url, map_width, map_height) VALUES (8, 2, 4, '4층', '/static/maps/geumbong_4F.svg', 420, 143);
-INSERT INTO building_floor (id, building_id, floor_level, name, map_image_url, map_width, map_height) VALUES (9, 3, 1, '1층', '/static/maps/donghaeng_1F.svg', 457, 103);
-INSERT INTO building_floor (id, building_id, floor_level, name, map_image_url, map_width, map_height) VALUES (10, 3, 2, '2층', '/static/maps/donghaeng_2F.svg', 482, 104);
-INSERT INTO building_floor (id, building_id, floor_level, name, map_image_url, map_width, map_height) VALUES (11, 3, 3, '3층', '/static/maps/donghaeng_3F.svg', 482, 103);
-INSERT INTO building_floor (id, building_id, floor_level, name, map_image_url, map_width, map_height) VALUES (12, 3, 4, '4층', '/static/maps/donghaeng_4F.svg', 482, 103);
-INSERT INTO building_floor (id, building_id, floor_level, name, map_image_url, map_width, map_height) VALUES (13, 3, 5, '5층', '/static/maps/donghaeng_5F.svg', 482, 103);
+INSERT INTO building_floor (id, building_id, floor_level, name, map_width, map_height) VALUES (1, 1, 1, '1층', 468, 139);
+INSERT INTO building_floor (id, building_id, floor_level, name, map_width, map_height) VALUES (2, 1, 2, '2층', 468, 120);
+INSERT INTO building_floor (id, building_id, floor_level, name, map_width, map_height) VALUES (3, 1, 3, '3층', 468, 119);
+INSERT INTO building_floor (id, building_id, floor_level, name, map_width, map_height) VALUES (4, 1, 4, '4층', 352, 99);
+INSERT INTO building_floor (id, building_id, floor_level, name, map_width, map_height) VALUES (5, 2, 1, '1층', 344, 143);
+INSERT INTO building_floor (id, building_id, floor_level, name, map_width, map_height) VALUES (6, 2, 2, '2층', 344, 143);
+INSERT INTO building_floor (id, building_id, floor_level, name, map_width, map_height) VALUES (7, 2, 3, '3층', 408, 137);
+INSERT INTO building_floor (id, building_id, floor_level, name, map_width, map_height) VALUES (8, 2, 4, '4층', 420, 143);
+INSERT INTO building_floor (id, building_id, floor_level, name, map_width, map_height) VALUES (9, 3, 1, '1층', 457, 103);
+INSERT INTO building_floor (id, building_id, floor_level, name, map_width, map_height) VALUES (10, 3, 2, '2층', 482, 104);
+INSERT INTO building_floor (id, building_id, floor_level, name, map_width, map_height) VALUES (11, 3, 3, '3층', 482, 103);
+INSERT INTO building_floor (id, building_id, floor_level, name, map_width, map_height) VALUES (12, 3, 4, '4층', 482, 103);
+INSERT INTO building_floor (id, building_id, floor_level, name, map_width, map_height) VALUES (13, 3, 5, '5층', 482, 103);
 
 -- 교실·시설 영역 (0~1 비율)
 INSERT INTO place (id, floor_id, name, place_type, x, y, width, height) VALUES (1, 1, '복도', 'HALL', 0.3374, 0.6448, 0.5987, 0.1439);

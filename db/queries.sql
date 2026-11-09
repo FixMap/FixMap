@@ -3,7 +3,7 @@
 -- =========================================================
 
 -- 1) 건물·층 목록 (GET /api/buildings)
-SELECT b.id AS building_id, b.name AS building, f.id AS floor_id, f.name AS floor_name, f.map_image_url
+SELECT b.id AS building_id, b.name AS building, f.id AS floor_id, f.name AS floor_name
 FROM building b
 JOIN building_floor f ON f.building_id = b.id
 ORDER BY b.sort_order, f.floor_level;
