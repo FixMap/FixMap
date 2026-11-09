@@ -1,101 +1,19 @@
-<svg xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges" viewBox="0 0 468 120" width="468" height="120" font-family="Pretendard, 'Noto Sans KR', 'Malgun Gothic', sans-serif" xmlns:c2pa="http://c2pa.org/manifest"><metadata><c2pa:manifest>AAAWgmp1bWIAAAAeanVtZGMycGEAEQAQgAAAqgA4m3EDYzJwYQAAABZcanVtYgAAAEdqdW1kYzJtYQARABCAAACqADibcQN1cm46YzJwYTo4MDBiMWZiMS0xMGIyLTRlNjEtYWNiMi1jZmY0YzI2YmVmNGMAAAADl2p1bWIAAAApanVtZGMyYXMAEQAQgAAAqgA4m3EDYzJwYS5hc3NlcnRpb25zAAAAALxqdW1iAAAARGp1bWRjYm9yABEAEIAAAKoAOJtxE2MycGEuaW5ncmVkaWVudC52MwAAAAAYYzJzaHZ+w8CDaE6dhflravfI+f0AAABwY2JvcqNpZGM6Zm9ybWF0bWltYWdlL3N2Zyt4bWxqaW5zdGFuY2VJRHgseG1wOmlpZDo2NTA1MTE3Yy01ODk1LTQ0NTctOTMzNi0xNzBiODYyOGM3ZWVscmVsYXRpb25zaGlwaHBhcmVudE9mAAAB4mp1bWIAAABBanVtZGNib3IAEQAQgAAAqgA4m3ETYzJwYS5hY3Rpb25zLnYyAAAAABhjMnNoW9/elJhN628Sn6LhSPDXhwAAAZljYm9yomdhY3Rpb25zgqJmYWN0aW9ua2MycGEub3BlbmVkanBhcmFtZXRlcnOha2luZ3JlZGllbnRzgaJjdXJseC1zZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmluZ3JlZGllbnQudjNkaGFzaFggySOxZFwESZTQsD3MHpEnjo13gZ3WbYnFan74kUorXIikZmFjdGlvbngdY29tLmFudGhyb3BpYy5jbGF1ZGUucHJvdmlkZWRqcGFyYW1ldGVyc6F4H2NvbS5hbnRocm9waWMub3JpZ2luLWNvbmZpZGVuY2VndW5rbm93bmtkZXNjcmlwdGlvbnhmQ2xhdWRlIHByb3ZpZGVkIHRoaXMgZmlsZSBhdCB0aGUgcmVxdWVzdCBvZiBhIHVzZXIgYW5kIG1heSBoYXZlIGNyZWF0ZWQgb3IgbW9kaWZpZWQgdGhlIGZpbGUgY29udGVudHMubXNvZnR3YXJlQWdlbnShZG5hbWVmQ2xhdWRlcmFsbEFjdGlvbnNJbmNsdWRlZPUAAADIanVtYgAAAEBqdW1kY2JvcgARABCAAACqADibcRNjMnBhLmhhc2guZGF0YQAAAAAYYzJzaIIzF6Tu9EcRXh9xBbc34vEAAACAY2JvcqVjYWxnZnNoYTI1NmNwYWRNAAAAAAAAAAAAAAAAAGRoYXNoWCBzG5VQj571CY914qESlXkebQ+einY1iL6eV8I30p6gOWRuYW1lbmp1bWJmIG1hbmlmZXN0amV4Y2x1c2lvbnOBomVzdGFydBj5Zmxlbmd0aBkeBAAAAj5qdW1iAAAAJ2p1bWRjMmNsABEAEIAAAKoAOJtxA2MycGEuY2xhaW0udjIAAAACD2Nib3KlY2FsZ2ZzaGEyNTZpc2lnbmF0dXJleE1zZWxmI2p1bWJmPS9jMnBhL3VybjpjMnBhOjgwMGIxZmIxLTEwYjItNGU2MS1hY2IyLWNmZjRjMjZiZWY0Yy9jMnBhLnNpZ25hdHVyZWppbnN0YW5jZUlEeCx4bXA6aWlkOjllZjc5YjM0LWNhNDYtNDJkYy1iNmZlLTNiZTY3ZTMyYmEwNHJjcmVhdGVkX2Fzc2VydGlvbnODomN1cmx4LXNlbGYjanVtYmY9YzJwYS5hc3NlcnRpb25zL2MycGEuaW5ncmVkaWVudC52M2RoYXNoWCDJI7FkXARJlNCwPcwekSeOjXeBndZticVqfviRSitciKJjdXJseCpzZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmFjdGlvbnMudjJkaGFzaFgg9yWYy6Vh3cjdiSG3aH4lsElMmgYdfmZ0R8513dhm4HyiY3VybHgpc2VsZiNqdW1iZj1jMnBhLmFzc2VydGlvbnMvYzJwYS5oYXNoLmRhdGFkaGFzaFggK5YGgEhr/dOi09Zplu7nm+8yJp6m+wBQwdDeC4RXzhh0Y2xhaW1fZ2VuZXJhdG9yX2luZm+jZG5hbWVvQW50aHJvcGljIEZpbGVzZ3ZlcnNpb25lMS4wLjBrc3BlY1ZlcnNpb25lMi40LjAAABA4anVtYgAAAChqdW1kYzJjcwARABCAAACqADibcQNjMnBhLnNpZ25hdHVyZQAAABAIY2JvctKEWQISogEmGCFZAgowggIGMIIBjaADAgECAhRA5aAK7sI50L64g/oGQgU9Z1UTADAKBggqhkjOPQQDAzBJMRcwFQYDVQQKEw5BbnRocm9waWMsIFBCQzEuMCwGA1UEAxMlQW50aHJvcGljIENvbnRlbnQgQ3JlZGVudGlhbHMgUm9vdCBDQTAeFw0yNjA4MDcxODQzNTZaFw0yODA4MDYxOTQzNTZaMEQxFzAVBgNVBAoTDkFudGhyb3BpYywgUEJDMSkwJwYDVQQDEyBBbnRocm9waWMgQ2xhdWRlIENvbnRlbnQgU2lnbmluZzBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABJh6CmvLUBgFFNU0vUKlOVtE6djd17L5SuwX0LemFisBM3dkd/3cyjxFA3Qo5S46fX0/ihY0VZ7mfb9KF703t5OjWDBWMA4GA1UdDwEB/wQEAwIHgDAVBgNVHSUEDjAMBgorBgEEAYPoXgIBMAwGA1UdEwEB/wQCMAAwHwYDVR0jBBgwFoAUzlHiBIFOZFsj+OPEz5o+nMHXXMIwCgYIKoZIzj0EAwMDZwAwZAIwMXMdFJ4BetLLVY7ORuE9noqbbAZOZn/aArXyTwFAZfKrPzxF2vPoJNf1+UCdg1XGAjBwX1zd9WGqYkqmL5SFqw1QySjr1zJfpJM9+1rdDwSPLMOPOjKuiXjoU/pUUeG9RwmhY3BhZFkNngAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPZYQMQqe6vEed+ShNVXgniUdgnpRCNPxZjhM/MVmcFAA++EsOHd4XTsL+v0N5o05296Y8tdB9IiP09TCE5Njy5lvMs=</c2pa:manifest></metadata>
-<!-- 본관·실습동 2층 배치도. data.sql의 place 사각형과 같은 값으로 그린 도면. 색은 style의 클래스로 바꾼다 -->
-<style>
-.fl{fill:#f1f3f4;stroke:#dadce0;stroke-width:1.5}
-.room{transition:fill .15s}
-.room--classroom{fill:#dce8fd}.room--special{fill:#d2e3fc}.room--office{fill:#fef7e0}
-.room--toilet{fill:#e6f4ea}.room--hall{fill:#fafbfc}.room--etc{fill:#eceff1}
-.room--stairs{fill:#e3e6e8}.room--stairs-v{fill:url(#stv)}.room--stairs-h{fill:url(#sth)}
-.room--door{fill:#fde293}
-.place:hover .room:not(.room--hall){fill:#aecbfa;cursor:pointer}
-.lbl{font-weight:500;fill:#3c4043;text-anchor:middle;pointer-events:none}
-</style>
-<defs><pattern id="stv" width="5" height="5" patternUnits="userSpaceOnUse"><rect width="5" height="5" fill="#eceff1"/><rect width="2.5" height="5" fill="#dadce0"/></pattern><pattern id="sth" width="5" height="5" patternUnits="userSpaceOnUse"><rect width="5" height="5" fill="#eceff1"/><rect width="5" height="2.5" fill="#dadce0"/></pattern></defs>
-<rect x="5" y="5" width="458" height="110" rx="8" class="fl"/>
-<g class="place" data-place="복도" data-type="HALL"><rect class="room room--hall" x="157.9" y="69.3" width="280.2" height="20.2" rx="1.5"/>
-</g>
-<g class="place" data-place="복도" data-type="HALL"><rect class="room room--hall" x="29.9" y="49.5" width="164.0" height="19.8" rx="1.5"/>
-</g>
-<g class="place" data-place="3학년 1반" data-type="CLASSROOM"><rect class="room room--classroom" x="30.8" y="10.9" width="33.8" height="37.7" rx="1.5"/>
-<text class="lbl" x="47.7" y="27.4" style="font-size:9.5px">3학년</text>
-<text class="lbl" x="47.7" y="38.8" style="font-size:9.5px">1반</text>
-</g>
-<g class="place" data-place="3학년 2반" data-type="CLASSROOM"><rect class="room room--classroom" x="66.4" y="10.9" width="34.4" height="37.7" rx="1.5"/>
-<text class="lbl" x="83.5" y="27.4" style="font-size:9.5px">3학년</text>
-<text class="lbl" x="83.5" y="38.8" style="font-size:9.5px">2반</text>
-</g>
-<g class="place" data-place="상담실" data-type="OFFICE"><rect class="room room--office" x="102.5" y="10.9" width="26.7" height="37.7" rx="1.5"/>
-<text class="lbl" x="115.9" y="32.6" style="font-size:8.2px">상담실</text>
-</g>
-<g class="place" data-place="3학년 상담실" data-type="OFFICE"><rect class="room room--office" x="131.0" y="10.9" width="25.9" height="37.7" rx="1.5"/>
-<text class="lbl" x="144.0" y="27.8" style="font-size:8.0px">3학년</text>
-<text class="lbl" x="144.0" y="37.3" style="font-size:8.0px">상담실</text>
-</g>
-<g class="place" data-place="프로젝트 3실" data-type="SPECIAL"><rect class="room room--special" x="158.8" y="10.9" width="34.2" height="37.7" rx="1.5"/>
-<text class="lbl" x="175.9" y="27.8" style="font-size:7.9px">프로젝트</text>
-<text class="lbl" x="175.9" y="37.2" style="font-size:7.9px">3실</text>
-</g>
-<g class="place" data-place="여화장실" data-type="TOILET"><rect class="room room--toilet" x="10.9" y="30.9" width="18.1" height="37.5" rx="1.5"/>
-<text class="lbl" x="19.9" y="47.6" style="font-size:8.3px">여화</text>
-<text class="lbl" x="19.9" y="57.5" style="font-size:8.3px">장실</text>
-</g>
-<g class="place" data-place="3학년 3반" data-type="CLASSROOM"><rect class="room room--classroom" x="194.8" y="30.9" width="34.1" height="37.5" rx="1.5"/>
-<text class="lbl" x="211.8" y="47.3" style="font-size:9.5px">3학년</text>
-<text class="lbl" x="211.8" y="58.7" style="font-size:9.5px">3반</text>
-</g>
-<g class="place" data-place="3학년 4반" data-type="CLASSROOM"><rect class="room room--classroom" x="230.7" y="30.9" width="34.5" height="37.5" rx="1.5"/>
-<text class="lbl" x="248.0" y="47.3" style="font-size:9.5px">3학년</text>
-<text class="lbl" x="248.0" y="58.7" style="font-size:9.5px">4반</text>
-</g>
-<g class="place" data-place="학생 회의실" data-type="SPECIAL"><rect class="room room--special" x="267.0" y="30.9" width="16.2" height="37.5" rx="1.5"/>
-<text class="lbl" x="275.1" y="48.4" style="font-size:5.0px">학생</text>
-<text class="lbl" x="275.1" y="54.4" style="font-size:5.0px">회의실</text>
-</g>
-<g class="place" data-place="Online Study Cafe" data-type="SPECIAL"><rect class="room room--special" x="285.0" y="30.9" width="15.9" height="37.5" rx="1.5"/>
-<text class="lbl" x="293.0" y="46.1" style="font-size:4.2px">Online</text>
-<text class="lbl" x="293.0" y="51.1" style="font-size:4.2px">Study</text>
-<text class="lbl" x="293.0" y="56.1" style="font-size:4.2px">Cafe</text>
-</g>
-<g class="place" data-place="계단" data-type="STAIRS"><rect class="room room--stairs-v" x="302.7" y="30.9" width="18.5" height="37.5" rx="1.5"/>
-<text class="lbl" x="312.0" y="52.6" style="font-size:8.5px">계단</text>
-</g>
-<g class="place" data-place="착용형 스마트기기 실습실" data-type="SPECIAL"><rect class="room room--special" x="362.9" y="30.9" width="26.2" height="37.5" rx="1.5"/>
-<text class="lbl" x="376.0" y="45.5" style="font-size:4.8px">착용형</text>
-<text class="lbl" x="376.0" y="51.3" style="font-size:4.8px">스마트기기</text>
-<text class="lbl" x="376.0" y="57.1" style="font-size:4.8px">실습실</text>
-</g>
-<g class="place" data-place="사물인터넷 서비스기획 실습실" data-type="SPECIAL"><rect class="room room--special" x="390.9" y="30.9" width="26.8" height="37.5" rx="1.5"/>
-<text class="lbl" x="404.4" y="45.4" style="font-size:4.9px">사물인터넷</text>
-<text class="lbl" x="404.4" y="51.4" style="font-size:4.9px">서비스기획</text>
-<text class="lbl" x="404.4" y="57.3" style="font-size:4.9px">실습실</text>
-</g>
-<g class="place" data-place="3D 프린터 서버실" data-type="SPECIAL"><rect class="room room--special" x="419.6" y="30.9" width="17.6" height="37.5" rx="1.5"/>
-<text class="lbl" x="428.4" y="45.0" style="font-size:5.4px">3D</text>
-<text class="lbl" x="428.4" y="51.5" style="font-size:5.4px">프린터</text>
-<text class="lbl" x="428.4" y="58.0" style="font-size:5.4px">서버실</text>
-</g>
-<g class="place" data-place="남화장실" data-type="TOILET"><rect class="room room--toilet" x="323.0" y="41.0" width="18.2" height="27.4" rx="1.5"/>
-<text class="lbl" x="332.1" y="52.6" style="font-size:8.4px">남화</text>
-<text class="lbl" x="332.1" y="62.7" style="font-size:8.4px">장실</text>
-</g>
-<g class="place" data-place="세면대" data-type="ETC"><rect class="room room--etc" x="343.0" y="55.9" width="18.1" height="12.5" rx="1.5"/>
-<text class="lbl" x="352.1" y="64.1" style="font-size:5.6px">세면대</text>
-</g>
-<g class="place" data-place="기타 공간" data-type="ETC"><rect class="room room--etc" x="439.0" y="61.0" width="18.1" height="27.6" rx="1.5"/>
-<text class="lbl" x="448.1" y="72.8" style="font-size:8.3px">기타</text>
-<text class="lbl" x="448.1" y="82.7" style="font-size:8.3px">공간</text>
-</g>
-<g class="place" data-place="계단" data-type="STAIRS"><rect class="room room--stairs-v" x="10.9" y="70.2" width="37.6" height="18.4" rx="1.5"/>
-<text class="lbl" x="29.7" y="82.7" style="font-size:9.5px">계단</text>
-</g>
-<g class="place" data-place="엘리베이터" data-type="ETC"><rect class="room room--etc" x="83.0" y="70.2" width="17.7" height="18.4" rx="1.5"/>
-<text class="lbl" x="91.9" y="78.1" style="font-size:5.4px">엘리베</text>
-<text class="lbl" x="91.9" y="84.6" style="font-size:5.4px">이터</text>
-</g>
-<g class="place" data-place="계단" data-type="STAIRS"><rect class="room room--stairs-v" x="131.0" y="70.2" width="25.9" height="18.4" rx="1.5"/>
-<text class="lbl" x="144.0" y="82.7" style="font-size:9.5px">계단</text>
-</g>
-<g class="place" data-place="계단" data-type="STAIRS"><rect class="room room--stairs-v" x="419.6" y="90.4" width="37.5" height="18.2" rx="1.5"/>
-<text class="lbl" x="438.3" y="102.8" style="font-size:9.5px">계단</text>
-</g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" width="1200" height="600" font-family="sans-serif">
+  <!-- 임시 배치도 (본관 2층). 실제 배치도로 교체할 것. 영역 좌표는 data.sql의 place와 같다 -->
+  <rect width="1200" height="600" fill="#fafafa"/>
+  <text x="16" y="28" font-size="18" fill="#999">본관 2층 (임시 배치도)</text>
+  <rect x="60" y="60" width="180" height="210" fill="#fff" stroke="#888" stroke-width="2" data-place="2-1반"/>
+  <text x="150" y="170" font-size="14" text-anchor="middle" fill="#555">2-1반</text>
+  <rect x="240" y="60" width="180" height="210" fill="#fff" stroke="#888" stroke-width="2" data-place="2-2반"/>
+  <text x="330" y="170" font-size="14" text-anchor="middle" fill="#555">2-2반</text>
+  <rect x="420" y="60" width="180" height="210" fill="#fff" stroke="#888" stroke-width="2" data-place="2-3반"/>
+  <text x="510" y="170" font-size="14" text-anchor="middle" fill="#555">2-3반</text>
+  <rect x="600" y="60" width="180" height="210" fill="#fff" stroke="#888" stroke-width="2" data-place="2-4반"/>
+  <text x="690" y="170" font-size="14" text-anchor="middle" fill="#555">2-4반</text>
+  <rect x="60" y="270" width="1080" height="60" fill="#fff" stroke="#888" stroke-width="2" data-place="2층 복도"/>
+  <text x="600" y="305" font-size="14" text-anchor="middle" fill="#555">2층 복도</text>
+  <rect x="1020" y="60" width="120" height="210" fill="#fff" stroke="#888" stroke-width="2" data-place="2층 남자 화장실"/>
+  <text x="1080" y="170" font-size="14" text-anchor="middle" fill="#555">2층 남자 화장실</text>
+  <rect x="840" y="60" width="120" height="210" fill="#fff" stroke="#888" stroke-width="2" data-place="2층 계단"/>
+  <text x="900" y="170" font-size="14" text-anchor="middle" fill="#555">2층 계단</text>
 </svg>
