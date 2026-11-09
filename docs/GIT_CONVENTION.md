@@ -47,7 +47,7 @@
 ## FE/BE 충돌 줄이기
 
 - API 규약(URL, 요청 필드, 응답 JSON)을 먼저 Notion 기능 명세서에 정한다.
-- 주 영역: FE는 `WEB-INF/views/`, `static/`, BE는 `controller`, `service`, `repository`, `domain`, `db/`
+- 주 영역과 하는 일, 하지 않는 일은 [AGENTS.md의 "FE / BE 작업 구분"](../AGENTS.md)을 따른다. 상대 영역의 파일은 직접 고치지 않고 알린다.
 - 같이 건드리는 파일(`pom.xml`, `web.xml`, `.classpath` 등 프로젝트 설정)은 수정 전에 팀에 알리고 작은 PR로 바로 합친다.
 
 ## 하지 않는 것
