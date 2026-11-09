@@ -27,9 +27,9 @@ AI 도구는 **정해지지 않은 것을 확정처럼 쓰거나 코드에 박�
 
 ## 구조
 
-- **기준 구조는 Spring MVC 6(Boot 없이) + Maven + JPA다.** 팀이 정했으므로 새 코드는 이 구조를 기준으로 작성한다. 컨트롤러는 Spring MVC(`@Controller`는 JSP 화면, `@RestController`는 JSON API), DB 접근은 JPA(Hibernate)로 한다.
-- **코드는 아직 서블릿 기반이다.** 전환은 별도 PR(`feature/spring-setup`)로 하고, 그 PR이 병합되기 전에는 기존 서블릿 코드와 프로젝트 설정(`pom.xml`, `web.xml` 등)을 임의로 바꾸지 않는다. 전환 PR이 병합된 뒤의 새 기능부터 Spring 기준으로 작성한다.
-- 현재 패키지 `com.fixmap`: `controller`(화면, `api`는 JSON), `dao`, `dto`, `filter`, `util`. 전환 후 패키지 구성(`service`, `repository`, `entity` 등)은 전환 PR에서 팀과 정한다.
+- **구조는 Spring MVC 6(Boot 없이) + Maven + JPA다.** 설정은 반영되어 있다(`pom.xml`, `config/`). 컨트롤러는 Spring MVC(`@Controller`는 JSP 화면, `@RestController`는 JSON API), DB 접근은 JPA(Hibernate)로 한다.
+- 패키지 `com.fixmap`: `config`, `controller`, `service`, `repository`(Spring Data JPA), `domain`(JPA 엔티티). 이 이름은 설정이 읽는 이름에 맞춘 임시 구성이고 팀이 바꿀 수 있다. 바꾸면 폴더와 `RootConfig`, `WebConfig`의 패키지 문자열을 함께 바꾼다.
+- 아직 기능 코드(컨트롤러, 서비스, 엔티티)와 JSP, 정적 파일은 없다.
 - JSP는 `WEB-INF/views/`, 정적 파일은 `static/`.
 - 지도의 핀 좌표는 층 기준 0~1 비율로 저장한다.
 - URL은 임의로 만들지 않는다. 제안은 `docs/URL_PLAN.md`에 있고, 확정되기 전까지 새 URL이 필요하면 팀에 먼저 묻는다.
@@ -58,8 +58,8 @@ AI 도구는 **정해지지 않은 것을 확정처럼 쓰거나 코드에 박�
 ### 라이브러리와 공유 파일
 
 - Skill 페이지 목록에 없는 라이브러리는 팀과 정한 뒤에 추가하고, 추가한 이유와 함께 Skill 페이지에 적는다.
-- 같이 쓰는 파일(`pom.xml`, `web.xml`, `common.css`, `.classpath` 등 프로젝트 설정)을 바꿀 때는 이유를 PR에 적고 작은 PR로 먼저 합친다. (`common.css`는 임시 파일이고 CSS 구조는 미정이다.)
-- FE는 `WEB-INF/views/`, `static/`을, BE는 `controller`, `service`, `dao`, `dto`, `db/`를 주로 맡는다. 상대 영역을 고칠 때는 그 팀원에게 알린다.
+- 같이 쓰는 파일(`pom.xml`, `web.xml`, `.classpath` 등 프로젝트 설정)을 바꿀 때는 이유를 PR에 적고 작은 PR로 먼저 합친다. CSS 파일 구조는 아직 미정이다.
+- FE는 `WEB-INF/views/`, `static/`을, BE는 `controller`, `service`, `repository`, `domain`, `db/`를 주로 맡는다. 상대 영역을 고칠 때는 그 팀원에게 알린다.
 
 ### AI 도구 작업 방식
 
@@ -70,5 +70,5 @@ AI 도구는 **정해지지 않은 것을 확정처럼 쓰거나 코드에 박�
 
 ## 빌드와 실행
 
-- Eclipse에서 Tomcat 10.1에 올려 `http://localhost:8080/FixMap/`로 확인한다.
-- 현재는 DB 스크립트를 `db/schema.sql` → `db/data.sql` 순서로 Oracle에서 실행한다. Spring과 JPA를 적용한 뒤에는 테이블을 JPA(`ddl-auto`)가 만들고, 초기 데이터 SQL만 실행하는 방식으로 바뀐다.
+- Eclipse에서 Maven 프로젝트로 가져와 Tomcat 10.1에 올려 `http://localhost:8080/FixMap/`로 확인한다. 처음 세팅은 `README.md`를 따른다.
+- 테이블은 JPA(`jpa.ddl-auto`)가 엔티티를 보고 만들고, 초기 데이터는 `db/data.sql`을 Oracle에서 실행한다. `db/schema.sql`은 엔티티의 이름과 컬럼을 맞추는 설계 기준이다. 아직 엔티티가 없어서 지금은 `schema.sql`로 테이블을 만들어야 `data.sql`을 실행할 수 있다.

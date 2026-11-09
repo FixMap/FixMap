@@ -20,7 +20,7 @@
 1. 저장소를 클론하고 Eclipse에서 `File > Import > Existing Maven Projects`(또는 Existing Projects into Workspace)로 연다. 라이브러리는 Maven이 받는다.
 2. `Window > Preferences > Server > Runtime Environments`에 Tomcat 10.1을 추가하고, 프로젝트의 Targeted Runtime으로 지정한다.
 3. `src/main/resources/db.properties.example`을 같은 폴더에 `db.properties`로 복사하고 DB 접속 정보를 채운다. (커밋되지 않음)
-4. 테이블은 JPA(`jpa.ddl-auto`)가 만든다. 현재는 엔티티가 없어서 테이블이 만들어지지 않는다. 초기 데이터는 `db/data.sql`을 Oracle에서 실행한다.
+4. 테이블은 JPA(`jpa.ddl-auto`)가 엔티티를 보고 만든다. 아직 엔티티가 없어서, 지금은 Oracle에서 `db/schema.sql` → `db/data.sql` 순서로 실행한다.
 5. 프로젝트를 Tomcat에 올리고 `http://localhost:8080/FixMap/`에 접속한다.
 
 ## 폴더 구조
@@ -42,7 +42,6 @@ src/main/webapp/
 
 패키지 이름은 설정에서 읽는 이름에 맞춘 임시 구성입니다. 팀에서 바꾸기로 하면 폴더와 `RootConfig`, `WebConfig`의 패키지 문자열을 함께 바꿉니다.
 
-## 브랜치 규칙 (제안)
+## 브랜치와 작업 규칙
 
-- `main`: 항상 실행되는 상태
-- 기능 작업은 `feature/기능명` 브랜치에서 하고 PR로 합친다.
+`main` / `develop` / `feature/*` 구조와 커밋, PR 규칙은 [docs/GIT_CONVENTION.md](docs/GIT_CONVENTION.md), AI 도구와 팀원이 같이 따르는 작업 규칙은 [AGENTS.md](AGENTS.md)에 있습니다.
