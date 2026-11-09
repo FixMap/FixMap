@@ -45,9 +45,9 @@ JSP와 JSON을 섞어 쓰기로 했으므로, 화면은 JSP가 그리고 지도�
 
 | 메서드 | URL | 용도 | 상태 |
 | --- | --- | --- | --- |
-| GET | `/api/buildings` | 건물과 층 목록 | 현재 코드에 있음 |
-| GET | `/api/reports/map?floor={id}` | 층의 핀 목록 | 현재 코드에 있음 |
-| GET | `/api/floors/{id}/places` | 층의 영역(place) 목록 | 제안 |
+| GET | `/api/buildings` | 건물과 층 목록 | 초기 세팅 코드에 있던 것(코드는 삭제됨). 메인 페이지 명세에 API 표로 적음 |
+| GET | `/api/reports/map?floor={id}` | 층의 핀 목록 | 초기 세팅 코드에 있던 것(코드는 삭제됨). 메인 페이지 명세에 API 표로 적음 |
+| GET | `/api/floors/{id}/places` | 층의 영역(place) 목록 | 제안 (메인 페이지 명세에 API 표로 적음) |
 | POST | `/api/reports` | 신고 등록 | 제안 |
 | POST | `/api/reports/{id}/files` | 첨부 파일 업로드 | 제안 |
 | GET | `/api/files/{id}` | 첨부 파일 내려받기 | 제안 (저장 위치가 정해져야 함) |
