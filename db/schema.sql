@@ -2,6 +2,9 @@
 -- 학교 고장 위치 시스템 DDL (Oracle 12c 이상, 19c 기준)
 -- 기준 문서: Notion > ERD 설계
 --
+-- JPA를 쓰므로 테이블은 엔티티를 보고 ddl-auto가 만든다. 이 파일은 엔티티의 이름과 컬럼을 맞추는
+-- 설계 기준이고, 엔티티가 아직 없는 동안 data.sql을 실행하기 위해 직접 실행해도 된다.
+--
 -- MySQL 초안과 달라진 이름 (Oracle 예약어·함수명 충돌 회피)
 --   floor   -> building_floor   (FLOOR는 Oracle 함수명)
 --   level   -> floor_level      (LEVEL은 예약어)

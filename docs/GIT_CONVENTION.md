@@ -1,6 +1,6 @@
 # Git Convention
 
-한 repo에서 FE(JSP, JS, CSS)와 BE(Controller, Service, DAO)를 함께 작업한다.
+한 repo에서 FE(JSP, JS, CSS)와 BE(Controller, Service, Repository)를 함께 작업한다.
 기능 하나를 JSP부터 DB까지 한 브랜치에서 끝까지 동작시키는 것이 원칙이다.
 
 ## 브랜치
@@ -47,8 +47,8 @@
 ## FE/BE 충돌 줄이기
 
 - API 규약(URL, 요청 필드, 응답 JSON)을 먼저 Notion 기능 명세서에 정한다.
-- 주 영역: FE는 `WEB-INF/views/`, `static/`, BE는 `controller`, `service`, `dao`, `dto`, `db/`
-- 같이 건드리는 파일(`web.xml`, `common.css`, `.classpath` 등 프로젝트 설정)은 수정 전에 팀에 알리고 작은 PR로 바로 합친다.
+- 주 영역: FE는 `WEB-INF/views/`, `static/`, BE는 `controller`, `service`, `repository`, `domain`, `db/`
+- 같이 건드리는 파일(`pom.xml`, `web.xml`, `.classpath` 등 프로젝트 설정)은 수정 전에 팀에 알리고 작은 PR로 바로 합친다.
 
 ## 하지 않는 것
 
