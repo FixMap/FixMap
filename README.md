@@ -2,8 +2,10 @@
 
 학교 배치도에 핀을 찍어 시설 고장·불편을 신고하고, 관리자가 처리 상황을 관리하는 학교 전용 웹 서비스입니다.
 
-- 일반 사용자: `/FixMap/` (학교 지도, 신고, 신고 조회)
-- 관리자: `/FixMap/admin` (신고 관리, 답글, 완료/보류 처리)
+- 일반 사용자: `/FixMap/` (학교 지도, 핀으로 신고 작성. 신고 조회는 이번 범위에서 제외)
+- 관리자: `/FixMap/admin` (신고 관리, 답글, 처리 상태 변경)
+
+URL 목록은 [docs/URL_PLAN.md](docs/URL_PLAN.md)에 있습니다.
 
 ## 개발 환경
 
@@ -26,6 +28,7 @@
 ## 폴더 구조
 
 ```
+docs/                       Git 규칙, URL 목록, 작업 분담(WORK_SPLIT.md), 작업 기록(worklog/)
 db/                         Oracle 초기 데이터와 예시 쿼리 (schema.sql은 JPA 전환 전 참고용)
 pom.xml                     Maven 설정 (Spring, JPA, Oracle 드라이버 등)
 src/main/java/com/fixmap/
