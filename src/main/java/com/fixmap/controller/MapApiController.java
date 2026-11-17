@@ -37,11 +37,12 @@ public class MapApiController {
                 .toList();
     }
 
-    /** GET /api/reports/map?floor={층 id} : 층의 신고 핀 목록. floor가 없거나 숫자가 아니면 400 */
+    /** GET /api/reports/map?floor={층 id} : 층의 신고 목록(핀 좌표 포함). floor가 없거나 숫자가 아니면 400 */
     @GetMapping("/api/reports/map")
     public List<PinResponse> pins(@RequestParam("floor") Long floorId) {
         return mapService.findPins(floorId).stream()
-                .map(r -> new PinResponse(r.getId(), r.getTitle(), r.getPosX(), r.getPosY(), r.getStatus()))
+                .map(r -> new PinResponse(r.report().getId(), r.report().getTitle(), r.categoryName(),
+                        r.report().getPosX(), r.report().getPosY(), r.report().getStatus()))
                 .toList();
     }
 
@@ -60,7 +61,7 @@ public class MapApiController {
     public record FloorResponse(Long id, int level, String name, Integer mapWidth, Integer mapHeight) {
     }
 
-    public record PinResponse(Long id, String title, BigDecimal posX, BigDecimal posY, String status) {
+    public record PinResponse(Long id, String title, String category, BigDecimal posX, BigDecimal posY, String status) {
     }
 
     public record PlaceResponse(Long id, String name, String type,
