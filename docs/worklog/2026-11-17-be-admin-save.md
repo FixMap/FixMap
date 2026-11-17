@@ -46,3 +46,9 @@
 ## 요청 (다른 영역이나 담당자에게)
 
 - FE: 관리자 상세 패널의 '저장'은 이 API 하나만 부르고, 저장 뒤 `/admin`을 새로고침한다.
+
+## 후속 (2026-11-17)
+
+- 신고 등록(#13)이 병합되어 develop을 합쳤다. 상태 변경은 `Report.changeStatus`(변경 감지, `updated_at` 함께 갱신)로 바꾸고 `ReportStatusRepository`를 없앴다. 상태 값 상수는 `Report`에 모았다.
+- H2(Oracle 모드)와 Tomcat 10.1에서 다시 호출했다. 상태 변경 200, 같은 상태 반복 200, 잘못된 `status` 400, 없는 신고 404. DB의 `status_history`와 `updated_at`을 직접 조회해 확인하지는 않았다. Oracle에서는 확인하지 못했다.
+- 위 "남은 일" 중 `Report`/`ReportStatusRepository` 정리와 상수 통합은 끝났다. 관리자 접근 제한은 여전히 미정이다.

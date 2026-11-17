@@ -27,6 +27,8 @@ public class Report {
 
     /** 등록할 때의 처리 상태(접수) */
     public static final String STATUS_RECEIVED = "RECEIVED";
+    public static final String STATUS_DONE = "DONE";
+    public static final String STATUS_HOLD = "HOLD";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

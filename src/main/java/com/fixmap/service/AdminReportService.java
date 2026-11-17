@@ -11,7 +11,7 @@ import com.fixmap.domain.Report;
 import com.fixmap.domain.ReportComment;
 import com.fixmap.domain.StatusHistory;
 import com.fixmap.repository.ReportCommentRepository;
-import com.fixmap.repository.ReportStatusRepository;
+import com.fixmap.repository.ReportRepository;
 import com.fixmap.repository.StatusHistoryRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -21,11 +21,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AdminReportService {
 
-    private static final Set<String> STATUSES = Set.of("RECEIVED", "DONE", "HOLD");
+    private static final Set<String> STATUSES = Set.of(Report.STATUS_RECEIVED, Report.STATUS_DONE, Report.STATUS_HOLD);
     private static final int MAX_COMMENT = 2000;
     private static final int MAX_REASON = 255;
 
-    private final ReportStatusRepository reportRepository;
+    private final ReportRepository reportRepository;
     private final ReportCommentRepository commentRepository;
     private final StatusHistoryRepository historyRepository;
 
@@ -57,8 +57,7 @@ public class AdminReportService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "신고를 찾을 수 없습니다"));
 
         String currentStatus = report.getStatus();
-        if (newStatus != null && !newStatus.equals(currentStatus)) {
-            reportRepository.updateStatus(reportId, newStatus);
+        if (report.changeStatus(newStatus)) {
             historyRepository.save(new StatusHistory(reportId, currentStatus, newStatus, newReason));
             currentStatus = newStatus;
         }
