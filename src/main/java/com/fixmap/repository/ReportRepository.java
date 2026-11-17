@@ -1,5 +1,6 @@
 package com.fixmap.repository;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -8,8 +9,5 @@ import com.fixmap.domain.Report;
 
 public interface ReportRepository extends JpaRepository<Report, Long> {
 
-    List<Report> findByFloorIdOrderByIdAsc(Long floorId);
-
-    /** "이 층의 신고" 목록: 최신순 */
-    List<Report> findByFloorIdOrderByCreatedAtDescIdDesc(Long floorId);
+    List<Report> findByFloorIdInOrderByIdAsc(Collection<Long> floorIds);
 }

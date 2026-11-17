@@ -29,7 +29,7 @@ import com.fixmap.repository.ReportRepository;
 
 import lombok.RequiredArgsConstructor;
 
-/** 신고 작성(REPAIR-1), 첨부 파일(REPAIR-2), "이 층의 신고" 조회 */
+/** 신고 작성(REPAIR-1), 첨부 파일(REPAIR-2) */
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -79,14 +79,6 @@ public class ReportService {
                 input.title().strip(), input.content().strip(),
                 ratio(input.posX()), ratio(input.posY())));
         return toViews(List.of(report)).get(0);
-    }
-
-    /** 층의 신고 목록(최신순). 첨부 파일 정보까지 담는다. 없는 층이면 404 */
-    public List<ReportView> findByFloor(Long floorId) {
-        if (!floorRepository.existsById(floorId)) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "층을 찾을 수 없습니다");
-        }
-        return toViews(reportRepository.findByFloorIdOrderByCreatedAtDescIdDesc(floorId));
     }
 
     /**

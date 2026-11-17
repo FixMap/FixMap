@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,7 +37,7 @@ import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 
 /**
- * 신고 작성(REPAIR-1), 첨부 파일(REPAIR-2), 메인 오른쪽 "이 층의 신고"가 부르는 JSON API.
+ * 신고 작성(REPAIR-1), 첨부 파일(REPAIR-2) JSON API. "이 층의 신고" 목록은 MapApiController의 /api/reports/map이 맡는다.
  * 주소는 docs/URL_PLAN.md를 따른다. 요청·응답 형식은 이 PR의 제안이며 Notion API 명세서에 옮겨 확정한다.
  */
 @RestController
@@ -53,12 +52,6 @@ public class ReportApiController {
         return reportService.findCategories().stream()
                 .map(c -> new CategoryResponse(c.getId(), c.getName()))
                 .toList();
-    }
-
-    /** GET /api/reports?floor={층 id} : 층의 신고 목록(최신순). 없는 층이면 404 */
-    @GetMapping("/api/reports")
-    public List<ReportResponse> reportsOfFloor(@RequestParam("floor") Long floorId) {
-        return reportService.findByFloor(floorId).stream().map(ReportResponse::of).toList();
     }
 
     /** POST /api/reports : 신고 등록(JSON). 필수 항목이 비면 400, 성공하면 201과 등록된 신고 */

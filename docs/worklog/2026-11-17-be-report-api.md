@@ -49,3 +49,9 @@
 
 - FE: 신고 작성 영역에서 `POST /api/reports`(JSON) 후 받은 id로 `POST /api/reports/{id}/files`(multipart, 필드 `files`)를 부른다. 오류는 `message`를 그대로 보여 주면 된다
 - 팀: Notion API 명세서, 기능 명세서(고장 종류), ERD(category 데이터) 반영
+
+## 정정 (2026-11-17)
+
+- PR #11이 먼저 병합되면서 "이 층의 신고" 목록은 `GET /api/reports/map?level={층 번호}`(MapApiController)가 맡게 됐고, `GET /api/reports?floor=`는 `docs/URL_PLAN.md`에서 빠졌다. 그래서 이 PR에서 그 API를 지웠다.
+- develop을 합치며 충돌을 풀었다: `Category`, `CategoryRepository`는 이 PR 쪽(정렬 조회 포함), `Report`는 양쪽 컬럼을 모두 유지, `ReportRepository`는 develop의 `findByFloorIdInOrderByIdAsc`만 남김.
+- 남은 문제: 사용자 쪽에서 신고 내용·첨부까지 보는 API가 URL 목록에 없다. `/api/reports/map` 응답에 내용·영역·첨부를 넣을지, 상세 주소를 새로 둘지 팀이 정해야 한다.

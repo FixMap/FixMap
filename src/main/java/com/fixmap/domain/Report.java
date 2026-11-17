@@ -55,7 +55,7 @@ public class Report {
     @Column(name = "pos_y", nullable = false, precision = 5, scale = 4)
     private BigDecimal posY;
 
-    /** RECEIVED(접수), DONE(완료), HOLD(보류). "처리 중" 등 상태 추가 여부는 팀 미정 */
+    /** RECEIVED(접수), DONE(완료), HOLD(보류) */
     @Column(nullable = false, length = 10)
     private String status;
 
