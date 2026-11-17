@@ -2,12 +2,14 @@ package com.fixmap.controller;
 
 import java.time.format.DateTimeFormatter;
 
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fixmap.domain.ReportComment;
+import com.fixmap.service.AdminReportQueryService;
 import com.fixmap.service.AdminReportService;
 
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,13 @@ public class AdminReportApiController {
     private static final DateTimeFormatter TIME = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
 
     private final AdminReportService adminReportService;
+    private final AdminReportQueryService queryService;
+
+    /** GET /api/admin/reports/{id} : 신고 상세(내용, 첨부, 핀 위치, 답글). 열면 읽음으로 바뀐다. */
+    @GetMapping("/api/admin/reports/{id}")
+    public AdminReportQueryService.Detail detail(@PathVariable("id") Long id) {
+        return queryService.detail(id);
+    }
 
     /** PATCH /api/admin/reports/{id} : 처리 상태 변경과 답글 작성을 한 번에 저장 */
     @PatchMapping("/api/admin/reports/{id}")
