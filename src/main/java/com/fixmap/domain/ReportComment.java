@@ -41,4 +41,10 @@ public class ReportComment {
         this.createdAt = LocalDateTime.now();
         this.updatedAt = this.createdAt;
     }
+
+    /** 내용을 고친다. 값 검사는 부르는 쪽(서비스)이 한다. */
+    public void edit(String newContent) {
+        this.content = newContent;
+        this.updatedAt = LocalDateTime.now();
+    }
 }
