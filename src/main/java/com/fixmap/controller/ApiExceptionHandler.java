@@ -5,14 +5,13 @@ import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.validation.BindException;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
-import org.springframework.web.multipart.support.MissingServletRequestPartException;
 import org.springframework.web.server.ResponseStatusException;
 
 /** JSON API의 오류 응답을 {"message": "..."} 형식으로 통일한다. */
@@ -36,12 +35,16 @@ public class ApiExceptionHandler {
                 .body(Map.of("message", e.getName() + " 값이 올바르지 않습니다"));
     }
 
-    /** @Validated 요청 검사 실패(필수 항목 누락 등): 첫 번째 오류 메시지를 돌려준다. */
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, String>> invalid(MethodArgumentNotValidException e) {
+    /**
+     * 요청 검사 실패(필수 항목 누락 등): 첫 번째 오류 메시지를 돌려준다.
+     * BindException은 폼(@ModelAttribute)과 JSON(@RequestBody, MethodArgumentNotValidException) 검사 실패를 모두 받는다.
+     * 숫자 칸에 글자가 오는 등 변환 실패는 "{필드} 값이 올바르지 않습니다"로 바꾼다.
+     */
+    @ExceptionHandler(BindException.class)
+    public ResponseEntity<Map<String, String>> invalid(BindException e) {
         String message = e.getBindingResult().getFieldErrors().stream()
                 .findFirst()
-                .map(FieldError::getDefaultMessage)
+                .map(f -> f.isBindingFailure() ? f.getField() + " 값이 올바르지 않습니다" : f.getDefaultMessage())
                 .orElse("입력값이 올바르지 않습니다");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", message));
     }
@@ -52,11 +55,11 @@ public class ApiExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("message", "요청 형식이 올바르지 않습니다"));
     }
 
-    /** multipart에 파일 필드가 없을 때 */
-    @ExceptionHandler(MissingServletRequestPartException.class)
-    public ResponseEntity<Map<String, String>> missingPart(MissingServletRequestPartException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(Map.of("message", e.getRequestPartName() + " 파일이 필요합니다"));
+    /** JSON 본문을 받는 API에 다른 Content-Type을 보냈을 때. 기본 HTML 오류 페이지 대신 JSON */
+    @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
+    public ResponseEntity<Map<String, String>> unsupported(HttpMediaTypeNotSupportedException e) {
+        return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
+                .body(Map.of("message", "요청 형식(Content-Type)이 올바르지 않습니다"));
     }
 
     /** 파일 크기 제한(WebAppInitializer: 1개 10MB, 요청 35MB)을 넘었을 때 */

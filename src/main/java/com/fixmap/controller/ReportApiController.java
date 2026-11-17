@@ -2,7 +2,7 @@ package com.fixmap.controller;
 
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.core.io.FileSystemResource;
@@ -14,9 +14,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,11 +38,14 @@ import lombok.RequiredArgsConstructor;
 
 /**
  * 신고 작성(REPAIR-1), 첨부 파일(REPAIR-2) JSON API. "이 층의 신고" 목록은 MapApiController의 /api/reports/map이 맡는다.
- * 주소는 docs/URL_PLAN.md를 따른다. 요청·응답 형식은 이 PR의 제안이며 Notion API 명세서에 옮겨 확정한다.
+ * 주소는 docs/URL_PLAN.md, 등록 방식(multipart 한 번)은 Notion API 명세서를 따른다.
  */
 @RestController
 @RequiredArgsConstructor
 public class ReportApiController {
+
+    /** 날짜는 "2026-11-17T10:00:00" 문자열로 보낸다(관리자 API와 같은 형식). */
+    private static final DateTimeFormatter TIME = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
 
     private final ReportService reportService;
 
@@ -54,22 +57,20 @@ public class ReportApiController {
                 .toList();
     }
 
-    /** POST /api/reports : 신고 등록(JSON). 필수 항목이 비면 400, 성공하면 201과 등록된 신고 */
-    @PostMapping(path = "/api/reports", consumes = MediaType.APPLICATION_JSON_VALUE)
+    /**
+     * POST /api/reports : 신고 등록(multipart/form-data). 글 항목과 첨부 파일(files, 0~3개)을 한 번에 받는다.
+     * 필수 항목이 비거나 파일이 맞지 않으면 400, 성공하면 201과 등록된 신고.
+     * consumes로 막으면 컨트롤러를 고르기 전에 415가 나가 {"message"} 대신 Tomcat HTML 오류가 되므로 두지 않았다.
+     * multipart가 아닌 요청은 폼 값이 비어 400 {"message"}가 된다.
+     */
+    @PostMapping("/api/reports")
     @ResponseStatus(HttpStatus.CREATED)
-    public ReportResponse create(@Validated @RequestBody CreateReportRequest request) {
+    public ReportResponse create(@Validated @ModelAttribute CreateReportRequest request,
+                                 @RequestPart(value = "files", required = false) List<MultipartFile> files) {
         ReportView created = reportService.create(new NewReport(
-                request.floorId(), request.placeId(), request.categoryId(),
-                request.title(), request.content(), request.posX(), request.posY()));
+                request.floorId(), request.categoryId(),
+                request.title(), request.content(), request.posX(), request.posY()), files);
         return ReportResponse.of(created);
-    }
-
-    /** POST /api/reports/{id}/files : 첨부 파일 업로드(multipart, 필드 이름 files). 신고 1건에 3개까지 */
-    @PostMapping(path = "/api/reports/{id}/files", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @ResponseStatus(HttpStatus.CREATED)
-    public List<FileResponse> upload(@PathVariable("id") Long reportId,
-                                     @RequestPart("files") List<MultipartFile> files) {
-        return reportService.addFiles(reportId, files).stream().map(FileResponse::of).toList();
     }
 
     /** GET /api/files/{id} : 첨부 파일 보기(사진은 브라우저에서 바로 열린다). 없으면 404 */
@@ -86,10 +87,9 @@ public class ReportApiController {
                 .body(new FileSystemResource(stored.path()));
     }
 
-    /** 신고 등록 요청. 신고 위치는 층(floorId)과 핀 좌표(posX, posY, 0~1)이고 영역(placeId)은 복도 등이면 생략한다. */
+    /** 신고 등록 요청(폼 필드). 신고 위치는 층(floorId)과 핀 좌표(posX, posY, 0~1)이고 영역은 서버가 좌표로 정한다. */
     public record CreateReportRequest(
             @NotNull(message = "층을 선택해 주세요") Long floorId,
-            Long placeId,
             @NotNull(message = "고장 종류를 선택해 주세요") Long categoryId,
             @NotBlank(message = "제목을 입력해 주세요")
             @Size(max = 100, message = "제목은 100자까지 입력할 수 있습니다") String title,
@@ -110,13 +110,13 @@ public class ReportApiController {
     public record ReportResponse(Long id, Long floorId, Long placeId, String placeName,
                                  Long categoryId, String categoryName, String title, String content,
                                  BigDecimal posX, BigDecimal posY, String status,
-                                 LocalDateTime createdAt, List<FileResponse> files) {
+                                 String createdAt, List<FileResponse> files) {
 
         static ReportResponse of(ReportView view) {
             Report r = view.report();
             return new ReportResponse(r.getId(), r.getFloorId(), r.getPlaceId(), view.placeName(),
                     r.getCategoryId(), view.categoryName(), r.getTitle(), r.getContent(),
-                    r.getPosX(), r.getPosY(), r.getStatus(), r.getCreatedAt(),
+                    r.getPosX(), r.getPosY(), r.getStatus(), r.getCreatedAt().format(TIME),
                     view.files().stream().map(FileResponse::of).toList());
         }
     }
