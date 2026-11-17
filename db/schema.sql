@@ -39,7 +39,7 @@ CREATE TABLE building (
 COMMENT ON TABLE  building            IS '건물';
 COMMENT ON COLUMN building.code       IS '영문 코드 (main, annex). 배치도 파일 이름에 사용';
 COMMENT ON COLUMN building.name       IS '본관, 별관';
-COMMENT ON COLUMN building.sort_order IS '건물 탭 표시 순서';
+COMMENT ON COLUMN building.sort_order IS '건물 표시 순서';
 
 -- 층
 CREATE TABLE building_floor (
