@@ -84,7 +84,7 @@ public class ReportApiController {
     }
 
     /**
-     * POST /api/reports : 신고 등록(multipart/form-data). 글 항목과 첨부 파일(files, 0~3개)을 한 번에 받는다.
+     * POST /api/reports : 신고 등록(multipart/form-data). 글 항목과 첨부 파일(files, 0~5개)을 한 번에 받는다.
      * 필수 항목이 비거나 파일이 맞지 않으면 400, 성공하면 201과 등록된 신고.
      * consumes로 막으면 컨트롤러를 고르기 전에 415가 나가 {"message"} 대신 Tomcat HTML 오류가 되므로 두지 않았다.
      * multipart가 아닌 요청은 폼 값이 비어 400 {"message"}가 된다.

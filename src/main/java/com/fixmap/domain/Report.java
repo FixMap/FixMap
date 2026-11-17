@@ -29,6 +29,7 @@ public class Report {
 
     /** 등록할 때의 처리 상태(접수) */
     public static final String STATUS_RECEIVED = "RECEIVED";
+    public static final String STATUS_PROGRESS = "PROGRESS";
     public static final String STATUS_DONE = "DONE";
     public static final String STATUS_HOLD = "HOLD";
 
@@ -59,7 +60,7 @@ public class Report {
     @Column(name = "pos_y", nullable = false, precision = 5, scale = 4)
     private BigDecimal posY;
 
-    /** RECEIVED(접수), DONE(완료), HOLD(보류) */
+    /** RECEIVED(접수), PROGRESS(처리 중), DONE(완료), HOLD(보류) */
     @Column(nullable = false, length = 10)
     private String status;
 
