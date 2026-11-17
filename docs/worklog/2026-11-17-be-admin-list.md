@@ -28,7 +28,7 @@
 
 ## 정한 것과 미정
 
-- 정한 것: 읽음은 상세를 열 때 서버가 바꾼다. 잘못된 `status`, `sort`, `page` 쿼리는 그 조건을 쓰지 않거나 가까운 값으로 맞춘다(오류를 내지 않는다). 키워드 검색 대상은 제목, 내용, 건물·층·영역 이름이다.
+- 정한 것: 읽음은 상세를 열 때 서버가 바꾼다. 잘못된 `status`, `sort`, `page`, `building`, `unread` 쿼리는 그 조건을 쓰지 않거나 가까운 값으로 맞춘다(숫자·불리언은 문자열로 받아 직접 바꿔서 `page=abc`도 오류 없이 첫 페이지가 된다). 키워드 검색 대상은 제목, 내용, 건물·층·영역 이름이다.
 - 미정: 관리자 접근 제한 방식, 처리 상태에 "처리 중"을 넣을지, 상세를 패널로 할지 별도 페이지로 할지, 답글 수정·삭제
 
 ## 확인한 방법
@@ -47,5 +47,5 @@
 ## 요청 (다른 영역이나 담당자에게)
 
 - FE: `WEB-INF/views/main.jsp`(메인)와 `admin.jsp`가 필요하다. `main`은 모델에 `level`만 담긴다.
-- FE: `admin.jsp`는 모델 이름은 `reports`(목록), `summary`, `page`, `totalPages`, `totalCount`, `q`, `status`, `building`, `unread`, `sort`이고 필드는 `AdminReportQueryService`의 `Row`, `Summary`를 본다. 상세 패널은 `GET /api/admin/reports/{id}`를 부르고, 열면 읽음이 되므로 목록의 읽음 표시는 새로고침해야 바뀐다.
-- DB 담당: 이미 `report` 테이블을 만든 DB는 `ALTER TABLE report ADD is_read NUMBER(1) DEFAULT 0 NOT NULL;`로 열을 추가한다(`ddl-auto`는 기존 테이블에 열을 추가하는지 설정에 따라 다르다).
+- FE: `admin.jsp`는 모델 이름은 `reports`(목록), `summary`, `page`, `totalPages`, `totalCount`, `q`, `status`, `building`, `unread`, `sort`이고 필드는 `AdminReportQueryService`의 `Row`, `Summary`를 본다. 상세 패널은 `GET /api/admin/reports/{id}`를 부르고, 열면 읽음이 되므로 목록의 읽음 표시는 새로고침해야 바뀐다. 마우스를 올릴 때 미리 불러오는 식으로 쓰지 말고, 상세를 실제로 열 때만 부른다(열지 않은 신고도 읽음이 된다).
+- DB 담당: `Report.read`에 `@ColumnDefault("0")`를 붙여, 이미 데이터가 있는 DB에서도 `jpa.ddl-auto=update`가 `is_read`를 기본값 0으로 추가한다. 수동 `ALTER`는 필요 없다(Oracle에서는 확인하지 못했다).

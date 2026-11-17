@@ -26,13 +26,18 @@ public class AdminPageController {
     @GetMapping("/admin")
     public String admin(@RequestParam(name = "q", required = false) String q,
                         @RequestParam(name = "status", required = false) String status,
-                        @RequestParam(name = "building", required = false) Long building,
-                        @RequestParam(name = "unread", defaultValue = "false") boolean unread,
+                        @RequestParam(name = "building", required = false) String building,
+                        @RequestParam(name = "unread", required = false) String unread,
                         @RequestParam(name = "sort", defaultValue = "latest") String sort,
-                        @RequestParam(name = "page", defaultValue = "1") int page,
+                        @RequestParam(name = "page", required = false) String page,
                         Model model) {
-        AdminReportQueryService.ListResult result =
-                queryService.list(new AdminReportQueryService.ListQuery(q, status, building, unread, sort, page));
+        // 숫자·불리언은 문자열로 받아 직접 바꾼다. 이 화면은 @Controller라 JSON 오류 처리기가 닿지 않아서,
+        // 올바르지 않은 값(page=abc 등)을 400 HTML 페이지로 보내지 않고 그 조건을 쓰지 않는다.
+        Long buildingId = parseLong(building);
+        boolean unreadOnly = "true".equalsIgnoreCase(unread);
+        int pageNumber = parseInt(page, 1);
+        AdminReportQueryService.ListResult result = queryService
+                .list(new AdminReportQueryService.ListQuery(q, status, buildingId, unreadOnly, sort, pageNumber));
 
         model.addAttribute("reports", result.reports());
         model.addAttribute("summary", result.summary());
@@ -41,9 +46,25 @@ public class AdminPageController {
         model.addAttribute("totalCount", result.totalCount());
         model.addAttribute("q", q == null ? "" : q);
         model.addAttribute("status", status == null ? "" : status);
-        model.addAttribute("building", building);
-        model.addAttribute("unread", unread);
+        model.addAttribute("building", buildingId);
+        model.addAttribute("unread", unreadOnly);
         model.addAttribute("sort", sort);
         return "admin";
+    }
+
+    private static Long parseLong(String value) {
+        try {
+            return value == null || value.isBlank() ? null : Long.valueOf(value.trim());
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
+    private static int parseInt(String value, int fallback) {
+        try {
+            return value == null || value.isBlank() ? fallback : Integer.parseInt(value.trim());
+        } catch (NumberFormatException e) {
+            return fallback;
+        }
     }
 }
