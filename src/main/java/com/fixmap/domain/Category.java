@@ -10,7 +10,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-/** 신고 분류(고장 종류) */
+/** 신고 분류(고장 종류). 목록은 db/data.sql에 있고, 종류 확정은 팀 미정이다. */
 @Entity
 @Table(name = "category")
 @Getter
