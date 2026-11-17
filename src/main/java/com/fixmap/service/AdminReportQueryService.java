@@ -114,13 +114,23 @@ public class AdminReportQueryService {
         return new ListResult(rows, summary, page, totalPages, filtered.size());
     }
 
-    /** 상세를 열면 읽음으로 바꾼다. 신고가 없으면 404. */
+    /** 관리자 상세. 열면 읽음으로 바꾼다. 신고가 없으면 404. */
     @Transactional
     public Detail detail(Long id) {
         if (!reportRepository.existsById(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "신고를 찾을 수 없습니다");
         }
         reportRepository.markRead(id);
+        return load(id);
+    }
+
+    /** 사용자 사이트의 신고 상세(메인 오른쪽 영역). 관리자 상세와 같은 내용이고 읽음 처리는 하지 않는다. */
+    @Transactional(readOnly = true)
+    public Detail view(Long id) {
+        return load(id);
+    }
+
+    private Detail load(Long id) {
         Report r = reportRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "신고를 찾을 수 없습니다"));
 

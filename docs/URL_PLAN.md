@@ -46,8 +46,9 @@ API의 요청·응답 형식은 Notion API 명세서(Backend 하위 페이지)�
 | GET | `/api/floors/{id}/places` | 층의 영역(place) 목록 | REPAIR-7 | 구현됨 (PR #11, 병합 전) |
 | GET | `/api/reports/map?level={층 번호}` | 세 건물의 같은 층 신고 목록(제목, 상태, 종류, 위치). 지도 핀과 오른쪽 "이 층의 신고"가 같이 쓴다 | REPAIR-7 | 구현됨 (PR #11) |
 | GET | `/api/categories` | 고장 종류 목록 | REPAIR-1 | 구현됨 (PR #13). Notion에는 "나중에". 종류 목록(7개 제안)은 미정 |
-| POST | `/api/reports` | 신고 등록. 글 항목과 첨부 파일(최대 3개)을 multipart 한 번에 보낸다 | REPAIR-1, 2 | 구현됨 (PR #13). 형식은 Notion API 명세서 |
+| POST | `/api/reports` | 신고 등록. 글 항목과 첨부 파일(최대 5개)을 multipart 한 번에 보낸다 | REPAIR-1, 2 | 구현됨 (PR #13). 형식은 Notion API 명세서 |
 | POST | `/api/reports/{id}/files` | 첨부 파일 따로 추가 | REPAIR-2 | 나중에 (Notion). 지금은 `POST /api/reports`에 함께 보낸다 |
+| GET | `/api/reports/{id}` | 신고 상세(내용, 첨부, 답글). 메인 오른쪽 영역에서 목록의 신고나 핀을 눌렀을 때. 응답은 관리자 상세와 같고 읽음 처리는 하지 않는다 | REPAIR-8 | 구현됨 |
 | GET | `/api/files/{id}` | 첨부 파일 보기 | REPAIR-2 | 구현됨 (PR #13). Notion은 관리자 전용이지만 접근 제한 방식이 미정이라 지금은 누구나 열 수 있다 |
 
 ### 관리자
@@ -59,7 +60,7 @@ API의 요청·응답 형식은 Notion API 명세서(Backend 하위 페이지)�
 | PATCH | `/api/admin/reports/{id}/read` | 읽음 처리 | REPAIR-3, 10 | 만들지 않음. 상세 조회가 읽음 처리를 겸한다 |
 | PATCH | `/api/admin/reports/{id}` | 처리 저장(상태 변경 + 답글을 한 번에) | REPAIR-4, 5 | 구현됨 (PR #14) |
 | DELETE | `/api/admin/reports/{id}` | 완료(`DONE`)된 신고 삭제(답글, 이력, 첨부 파일 포함). 완료가 아니면 400 | REPAIR-10 | 구현됨 |
-| PATCH, DELETE | `/api/admin/reports/{id}/comments/{commentId}` | 답글 수정, 삭제 | REPAIR-4 | 지정 |
+| PATCH, DELETE | `/api/admin/reports/{id}/comments/{commentId}` | 답글 수정(`{ content }`), 삭제(204) | REPAIR-4 | 구현됨 |
 | GET | `/api/admin/summary` | 요약 통계(안 읽은 신고, 상태별, 건물별 건수) | REPAIR-10 | 만들지 않음. `/admin`을 그릴 때 컨트롤러가 집계해 모델에 담는다 |
 
 ## 아직 정하지 않은 것

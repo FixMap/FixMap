@@ -25,7 +25,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AdminReportService {
 
-    private static final Set<String> STATUSES = Set.of(Report.STATUS_RECEIVED, Report.STATUS_DONE, Report.STATUS_HOLD);
+    private static final Set<String> STATUSES = Set.of(Report.STATUS_RECEIVED, Report.STATUS_PROGRESS, Report.STATUS_DONE,
+            Report.STATUS_HOLD);
     private static final int MAX_COMMENT = 2000;
     private static final int MAX_REASON = 255;
 
@@ -102,6 +103,33 @@ public class AdminReportService {
                 storedPaths.forEach(fileStorage::deleteQuietly);
             }
         });
+    }
+
+    /** 답글 내용을 고친다. 신고나 답글이 없거나 그 신고의 답글이 아니면 404, 내용이 비었거나 2000자를 넘으면 400. */
+    @Transactional
+    public ReportComment editComment(Long reportId, Long commentId, String content) {
+        String newContent = blankToNull(content);
+        if (newContent == null || newContent.length() > MAX_COMMENT) {
+            throw badRequest("content 값이 올바르지 않습니다");
+        }
+        ReportComment comment = findComment(reportId, commentId);
+        comment.edit(newContent);
+        return comment;
+    }
+
+    /** 답글을 지운다. 신고나 답글이 없거나 그 신고의 답글이 아니면 404. */
+    @Transactional
+    public void deleteComment(Long reportId, Long commentId) {
+        commentRepository.delete(findComment(reportId, commentId));
+    }
+
+    private ReportComment findComment(Long reportId, Long commentId) {
+        if (!reportRepository.existsById(reportId)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "신고를 찾을 수 없습니다");
+        }
+        return commentRepository.findById(commentId)
+                .filter(c -> c.getReportId().equals(reportId))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "답글을 찾을 수 없습니다"));
     }
 
     private static String blankToNull(String value) {
