@@ -46,7 +46,7 @@ API의 요청·응답 형식은 Notion API 명세서(Backend 하위 페이지)�
 | GET | `/api/floors/{id}/places` | 층의 영역(place) 목록 | REPAIR-7 | 구현됨 (PR #11, 병합 전) |
 | GET | `/api/reports/map?level={층 번호}` | 세 건물의 같은 층 신고 목록(제목, 상태, 종류, 위치). 지도 핀과 오른쪽 "이 층의 신고"가 같이 쓴다 | REPAIR-7 | 구현됨 (PR #11) |
 | GET | `/api/categories` | 고장 종류 목록 | REPAIR-1 | 구현됨 (PR #13). Notion에는 "나중에". 종류 목록(7개 제안)은 미정 |
-| POST | `/api/reports` | 신고 등록. 글 항목과 첨부 파일(최대 3개)을 multipart 한 번에 보낸다 | REPAIR-1, 2 | 구현됨 (PR #13). 형식은 Notion API 명세서 |
+| POST | `/api/reports` | 신고 등록. 글 항목과 첨부 파일(최대 5개)을 multipart 한 번에 보낸다 | REPAIR-1, 2 | 구현됨 (PR #13). 형식은 Notion API 명세서 |
 | POST | `/api/reports/{id}/files` | 첨부 파일 따로 추가 | REPAIR-2 | 나중에 (Notion). 지금은 `POST /api/reports`에 함께 보낸다 |
 | GET | `/api/files/{id}` | 첨부 파일 보기 | REPAIR-2 | 구현됨 (PR #13). Notion은 관리자 전용이지만 접근 제한 방식이 미정이라 지금은 누구나 열 수 있다 |
 

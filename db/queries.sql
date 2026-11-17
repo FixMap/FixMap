@@ -34,7 +34,7 @@ JOIN building b       ON b.id = f.building_id
 JOIN category c       ON c.id = r.category_id
 LEFT JOIN place p     ON p.id = r.place_id
 WHERE (r.title LIKE '%고장%' OR r.content LIKE '%고장%' OR p.name LIKE '%고장%')
-  AND r.status IN ('RECEIVED', 'HOLD')
+  AND r.status IN ('RECEIVED', 'PROGRESS', 'HOLD')
 ORDER BY r.created_at DESC
 OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;
 

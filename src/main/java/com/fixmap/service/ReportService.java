@@ -38,7 +38,7 @@ import lombok.RequiredArgsConstructor;
 public class ReportService {
 
     /** 신고 1건에 붙일 수 있는 첨부 파일 수 */
-    public static final int MAX_FILES_PER_REPORT = 3;
+    public static final int MAX_FILES_PER_REPORT = 5;
 
     private final ReportRepository reportRepository;
     private final ReportFileRepository fileRepository;
