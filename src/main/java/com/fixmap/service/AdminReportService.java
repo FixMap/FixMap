@@ -21,7 +21,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AdminReportService {
 
-    private static final Set<String> STATUSES = Set.of(Report.STATUS_RECEIVED, Report.STATUS_DONE, Report.STATUS_HOLD);
+    private static final Set<String> STATUSES = Set.of(Report.STATUS_RECEIVED, Report.STATUS_PROGRESS, Report.STATUS_DONE,
+            Report.STATUS_HOLD);
     private static final int MAX_COMMENT = 2000;
     private static final int MAX_REASON = 255;
 
