@@ -13,8 +13,8 @@ import com.fixmap.service.MapService;
 import lombok.RequiredArgsConstructor;
 
 /**
- * 메인(학교 지도) 화면이 부르는 JSON API. 요청·응답 형식은 Notion 기능 명세서의
- * "메인(학교 지도) 페이지"에 적힌 API 표를 따른다.
+ * 메인(학교 지도) 화면이 부르는 JSON API. 요청·응답 형식은 Notion Backend의
+ * "API 명세서"를 따른다.
  */
 @RestController
 @RequiredArgsConstructor

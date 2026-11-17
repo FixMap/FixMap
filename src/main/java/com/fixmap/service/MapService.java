@@ -32,7 +32,7 @@ public class MapService {
     private final PlaceRepository placeRepository;
     private final ReportRepository reportRepository;
 
-    /** 건물 목록(탭 순서)과 각 건물의 층(층 번호 순서) */
+    /** 건물 목록(배치도 순서)과 각 건물의 층(층 번호 순서) */
     public List<BuildingWithFloors> findBuildingsWithFloors() {
         Map<Long, List<BuildingFloor>> floorsByBuilding = new LinkedHashMap<>();
         for (BuildingFloor floor : floorRepository.findAllByOrderByFloorLevelAsc()) {
