@@ -53,12 +53,26 @@ public class ReportApiController {
 
     /**
      * GET /api/reports/{id} : 신고 상세(내용, 첨부, 답글). 메인 오른쪽 영역에서 목록의 신고나 핀을 눌렀을 때 쓴다.
-     * 응답은 관리자 상세(GET /api/admin/reports/{id})와 같고 읽음 처리는 하지 않는다.
+     * 응답은 관리자 상세에서 관리자용 항목(read)을 뺀 PublicDetail이고 읽음 처리는 하지 않는다.
      * /api/reports/map은 문자열 그대로 맞는 매핑이 먼저 선택되어 겹치지 않는다.
      */
     @GetMapping("/api/reports/{id}")
-    public AdminReportQueryService.Detail detail(@PathVariable("id") Long id) {
-        return reportQueryService.view(id);
+    public PublicDetail detail(@PathVariable("id") Long id) {
+        return PublicDetail.from(reportQueryService.view(id));
+    }
+
+    /** 사용자에게 보여 주는 신고 상세. 관리자용 항목은 여기에 넣지 않는다. */
+    public record PublicDetail(Long id, String title, String content, Long categoryId, String category,
+                               Long floorId, String building, String floor, Long placeId, String place,
+                               BigDecimal posX, BigDecimal posY, String status, String createdAt,
+                               List<AdminReportQueryService.FileInfo> files,
+                               List<AdminReportQueryService.CommentInfo> comments) {
+
+        static PublicDetail from(AdminReportQueryService.Detail d) {
+            return new PublicDetail(d.id(), d.title(), d.content(), d.categoryId(), d.category(), d.floorId(),
+                    d.building(), d.floor(), d.placeId(), d.place(), d.posX(), d.posY(), d.status(),
+                    d.createdAt(), d.files(), d.comments());
+        }
     }
 
     /** GET /api/categories : 고장 종류 목록 */
