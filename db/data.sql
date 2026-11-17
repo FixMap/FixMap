@@ -368,30 +368,31 @@ INSERT INTO place (id, floor_id, name, place_type, x, y, width, height) VALUES (
 INSERT INTO place (id, floor_id, name, place_type, x, y, width, height) VALUES (341, 13, '침실', 'SPECIAL', 0.567, 0.8015, 0.0292, 0.0927);
 INSERT INTO place (id, floor_id, name, place_type, x, y, width, height) VALUES (342, 13, '화장실', 'TOILET', 0.5999, 0.8015, 0.0291, 0.0927);
 
--- 신고 분류
-INSERT INTO category (id, name, sort_order) VALUES (1, '시설 고장', 1);
-INSERT INTO category (id, name, sort_order) VALUES (2, '전기', 2);
-INSERT INTO category (id, name, sort_order) VALUES (3, '냉난방', 3);
-INSERT INTO category (id, name, sort_order) VALUES (4, '수도·화장실', 4);
-INSERT INTO category (id, name, sort_order) VALUES (5, '청결', 5);
-INSERT INTO category (id, name, sort_order) VALUES (6, '기타', 6);
+-- 신고 분류 (고장 종류 7개 제안. 팀 확정 전이라 바뀌면 이 목록만 고친다)
+INSERT INTO category (id, name, sort_order) VALUES (1, '전기·조명', 1);
+INSERT INTO category (id, name, sort_order) VALUES (2, '냉난방·환기', 2);
+INSERT INTO category (id, name, sort_order) VALUES (3, '수도·화장실', 3);
+INSERT INTO category (id, name, sort_order) VALUES (4, '문·창문·시설물', 4);
+INSERT INTO category (id, name, sort_order) VALUES (5, '가구·집기', 5);
+INSERT INTO category (id, name, sort_order) VALUES (6, '정보기기', 6);
+INSERT INTO category (id, name, sort_order) VALUES (7, '기타', 7);
 
 -- 신고 (pos_x, pos_y는 해당 place 영역의 가운데)
-INSERT INTO report (id, floor_id, place_id, category_id, title, content, pos_x, pos_y, status, reporter_name, created_at, updated_at) VALUES (1, 2, 39, 2, '3학년 3반 형광등 깜빡임', '교실 앞쪽 형광등 2개가 계속 깜빡입니다.', 0.4526, 0.4137, 'RECEIVED', '2학년 김학생', TIMESTAMP '2026-11-03 08:40:00', TIMESTAMP '2026-11-03 08:40:00');
-INSERT INTO report (id, floor_id, place_id, category_id, title, content, pos_x, pos_y, status, reporter_name, created_at, updated_at) VALUES (2, 2, 31, 4, '복도 정수기 누수', '2층 복도 정수기 아래로 물이 새서 바닥이 젖어 있어요.', 0.6367, 0.6618, 'DONE', NULL, TIMESTAMP '2026-11-02 12:10:00', TIMESTAMP '2026-11-03 10:00:00');
-INSERT INTO report (id, floor_id, place_id, category_id, title, content, pos_x, pos_y, status, reporter_name, created_at, updated_at) VALUES (3, 2, 33, 1, '3학년 1반 창문 잠금장치 고장', '3학년 1반 뒤쪽 창문 잠금장치가 부러져서 잠기지 않습니다.', 0.1019, 0.2479, 'HOLD', '2학년 이학생', TIMESTAMP '2026-11-01 09:15:00', TIMESTAMP '2026-11-02 14:00:00');
-INSERT INTO report (id, floor_id, place_id, category_id, title, content, pos_x, pos_y, status, reporter_name, created_at, updated_at) VALUES (4, 6, 137, 3, '강당 에어컨 작동 안 함', '강당 오른쪽 에어컨이 켜지지 않아요.', 0.3899, 0.68, 'RECEIVED', NULL, TIMESTAMP '2026-11-04 15:30:00', TIMESTAMP '2026-11-04 15:30:00');
-INSERT INTO report (id, floor_id, place_id, category_id, title, content, pos_x, pos_y, status, reporter_name, created_at, updated_at) VALUES (5, 1, 14, 4, '1층 여화장실 변기 막힘', '1층 여화장실 안쪽 칸 변기가 막혔습니다.', 0.0422, 0.5032, 'DONE', '1학년 박학생', TIMESTAMP '2026-10-30 11:00:00', TIMESTAMP '2026-10-30 16:20:00');
-INSERT INTO report (id, floor_id, place_id, category_id, title, content, pos_x, pos_y, status, reporter_name, created_at, updated_at) VALUES (6, 3, 60, 1, '프로젝트 2실 의자 바퀴 파손', '프로젝트 2실 12번 자리 의자 바퀴가 빠졌어요.', 0.3758, 0.249, 'RECEIVED', NULL, TIMESTAMP '2026-11-05 13:05:00', TIMESTAMP '2026-11-05 13:05:00');
-INSERT INTO report (id, floor_id, place_id, category_id, title, content, pos_x, pos_y, status, reporter_name, created_at, updated_at) VALUES (7, 4, NULL, 5, '4층 계단 옆 쓰레기', '4층 계단 옆 구석에 쓰레기가 쌓여 있습니다.', 0.007, 0.8, 'RECEIVED', '3학년 최학생', TIMESTAMP '2026-11-05 17:45:00', TIMESTAMP '2026-11-05 17:45:00');
-INSERT INTO report (id, floor_id, place_id, category_id, title, content, pos_x, pos_y, status, reporter_name, created_at, updated_at) VALUES (8, 7, 150, 2, '도서실 콘센트 고장', '도서실 창가 쪽 콘센트에 전기가 안 들어와요.', 0.3604, 0.4032, 'HOLD', NULL, TIMESTAMP '2026-10-28 10:20:00', TIMESTAMP '2026-10-29 09:00:00');
+INSERT INTO report (id, floor_id, place_id, category_id, title, content, pos_x, pos_y, status, reporter_name, created_at, updated_at) VALUES (1, 2, 39, 1, '3학년 3반 형광등 깜빡임', '교실 앞쪽 형광등 2개가 계속 깜빡입니다.', 0.4526, 0.4137, 'RECEIVED', '2학년 김학생', TIMESTAMP '2026-11-03 08:40:00', TIMESTAMP '2026-11-03 08:40:00');
+INSERT INTO report (id, floor_id, place_id, category_id, title, content, pos_x, pos_y, status, reporter_name, created_at, updated_at) VALUES (2, 2, 31, 3, '복도 정수기 누수', '2층 복도 정수기 아래로 물이 새서 바닥이 젖어 있어요.', 0.6367, 0.6618, 'DONE', NULL, TIMESTAMP '2026-11-02 12:10:00', TIMESTAMP '2026-11-03 10:00:00');
+INSERT INTO report (id, floor_id, place_id, category_id, title, content, pos_x, pos_y, status, reporter_name, created_at, updated_at) VALUES (3, 2, 33, 4, '3학년 1반 창문 잠금장치 고장', '3학년 1반 뒤쪽 창문 잠금장치가 부러져서 잠기지 않습니다.', 0.1019, 0.2479, 'HOLD', '2학년 이학생', TIMESTAMP '2026-11-01 09:15:00', TIMESTAMP '2026-11-02 14:00:00');
+INSERT INTO report (id, floor_id, place_id, category_id, title, content, pos_x, pos_y, status, reporter_name, created_at, updated_at) VALUES (4, 6, 137, 2, '강당 에어컨 작동 안 함', '강당 오른쪽 에어컨이 켜지지 않아요.', 0.3899, 0.68, 'RECEIVED', NULL, TIMESTAMP '2026-11-04 15:30:00', TIMESTAMP '2026-11-04 15:30:00');
+INSERT INTO report (id, floor_id, place_id, category_id, title, content, pos_x, pos_y, status, reporter_name, created_at, updated_at) VALUES (5, 1, 14, 3, '1층 여화장실 변기 막힘', '1층 여화장실 안쪽 칸 변기가 막혔습니다.', 0.0422, 0.5032, 'DONE', '1학년 박학생', TIMESTAMP '2026-10-30 11:00:00', TIMESTAMP '2026-10-30 16:20:00');
+INSERT INTO report (id, floor_id, place_id, category_id, title, content, pos_x, pos_y, status, reporter_name, created_at, updated_at) VALUES (6, 3, 60, 5, '프로젝트 2실 의자 바퀴 파손', '프로젝트 2실 12번 자리 의자 바퀴가 빠졌어요.', 0.3758, 0.249, 'RECEIVED', NULL, TIMESTAMP '2026-11-05 13:05:00', TIMESTAMP '2026-11-05 13:05:00');
+INSERT INTO report (id, floor_id, place_id, category_id, title, content, pos_x, pos_y, status, reporter_name, created_at, updated_at) VALUES (7, 4, NULL, 7, '4층 계단 옆 쓰레기', '4층 계단 옆 구석에 쓰레기가 쌓여 있습니다.', 0.007, 0.8, 'RECEIVED', '3학년 최학생', TIMESTAMP '2026-11-05 17:45:00', TIMESTAMP '2026-11-05 17:45:00');
+INSERT INTO report (id, floor_id, place_id, category_id, title, content, pos_x, pos_y, status, reporter_name, created_at, updated_at) VALUES (8, 7, 150, 1, '도서실 콘센트 고장', '도서실 창가 쪽 콘센트에 전기가 안 들어와요.', 0.3604, 0.4032, 'HOLD', NULL, TIMESTAMP '2026-10-28 10:20:00', TIMESTAMP '2026-10-29 09:00:00');
 
--- 첨부 파일 (파일 자체는 /uploads 폴더에 있다고 가정)
-INSERT INTO report_file (report_id, original_name, stored_path, content_type, file_size, created_at) VALUES (1, '형광등.jpg', '/uploads/2026/11/7f3c1e2a-0b6d-4c1e-9a51-1f2b3c4d5e01.jpg', 'image/jpeg', 1843200, TIMESTAMP '2026-11-03 08:40:00');
-INSERT INTO report_file (report_id, original_name, stored_path, content_type, file_size, created_at) VALUES (2, '정수기누수.jpg', '/uploads/2026/11/0a1b2c3d-4e5f-4a6b-8c7d-9e0f1a2b3c02.jpg', 'image/jpeg', 2457600, TIMESTAMP '2026-11-02 12:10:00');
-INSERT INTO report_file (report_id, original_name, stored_path, content_type, file_size, created_at) VALUES (2, '바닥.png', '/uploads/2026/11/1b2c3d4e-5f6a-4b7c-9d8e-0f1a2b3c4d03.png', 'image/png', 980000, TIMESTAMP '2026-11-02 12:10:00');
-INSERT INTO report_file (report_id, original_name, stored_path, content_type, file_size, created_at) VALUES (3, 'window.jpg', '/uploads/2026/11/2c3d4e5f-6a7b-4c8d-8e9f-1a2b3c4d5e04.jpg', 'image/jpeg', 1520000, TIMESTAMP '2026-11-01 09:15:00');
-INSERT INTO report_file (report_id, original_name, stored_path, content_type, file_size, created_at) VALUES (6, '의자.jpg', '/uploads/2026/11/3d4e5f6a-7b8c-4d9e-9f0a-2b3c4d5e6f05.jpg', 'image/jpeg', 1200000, TIMESTAMP '2026-11-05 13:05:00');
+-- 첨부 파일 (stored_path는 upload.dir 기준 상대 경로. 예시라 실제 파일은 없다)
+INSERT INTO report_file (report_id, original_name, stored_path, content_type, file_size, created_at) VALUES (1, '형광등.jpg', '2026/11/7f3c1e2a-0b6d-4c1e-9a51-1f2b3c4d5e01.jpg', 'image/jpeg', 1843200, TIMESTAMP '2026-11-03 08:40:00');
+INSERT INTO report_file (report_id, original_name, stored_path, content_type, file_size, created_at) VALUES (2, '정수기누수.jpg', '2026/11/0a1b2c3d-4e5f-4a6b-8c7d-9e0f1a2b3c02.jpg', 'image/jpeg', 2457600, TIMESTAMP '2026-11-02 12:10:00');
+INSERT INTO report_file (report_id, original_name, stored_path, content_type, file_size, created_at) VALUES (2, '바닥.png', '2026/11/1b2c3d4e-5f6a-4b7c-9d8e-0f1a2b3c4d03.png', 'image/png', 980000, TIMESTAMP '2026-11-02 12:10:00');
+INSERT INTO report_file (report_id, original_name, stored_path, content_type, file_size, created_at) VALUES (3, 'window.jpg', '2026/11/2c3d4e5f-6a7b-4c8d-8e9f-1a2b3c4d5e04.jpg', 'image/jpeg', 1520000, TIMESTAMP '2026-11-01 09:15:00');
+INSERT INTO report_file (report_id, original_name, stored_path, content_type, file_size, created_at) VALUES (6, '의자.jpg', '2026/11/3d4e5f6a-7b8c-4d9e-9f0a-2b3c4d5e6f05.jpg', 'image/jpeg', 1200000, TIMESTAMP '2026-11-05 13:05:00');
 
 -- 관리자 답글
 INSERT INTO report_comment (report_id, content, created_at, updated_at) VALUES (2, '정수기 업체에 연락해서 필터 연결부를 교체했습니다.', TIMESTAMP '2026-11-03 10:00:00', TIMESTAMP '2026-11-03 10:00:00');
