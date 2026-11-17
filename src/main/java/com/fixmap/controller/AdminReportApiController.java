@@ -2,10 +2,13 @@ package com.fixmap.controller;
 
 import java.time.format.DateTimeFormatter;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fixmap.domain.ReportComment;
@@ -41,6 +44,20 @@ public class AdminReportApiController {
         return new SaveResponse(result.reportId(), result.status(), toResponse(result.comment()));
     }
 
+    /** PATCH /api/admin/reports/{id}/comments/{commentId} : 답글 내용 수정 */
+    @PatchMapping("/api/admin/reports/{id}/comments/{commentId}")
+    public CommentResponse editComment(@PathVariable("id") Long id, @PathVariable("commentId") Long commentId,
+                                       @RequestBody EditCommentRequest request) {
+        return toResponse(adminReportService.editComment(id, commentId, request.content()));
+    }
+
+    /** DELETE /api/admin/reports/{id}/comments/{commentId} : 답글 삭제. 성공하면 204 */
+    @DeleteMapping("/api/admin/reports/{id}/comments/{commentId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteComment(@PathVariable("id") Long id, @PathVariable("commentId") Long commentId) {
+        adminReportService.deleteComment(id, commentId);
+    }
+
     private static CommentResponse toResponse(ReportComment comment) {
         if (comment == null) {
             return null;
@@ -49,6 +66,9 @@ public class AdminReportApiController {
     }
 
     public record SaveRequest(String status, String comment, String reason) {
+    }
+
+    public record EditCommentRequest(String content) {
     }
 
     public record SaveResponse(Long id, String status, CommentResponse comment) {
