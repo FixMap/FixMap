@@ -56,3 +56,15 @@
 - develop을 합치며 충돌을 풀었다: `Category`, `CategoryRepository`는 이 PR 쪽(정렬 조회 포함), `Report`는 양쪽 컬럼을 모두 유지, `ReportRepository`는 develop의 `findByFloorIdInOrderByIdAsc`만 남김.
 - 남은 문제: 사용자 쪽에서 신고 내용·첨부까지 보는 API가 URL 목록에 없다. `/api/reports/map` 응답에 내용·영역·첨부를 넣을지, 상세 주소를 새로 둘지 팀이 정해야 한다.
 - #14 리뷰 후 요청을 받아 `Report.changeStatus(String)`를 추가했다. #14의 후속 작업에서 `ReportStatusRepository`의 일괄 update 대신 쓰면 `updated_at`이 갱신된다. `ApiExceptionHandler`의 중복 핸들러는 #14에서 빼기로 해서 이 PR의 것을 유지한다.
+
+## 정정 2 (2026-11-17, #13 리뷰 반영)
+
+- Notion API 명세서에 맞춰 신고 등록을 `POST /api/reports` multipart 한 번(글 항목 + `files` 0~3개)으로 바꾸고 `POST /api/reports/{id}/files`는 지웠다. 등록 후 첨부만 실패해 신고가 파일 없이 남는 문제도 없어졌다.
+- 영역(`place_id`)은 요청에서 받지 않고 서버가 핀 좌표로 정한다(ERD, Notion). 여러 영역에 걸치면 가장 작은 영역.
+- `createdAt`을 배열이 아닌 `yyyy-MM-dd'T'HH:mm:ss` 문자열로 보낸다(#14와 같은 형식).
+- 첨부 형식은 브라우저가 보낸 Content-Type이 아니라 파일 앞부분(매직 바이트)으로 판단한다.
+- `@RequestMapping(consumes)`를 빼서 multipart가 아닌 요청도 Tomcat HTML이 아닌 400 `{"message"}`로 응답한다.
+- `docs/URL_PLAN.md`의 사용자 API 네 줄 상태를 고쳤다.
+- 확인: H2(Oracle 모드) + 내장 Tomcat 10.1 + UTF-8 필터로 HTTP 호출. 정상 등록(파일 0·1·2개, 한글), 영역 자동 지정(교실·복도·없음), 필수 누락·좌표 범위·숫자 아닌 값·없는 층·없는 종류·HTML을 담은 jpg·파일 4개·JSON/본문 없음/text/plain 요청은 400 `{"message"}`, 파일 보기 200(`nosniff`), 없는 파일 404. Oracle에서는 여전히 확인하지 못했다.
+- `data.sql`의 IDENTITY 시작값은 이미 끝부분(`START WITH LIMIT VALUE`, Oracle 문법)에서 올리고 있다. H2는 이 문법을 지원하지 않아 리뷰 환경에서 재현된 것으로 보인다.
+- 팀 결정이 필요해 이 PR에서 하지 않은 것: 글 종류(고장 신고/문의) 필드(DB 변경), 사용자 쪽 신고 상세 조회 API, `/api/files/{id}` 관리자 전용 제한(접근 제한 방식 미정).
