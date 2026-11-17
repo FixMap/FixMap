@@ -58,6 +58,7 @@ API의 요청·응답 형식은 Notion API 명세서(Backend 하위 페이지)�
 | GET | `/api/admin/reports/{id}` | 신고 상세(내용, 첨부, 핀 위치, 답글). 열면 서버가 읽음으로 바꾼다 | REPAIR-3 | 구현됨 |
 | PATCH | `/api/admin/reports/{id}/read` | 읽음 처리 | REPAIR-3, 10 | 만들지 않음. 상세 조회가 읽음 처리를 겸한다 |
 | PATCH | `/api/admin/reports/{id}` | 처리 저장(상태 변경 + 답글을 한 번에) | REPAIR-4, 5 | 구현됨 (PR #14) |
+| DELETE | `/api/admin/reports/{id}` | 완료(`DONE`)된 신고 삭제(답글, 이력, 첨부 파일 포함). 완료가 아니면 400 | REPAIR-10 | 구현됨 |
 | PATCH, DELETE | `/api/admin/reports/{id}/comments/{commentId}` | 답글 수정, 삭제 | REPAIR-4 | 지정 |
 | GET | `/api/admin/summary` | 요약 통계(안 읽은 신고, 상태별, 건물별 건수) | REPAIR-10 | 만들지 않음. `/admin`을 그릴 때 컨트롤러가 집계해 모델에 담는다 |
 

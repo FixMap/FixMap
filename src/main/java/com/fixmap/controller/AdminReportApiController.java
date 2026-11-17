@@ -2,10 +2,13 @@ package com.fixmap.controller;
 
 import java.time.format.DateTimeFormatter;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fixmap.domain.ReportComment;
@@ -31,6 +34,13 @@ public class AdminReportApiController {
     @GetMapping("/api/admin/reports/{id}")
     public AdminReportQueryService.Detail detail(@PathVariable("id") Long id) {
         return queryService.detail(id);
+    }
+
+    /** DELETE /api/admin/reports/{id} : 완료된 신고 삭제(답글, 이력, 첨부 파일 포함). 성공하면 204 */
+    @DeleteMapping("/api/admin/reports/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteReport(@PathVariable("id") Long id) {
+        adminReportService.deleteReport(id);
     }
 
     /** PATCH /api/admin/reports/{id} : 처리 상태 변경과 답글 작성을 한 번에 저장 */
