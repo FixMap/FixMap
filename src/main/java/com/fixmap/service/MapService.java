@@ -56,13 +56,19 @@ public class MapService {
         return placeRepository.findByFloorIdOrderByIdAsc(floorId);
     }
 
-    /** 층의 신고 목록(핀 좌표 포함). 신고가 없으면 빈 목록 */
-    public List<ReportWithCategory> findPins(Long floorId) {
+    /** 층 번호의 신고 목록(핀 좌표 포함). 모든 건물의 같은 층을 함께 반환한다. 신고가 없으면 빈 목록 */
+    public List<ReportWithCategory> findPins(int level) {
+        List<Long> floorIds = floorRepository.findByFloorLevel(level).stream()
+                .map(BuildingFloor::getId)
+                .toList();
+        if (floorIds.isEmpty()) {
+            return List.of();
+        }
         Map<Long, String> categoryNames = new LinkedHashMap<>();
         for (Category category : categoryRepository.findAll()) {
             categoryNames.put(category.getId(), category.getName());
         }
-        return reportRepository.findByFloorIdOrderByIdAsc(floorId).stream()
+        return reportRepository.findByFloorIdInOrderByIdAsc(floorIds).stream()
                 .map(r -> new ReportWithCategory(r, categoryNames.get(r.getCategoryId())))
                 .toList();
     }

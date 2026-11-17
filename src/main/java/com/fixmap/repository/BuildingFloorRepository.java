@@ -9,4 +9,6 @@ import com.fixmap.domain.BuildingFloor;
 public interface BuildingFloorRepository extends JpaRepository<BuildingFloor, Long> {
 
     List<BuildingFloor> findAllByOrderByFloorLevelAsc();
+
+    List<BuildingFloor> findByFloorLevel(int floorLevel);
 }
