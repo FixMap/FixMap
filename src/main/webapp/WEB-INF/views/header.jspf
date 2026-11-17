@@ -1,0 +1,23 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="학교 지도에서 신고 위치와 처리 상태를 확인하세요.">
+  <title>FixMap | 학교 시설 문의/신고</title>
+  <meta name="htmx-config" content='{"allowEval":false,"allowScriptTags":false}'>
+  <link rel="stylesheet" href="<c:url value='/static/user/app.css'/>">
+  <script defer src="<c:url value='/static/vendor/bootstrap/5.3.9/bootstrap.bundle.min.js'/>"></script>
+  <script defer src="<c:url value='/static/vendor/htmx/2.0.11/htmx.min.js'/>"></script>
+  <script defer src="<c:url value='/static/vendor/alpinejs/3.17.5/csp.min.js'/>"></script>
+  <script type="module" src="<c:url value='/static/user/map.js'/>"></script>
+</head>
+<body data-context="<%= request.getContextPath() %>" data-page="map">
+<a class="skip" href="#main">본문으로 건너뛰기</a>
+<header class="site-header"><div class="header-inner">
+  <a class="brand" aria-label="FixMap 학교 지도 홈" href="<%= request.getContextPath() %>/"><span class="brand-icon" aria-hidden="true"></span><span class="brand-name">Fix<span class="word-map">Map</span></span></a>
+</div></header>
+<main id="main" class="container">
+<div id="global-error" class="notice error" role="alert" hidden></div>
+<noscript><p class="notice error">지도 데이터와 신고 위치를 확인하려면 JavaScript를 활성화해 주세요.</p></noscript>
