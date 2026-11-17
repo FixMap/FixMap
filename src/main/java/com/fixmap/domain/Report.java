@@ -80,6 +80,20 @@ public class Report {
         return report;
     }
 
+    /**
+     * 처리 상태를 바꾼다. 값 검사는 부르는 쪽(서비스)이 한다.
+     * 트랜잭션 안에서 조회한 엔티티에 부르면 변경 감지로 저장되고 updated_at은 @PreUpdate가 갱신한다.
+     *
+     * @return 상태가 실제로 바뀌었으면 true
+     */
+    public boolean changeStatus(String newStatus) {
+        if (newStatus == null || newStatus.equals(status)) {
+            return false;
+        }
+        status = newStatus;
+        return true;
+    }
+
     @PrePersist
     void onCreate() {
         LocalDateTime now = LocalDateTime.now();

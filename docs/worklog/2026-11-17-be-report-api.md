@@ -55,3 +55,4 @@
 - PR #11이 먼저 병합되면서 "이 층의 신고" 목록은 `GET /api/reports/map?level={층 번호}`(MapApiController)가 맡게 됐고, `GET /api/reports?floor=`는 `docs/URL_PLAN.md`에서 빠졌다. 그래서 이 PR에서 그 API를 지웠다.
 - develop을 합치며 충돌을 풀었다: `Category`, `CategoryRepository`는 이 PR 쪽(정렬 조회 포함), `Report`는 양쪽 컬럼을 모두 유지, `ReportRepository`는 develop의 `findByFloorIdInOrderByIdAsc`만 남김.
 - 남은 문제: 사용자 쪽에서 신고 내용·첨부까지 보는 API가 URL 목록에 없다. `/api/reports/map` 응답에 내용·영역·첨부를 넣을지, 상세 주소를 새로 둘지 팀이 정해야 한다.
+- #14 리뷰 후 요청을 받아 `Report.changeStatus(String)`를 추가했다. #14의 후속 작업에서 `ReportStatusRepository`의 일괄 update 대신 쓰면 `updated_at`이 갱신된다. `ApiExceptionHandler`의 중복 핸들러는 #14에서 빼기로 해서 이 PR의 것을 유지한다.
