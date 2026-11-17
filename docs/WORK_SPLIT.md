@@ -24,6 +24,7 @@
 | 프로젝트 설정 | `pom.xml`, `web.xml`, `.classpath`, `.settings/` | 공유(5절) | |
 | 문서(명세) | Notion 기능 명세서, API 명세서, ERD, 디자인 | 바꾸는 쪽이 자기 영역 문서를 고친다 | 4절 |
 | 문서(repo) | `docs/`, `README.md` | 바꾸는 쪽 | 같은 문서를 둘이 동시에 고치지 않는다 |
+| 작업 기록 | `docs/worklog/` | 작업한 사람 또는 에이전트 | PR마다 새 파일 하나. 남의 기록은 고치지 않는다([규칙](worklog/README.md)) |
 | 작업 규칙 | `AGENTS.md`, `CLAUDE.md`, `.github/CODEOWNERS` | 팀장 | 바꾸려면 팀에 먼저 말한다 |
 
 - 상대 영역에 필요한 변경이 보이면 직접 고치지 말고, 무엇이 필요한지 PR 코멘트나 Notion에 남긴다.

@@ -28,6 +28,7 @@ URL 목록은 [docs/URL_PLAN.md](docs/URL_PLAN.md)에 있습니다.
 ## 폴더 구조
 
 ```
+docs/                       Git 규칙, URL 목록, 작업 분담(WORK_SPLIT.md), 작업 기록(worklog/)
 db/                         Oracle 초기 데이터와 예시 쿼리 (schema.sql은 JPA 전환 전 참고용)
 pom.xml                     Maven 설정 (Spring, JPA, Oracle 드라이버 등)
 src/main/java/com/fixmap/
