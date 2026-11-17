@@ -10,11 +10,12 @@
 
 - `/admin` 페이지 컨트롤러를 만들었다. 요약 타일(전체, 안 읽은 수, 상태별, 건물별)과 목록(검색·상태·건물·안 읽음 필터, 최신순·상태순 정렬, 10개씩 페이지)을 모델에 담아 `admin` 뷰로 넘긴다.
 - `GET /api/admin/reports/{id}`를 만들었다. 내용, 위치(건물·층·영역), 핀 좌표, 첨부(`/api/files/{id}` 주소 포함), 답글을 주고, 열면 읽음으로 바꾼다.
+- 메인 `/`의 페이지 컨트롤러(`MainPageController`)를 만들었다. `level` 쿼리를 모델에 담아 `main` 뷰로 연결만 한다.
 - 읽음 표시는 `report.is_read`(`NUMBER(1)`, 기본 0)로 저장한다. 읽음으로 바꿀 때는 `updated_at`을 바꾸지 않는다.
 
 ## 바꾼 파일
 
-- `controller/AdminPageController`, `service/AdminReportQueryService`: 새 파일
+- `controller/AdminPageController`, `controller/MainPageController`, `service/AdminReportQueryService`: 새 파일
 - `controller/AdminReportApiController`: 상세 조회 메서드 추가
 - `domain/Report`: `read` 필드 추가(공유 파일). `repository/ReportRepository`: `markRead`(공유 파일). `ReportFileRepository`, `ReportCommentRepository`: 신고별 조회 메서드
 - `db/schema.sql`: `report.is_read`와 체크 제약, 주석 추가(공유 파일)
@@ -45,5 +46,6 @@
 
 ## 요청 (다른 영역이나 담당자에게)
 
-- FE: `WEB-INF/views/admin.jsp`가 필요하다. 모델 이름은 `reports`(목록), `summary`, `page`, `totalPages`, `totalCount`, `q`, `status`, `building`, `unread`, `sort`이고 필드는 `AdminReportQueryService`의 `Row`, `Summary`를 본다. 상세 패널은 `GET /api/admin/reports/{id}`를 부르고, 열면 읽음이 되므로 목록의 읽음 표시는 새로고침해야 바뀐다.
+- FE: `WEB-INF/views/main.jsp`(메인)와 `admin.jsp`가 필요하다. `main`은 모델에 `level`만 담긴다.
+- FE: `admin.jsp`는 모델 이름은 `reports`(목록), `summary`, `page`, `totalPages`, `totalCount`, `q`, `status`, `building`, `unread`, `sort`이고 필드는 `AdminReportQueryService`의 `Row`, `Summary`를 본다. 상세 패널은 `GET /api/admin/reports/{id}`를 부르고, 열면 읽음이 되므로 목록의 읽음 표시는 새로고침해야 바뀐다.
 - DB 담당: 이미 `report` 테이블을 만든 DB는 `ALTER TABLE report ADD is_read NUMBER(1) DEFAULT 0 NOT NULL;`로 열을 추가한다(`ddl-auto`는 기존 테이블에 열을 추가하는지 설정에 따라 다르다).
