@@ -36,6 +36,13 @@ public class AdminReportApiController {
         return queryService.detail(id);
     }
 
+    /** DELETE /api/admin/reports/{id} : 완료된 신고 삭제(답글, 이력, 첨부 파일 포함). 성공하면 204 */
+    @DeleteMapping("/api/admin/reports/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteReport(@PathVariable("id") Long id) {
+        adminReportService.deleteReport(id);
+    }
+
     /** PATCH /api/admin/reports/{id} : 처리 상태 변경과 답글 작성을 한 번에 저장 */
     @PatchMapping("/api/admin/reports/{id}")
     public SaveResponse save(@PathVariable("id") Long id, @RequestBody SaveRequest request) {
