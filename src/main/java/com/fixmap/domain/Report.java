@@ -3,6 +3,8 @@ package com.fixmap.domain;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.ColumnDefault;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -62,6 +64,7 @@ public class Report {
     private String status;
 
     /** 관리자가 상세를 열었으면 true. 안 읽은 신고를 목록에서 진하게 보여 주는 데 쓴다. */
+    @ColumnDefault("0")
     @Column(name = "is_read", nullable = false)
     private boolean read;
 
