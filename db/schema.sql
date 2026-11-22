@@ -107,13 +107,15 @@ CREATE TABLE report (
   pos_y          NUMBER(5,4)         NOT NULL,
   status         VARCHAR2(10)        DEFAULT 'RECEIVED' NOT NULL,
   reporter_name  VARCHAR2(30 CHAR),
+  is_read        NUMBER(1)           DEFAULT 0 NOT NULL,
   created_at     TIMESTAMP           DEFAULT SYSTIMESTAMP NOT NULL,
   updated_at     TIMESTAMP           DEFAULT SYSTIMESTAMP NOT NULL,
   CONSTRAINT pk_report          PRIMARY KEY (id),
   CONSTRAINT fk_report_floor    FOREIGN KEY (floor_id)    REFERENCES building_floor (id),
   CONSTRAINT fk_report_place    FOREIGN KEY (place_id)    REFERENCES place (id) ON DELETE SET NULL,
   CONSTRAINT fk_report_category FOREIGN KEY (category_id) REFERENCES category (id),
-  CONSTRAINT ck_report_status   CHECK (status IN ('RECEIVED','DONE','HOLD')),
+  CONSTRAINT ck_report_status   CHECK (status IN ('RECEIVED','PROGRESS','DONE','HOLD')),
+  CONSTRAINT ck_report_read     CHECK (is_read IN (0,1)),
   CONSTRAINT ck_report_pos      CHECK (pos_x BETWEEN 0 AND 1 AND pos_y BETWEEN 0 AND 1)
 );
 CREATE INDEX idx_report_floor          ON report (floor_id);
@@ -126,8 +128,9 @@ COMMENT ON COLUMN report.place_id      IS '핀이 들어간 교실 영역 (복�
 COMMENT ON COLUMN report.content       IS '신고 내용 (최대 4000자)';
 COMMENT ON COLUMN report.pos_x         IS '핀 x 좌표 (0~1)';
 COMMENT ON COLUMN report.pos_y         IS '핀 y 좌표 (0~1)';
-COMMENT ON COLUMN report.status        IS 'RECEIVED 접수, DONE 완료, HOLD 보류';
+COMMENT ON COLUMN report.status        IS 'RECEIVED 접수, PROGRESS 처리 중, DONE 완료, HOLD 보류';
 COMMENT ON COLUMN report.reporter_name IS '선택 입력 (로그인 없음)';
+COMMENT ON COLUMN report.is_read       IS '관리자가 상세를 열었으면 1 (0 안 읽음, 1 읽음)';
 
 -- 첨부 파일 (파일 자체는 서버 폴더/S3, DB에는 정보만)
 CREATE TABLE report_file (
@@ -173,8 +176,8 @@ CREATE TABLE status_history (
   changed_at   TIMESTAMP           DEFAULT SYSTIMESTAMP NOT NULL,
   CONSTRAINT pk_status_history        PRIMARY KEY (id),
   CONSTRAINT fk_status_history_report FOREIGN KEY (report_id) REFERENCES report (id) ON DELETE CASCADE,
-  CONSTRAINT ck_status_history_from   CHECK (from_status IN ('RECEIVED','DONE','HOLD')),
-  CONSTRAINT ck_status_history_to     CHECK (to_status   IN ('RECEIVED','DONE','HOLD'))
+  CONSTRAINT ck_status_history_from   CHECK (from_status IN ('RECEIVED','PROGRESS','DONE','HOLD')),
+  CONSTRAINT ck_status_history_to     CHECK (to_status   IN ('RECEIVED','PROGRESS','DONE','HOLD'))
 );
 CREATE INDEX idx_status_history_report ON status_history (report_id, changed_at);
 COMMENT ON TABLE  status_history        IS '상태 변경 기록';

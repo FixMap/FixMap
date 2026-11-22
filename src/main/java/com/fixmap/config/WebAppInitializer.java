@@ -16,7 +16,7 @@ public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServlet
     /** 첨부 파일 1개 최대 크기 */
     private static final long MAX_FILE_SIZE = 10L * 1024 * 1024;
     /** 요청 1건 최대 크기 (파일 여러 개 포함) */
-    private static final long MAX_REQUEST_SIZE = 35L * 1024 * 1024;
+    private static final long MAX_REQUEST_SIZE = 55L * 1024 * 1024;
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
