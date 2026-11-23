@@ -1,11 +1,15 @@
 package com.fixmap.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import com.fixmap.service.AdminAccess;
 
 /**
  * Spring MVC 설정: 컨트롤러 등록, JSP 위치, 정적 파일 경로.
@@ -15,6 +19,15 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableWebMvc
 @ComponentScan(basePackages = "com.fixmap.controller")
 public class WebConfig implements WebMvcConfigurer {
+
+    @Autowired
+    private AdminAccess adminAccess;
+
+    /** 관리자 화면과 관리자 API는 접근 키가 있어야 열린다(임시 방식, docs/URL_PLAN.md). */
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new AdminAccessInterceptor(adminAccess)).addPathPatterns("/admin", "/admin/**", "/api/admin/**");
+    }
 
     /** return "main" → /WEB-INF/views/main.jsp */
     @Override
