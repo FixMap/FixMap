@@ -41,9 +41,9 @@ body[data-page="map"] .campus-workspace { grid-template-columns: minmax(0, 1fr) 
 .place span { width: calc(100% - 2px); word-break: keep-all; overflow-wrap: anywhere; pointer-events: none; }
 .place[data-type="HALL"], .place[data-type="STAIRS"], .place[data-type="ETC"] { background: var(--color-map-fill); }
 .map-loading { font-size: 12px; line-height: 1.5; }
-.building-pins { position: absolute; inset: 0; pointer-events: none; --pin-size: clamp(13px, 1.9cqi, 36px); }
+.building-pins { position: absolute; inset: 0; pointer-events: none; --pin-size: clamp(12px, 1.5cqi, 30px); }
 .campus-viewport .pin { pointer-events: auto; width: var(--pin-size); height: var(--pin-size); border: max(2px, calc(var(--pin-size) * .09)) solid var(--color-paper-2); outline: 0; background: var(--color-accent); color: var(--color-accent-ink); box-shadow: var(--shadow-pin); }
-.campus-viewport .pin::before { font-size: calc(var(--pin-size) * .48); font-weight: 700; }
+.campus-viewport .pin::before { font-size: max(7px, calc(var(--pin-size) * .5)); font-weight: 700; }
 .campus-viewport .pin:not(.draft) { background: var(--color-accent); color: var(--color-accent-ink); }
 .campus-viewport .pin::after { content: ""; position: absolute; inset: -7px; }
 .campus-viewport .pin:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 3px; }
