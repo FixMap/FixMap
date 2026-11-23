@@ -13,6 +13,8 @@ export function drawPlaces(map, places) {
   map.prepend(areas);
 }
 
+const MIN_READABLE = 6;
+
 export function fitPlaceLabels(map) {
   const text = document.createRange();
   for (const area of map.querySelectorAll('.place')) {
@@ -24,7 +26,7 @@ export function fitPlaceLabels(map) {
       return rect.left >= bounds.left + 1 && rect.right <= bounds.right - 1
         && rect.top >= bounds.top + 1 && rect.bottom <= bounds.bottom - 1;
     };
-    label.style.fontSize = '';
+    label.style.fontSize = ''; label.style.visibility = '';
     if (fits()) continue;
 
     // Find the largest quarter-pixel size that fits the wrapped name.
@@ -36,6 +38,8 @@ export function fitPlaceLabels(map) {
       else high = size - 1;
     }
     label.style.fontSize = low / 4 + 'px';
+    // Too small to read: hide the name (the full name stays in the tooltip) until the map is zoomed in.
+    if (low / 4 < MIN_READABLE) label.style.visibility = 'hidden';
   }
 }
 

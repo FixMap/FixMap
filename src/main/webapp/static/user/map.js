@@ -15,7 +15,8 @@ async function start() {
     || buildings.find(item => item.floors.some(floor => floor.level === requestedLevel))
     || buildings[0];
   let floor = floorFor(building, requestedLevel);
-  let view, draft = null, selected = null, reports = [], version = 0, zoom = 100;
+  const MIN_ZOOM = 100, MAX_ZOOM = 400;
+  let view, draft = null, selected = null, reports = [], version = 0, zoom = MIN_ZOOM;
   const detail = setupReportDetail(close);
   const composer = setupReportForm({
     onCancel: close, getPosition: () => draft,
@@ -133,7 +134,7 @@ async function start() {
     }
   }
   async function loadLevel() {
-    const request = ++version; draft = null; selected = null; reports = []; zoom = 100; detail.reset(); composer.reset(); mode('list'); tabs();
+    const request = ++version; draft = null; selected = null; reports = []; zoom = MIN_ZOOM; detail.reset(); composer.reset(); mode('list'); tabs();
     try {
       buildMap(); applyZoom(); viewport.scrollTo(0, 0); stage.classList.add('busy'); stage.setAttribute('aria-busy', 'true');
       $('#map-name').textContent = locationName(); $('#pin-count').textContent = '…'; $('#location-reports').replaceChildren(el('p', 'empty muted', '지도와 신고를 불러오는 중입니다.'));
@@ -174,11 +175,33 @@ async function start() {
     stage.style.width = Math.max(fit, 640) * zoom / 100 + 'px';
     $('.campus-card').classList.toggle('map-can-scroll', stage.offsetWidth > width);
     $('#zoom-value').textContent = zoom + '%';
-    if (view.ready) fitPlaceLabels(view.map);
+    if (view.ready) scheduleFit();
+  }
+  let fitFrame = 0;
+  function scheduleFit() {
+    if (fitFrame) return;
+    fitFrame = requestAnimationFrame(() => { fitFrame = 0; if (view?.ready) fitPlaceLabels(view.map); });
+  }
+  function setZoom(next, clientX, clientY) {
+    next = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, Math.round(next)));
+    if (next === zoom || !view) return;
+    const before = stage.getBoundingClientRect(), oldWidth = stage.offsetWidth;
+    zoom = next; applyZoom();
+    if (clientX === undefined) return;
+    // Keep the point under the cursor where it was.
+    const ratio = stage.offsetWidth / oldWidth, after = stage.getBoundingClientRect();
+    viewport.scrollLeft += after.left + (clientX - before.left) * ratio - clientX;
+    viewport.scrollTop += after.top + (clientY - before.top) * ratio - clientY;
   }
   addEventListener('resize', applyZoom);
-  $('#zoom-in').addEventListener('click', () => { zoom = Math.min(250, zoom + 25); applyZoom(); });
-  $('#zoom-out').addEventListener('click', () => { zoom = Math.max(100, zoom - 25); applyZoom(); });
+  $('#zoom-in').addEventListener('click', () => setZoom(zoom + 25));
+  $('#zoom-out').addEventListener('click', () => setZoom(zoom - 25));
+  viewport.addEventListener('wheel', event => {
+    if (composer.busy || stage.classList.contains('busy') || !view) return;
+    event.preventDefault();
+    const delta = event.deltaMode === 1 ? event.deltaY * 16 : event.deltaY;
+    setZoom(zoom * Math.exp(-Math.max(-120, Math.min(120, delta)) * .0015), event.clientX, event.clientY);
+  }, { passive: false });
   await loadLevel();
 }
 
