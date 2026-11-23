@@ -196,6 +196,27 @@ async function start() {
   addEventListener('resize', applyZoom);
   $('#zoom-in').addEventListener('click', () => setZoom(zoom + 25));
   $('#zoom-out').addEventListener('click', () => setZoom(zoom - 25));
+  // Drag to pan. A drag must not select the labels or count as a click that places a pin.
+  let drag = null, dragged = false;
+  viewport.addEventListener('pointerdown', event => {
+    dragged = false;
+    if (event.button !== 0 || event.pointerType === 'touch' || event.target.closest('.pin') || composer.busy) return;
+    drag = { id: event.pointerId, x: event.clientX, y: event.clientY, left: viewport.scrollLeft, top: viewport.scrollTop };
+  });
+  viewport.addEventListener('pointermove', event => {
+    if (!drag || event.pointerId !== drag.id) return;
+    const dx = event.clientX - drag.x, dy = event.clientY - drag.y;
+    if (!dragged) {
+      if (Math.hypot(dx, dy) < 5) return;
+      dragged = true; viewport.setPointerCapture(drag.id); viewport.classList.add('panning');
+    }
+    viewport.scrollLeft = drag.left - dx; viewport.scrollTop = drag.top - dy;
+  });
+  const endDrag = () => { drag = null; viewport.classList.remove('panning'); };
+  viewport.addEventListener('pointerup', endDrag);
+  viewport.addEventListener('pointercancel', endDrag);
+  viewport.addEventListener('click', event => { if (dragged) { event.stopPropagation(); dragged = false; } }, true);
+  viewport.addEventListener('dragstart', event => event.preventDefault());
   viewport.addEventListener('wheel', event => {
     if (composer.busy || stage.classList.contains('busy') || !view) return;
     event.preventDefault();
