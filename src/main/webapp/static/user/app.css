@@ -44,8 +44,7 @@ button, a, input, textarea { touch-action: manipulation; }
 .skip { position: fixed; left: 16px; top: -96px; background: var(--color-ink); color: var(--color-accent-ink); padding: 12px; z-index: var(--z-tooltip); }
 .skip:focus-visible { top: 16px; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: 0; overflow: clip; clip-path: inset(50%); white-space: nowrap; }
-.floor-tabs button { border: 0; position: relative; white-space: nowrap; }
-.floor-tabs button::after, .zoom-controls button::after { content: ""; position: absolute; inset: -2px; }
+.zoom-controls button::after { content: ""; position: absolute; inset: -2px; }
 .zoom-controls button { position: relative; display: grid; place-items: center; padding: 0; }
 input, textarea, select { width: 100%; min-width: 0; font: inherit; color: inherit; border: 1px solid var(--color-field-border); background: var(--color-paper-2); border-radius: 10px; padding: 9px 12px; }
 input { min-height: 44px; }

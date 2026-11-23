@@ -3,18 +3,22 @@
 <div class="page-heading campus-heading">
   <span class="school-tag">광주소프트웨어마이스터고등학교</span>
   <h1>고장 난 곳, 지도에서 바로 알려주세요</h1>
-  <p>층을 고르고 지도를 눌러 위치를 선택하세요. 작은 불편을 함께 해결해요.</p>
+  <p>건물과 층을 고르고 지도에서 신고할 위치를 선택하세요.</p>
 </div>
 <div class="map-grid campus-workspace">
   <section class="campus-left" aria-label="학교 배치도">
-    <div class="campus-toolbar"><div id="floor-tabs" class="floor-tabs" role="group" aria-label="층 선택">
-      <span class="muted">층을 불러오는 중입니다.</span>
-    </div><p>건물 도면을 누르면 오른쪽에서 선택한 위치를 확인해요</p></div>
+    <div class="campus-toolbar" id="map-controls">
+      <div id="building-tabs" class="map-tabs" role="group" aria-label="건물 선택">
+        <span class="muted">건물을 불러오는 중입니다.</span>
+      </div>
+      <div id="floor-tabs" class="map-tabs floor-tabs" role="group" aria-label="층 선택"></div>
+    </div>
     <div class="panel map-panel campus-card">
-      <div class="map-scroll campus-viewport" id="map-scroll"><div class="map-stage" id="map-stage" tabindex="0" role="group" aria-label="학교 지도. 건물 도면에서 위치 선택. 방향키로 이동, Enter로 신고 작성">
+      <div class="map-scroll campus-viewport" id="map-scroll"><div class="map-stage" id="map-stage" tabindex="-1">
         <p class="empty muted">학교 지도를 불러오는 중입니다.</p>
       </div></div>
       <div class="zoom-controls campus-zoom"><button id="zoom-in" type="button" aria-label="지도 확대">+</button><button id="zoom-out" type="button" aria-label="지도 축소">−</button><output id="zoom-value" class="sr-only" aria-live="polite">100%</output></div>
+      <p class="map-scroll-hint">좌우로 밀어 도면을 볼 수 있어요.</p>
       <p id="map-status" class="sr-only" role="status"></p>
     </div>
   </section>

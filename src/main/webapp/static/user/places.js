@@ -13,6 +13,32 @@ export function drawPlaces(map, places) {
   map.prepend(areas);
 }
 
+export function fitPlaceLabels(map) {
+  const text = document.createRange();
+  for (const area of map.querySelectorAll('.place')) {
+    const label = area.firstElementChild;
+    const bounds = area.getBoundingClientRect();
+    text.selectNodeContents(label);
+    const fits = () => {
+      const rect = text.getBoundingClientRect();
+      return rect.left >= bounds.left + 1 && rect.right <= bounds.right - 1
+        && rect.top >= bounds.top + 1 && rect.bottom <= bounds.bottom - 1;
+    };
+    label.style.fontSize = '';
+    if (fits()) continue;
+
+    // Find the largest quarter-pixel size that fits the wrapped name.
+    let low = 1, high = Math.floor(parseFloat(getComputedStyle(label).fontSize) * 4);
+    while (low < high) {
+      const size = Math.ceil((low + high) / 2);
+      label.style.fontSize = size / 4 + 'px';
+      if (fits()) low = size;
+      else high = size - 1;
+    }
+    label.style.fontSize = low / 4 + 'px';
+  }
+}
+
 export function placeAt(places, x, y) {
   return places.filter(p => x >= p.x && x <= p.x + p.width && y >= p.y && y <= p.y + p.height)
     .sort((a, b) => a.width * a.height - b.width * b.height || a.id - b.id)[0];

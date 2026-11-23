@@ -29,7 +29,10 @@ try {
         if (!url.searchParams.has('level') || url.searchParams.has('floor')) errors.push('Wrong pin parameter');
         if (Number(url.searchParams.get('level')) === slowLevel) await new Promise(resolve => setTimeout(resolve, 350));
         if (failPins) return json(500, { message: '신고 조회 오류 테스트' });
-        if (progress) { const rows = await fetch(url).then(r => r.json()); rows[0].status = 'PROGRESS'; return json(200, rows); }
+        if (progress) {
+          const rows = await fetch(url).then(r => r.json());
+          return json(200, [...rows, { ...rows[0], id: 999999, status: 'PROGRESS' }]);
+        }
       }
       if (failPlaces && /^\/api\/floors\//.test(route)) return json(500, { message: '영역 조회 오류 테스트' });
       if (failCategories && route === '/api/categories') return json(500, { message: '종류 조회 오류 테스트' });
@@ -56,13 +59,22 @@ try {
     await page.goto(origin + '/?level=2', { waitUntil: 'networkidle0' }); await loaded(); await page.evaluate(() => document.fonts.ready);
     assert.equal(await page.$eval('body', body => body.dataset.level), '2', 'MainPageController model');
     assert.equal(calls.slice(before).filter(call => call.route === '/api/reports/map').length, 1, 'one pin GET for all buildings');
-    assert.equal(calls.slice(before).filter(call => /^\/api\/floors\//.test(call.route)).length, 3);
+    assert.deepEqual(calls.slice(before).filter(call => /^\/api\/floors\//.test(call.route)).map(call => call.route), ['/api/floors/2/places']);
+    assert.equal(await page.$$eval('.building-map', nodes => nodes.length), 1);
     assert.equal(await page.$$eval('.building-map img', nodes => nodes.length), 0, 'no temporary map images');
     assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
     const places = await fetch(origin + '/api/floors/2/places').then(r => r.json());
     assert(await page.$eval('.place[data-place-id="' + places[0].id + '"]', (node, p) => Math.abs(parseFloat(node.style.left) - p.x * 100) < .001 && Math.abs(parseFloat(node.style.width) - p.width * 100) < .001, places[0]));
     const pins = await fetch(origin + '/api/reports/map?level=2').then(r => r.json());
-    for (const report of pins) assert.equal(await page.$eval('.pin[data-report-id="' + report.id + '"]', node => Number(node.closest('.building-map').dataset.floorId)), report.floorId);
+    assert.deepEqual(await page.$$eval('.pin[data-report-id]', nodes => nodes.map(node => Number(node.dataset.reportId))), pins.filter(report => report.floorId === 2).map(report => report.id));
+    assert(await page.$eval('.building-map', map => map.offsetWidth >= map.closest('.map-scroll').clientWidth - 32));
+    assert.deepEqual(await page.$$eval('.place', nodes => nodes.filter(node => {
+      const range = document.createRange();
+      range.selectNodeContents(node.firstElementChild);
+      const text = range.getBoundingClientRect();
+      const bounds = node.getBoundingClientRect();
+      return text.left < bounds.left || text.right > bounds.right || text.top < bounds.top || text.bottom > bounds.bottom;
+    }).map(node => node.title)), [], 'place labels fit within their own rectangles');
     await openForm();
     await page.waitForFunction(() => !document.querySelector('#form-submit').disabled);
     assert(await page.$eval('#form-submit', node => { const rect = node.getBoundingClientRect(); return rect.top >= 0 && rect.bottom <= innerHeight; }));
@@ -77,6 +89,14 @@ try {
     assert(Math.abs(await page.$eval('#map-stage', node => node.getBoundingClientRect().width) / widthBefore - 2.5) < .02);
   }
   await page.setViewport({ width: 1440, height: 900 });
+  await page.click('#building-tabs [data-building="donghaeng"]');
+  await loaded();
+  assert.equal(await page.$eval('.building-map', node => node.dataset.floorId), '10', 'keeps the floor when the new building has it');
+  await page.click('#floor-tabs [data-level="5"]'); await loaded();
+  await page.click('#building-tabs [data-building="main"]'); await loaded();
+  assert.equal(await page.$eval('#floor-tabs [aria-pressed="true"]', node => node.dataset.level), '1', 'falls back to the first available floor');
+  await page.goto(origin + '/?level=2&building=geumbong', { waitUntil: 'networkidle0' }); await loaded();
+  assert.equal(await page.$eval('.building-map', node => node.dataset.floorId), '6', 'building and level survive a reload');
   progress = true; await page.goto(origin + '/?level=2', { waitUntil: 'networkidle0' }); await loaded();
   assert.deepEqual(new Set(await page.$$eval('.report-card .badge', nodes => nodes.map(node => node.textContent))), new Set(['접수', '처리 중', '완료', '보류'])); progress = false;
   slowLevel = 1;
