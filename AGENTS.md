@@ -11,10 +11,10 @@ AI 도구는 **정해지지 않은 것을 확정처럼 쓰거나 코드에 박�
 | 구분 | 내용 |
 | --- | --- |
 | 수행 규칙 (바꿀 수 없음) | Eclipse Dynamic Web Project, Oracle, JSP |
-| 팀이 정함 | Spring MVC 6(Boot 없이) + Maven + JPA(Hibernate, `ddl-auto`), 화면은 JSP + JSON API 혼합, Lombok 사용, MVP에 로그인 없음, 프론트 라이브러리로 Bootstrap 사용(2026-11-16) |
+| 팀이 정함 | Spring MVC 6(Boot 없이) + Maven + JPA(Hibernate, `ddl-auto`), 화면은 JSP + JSON API 혼합, Lombok 사용, MVP에 로그인 없음(관리자는 `admin.key` 접근 키로 임시 제한), 프론트 라이브러리로 Bootstrap 사용(2026-11-16) |
 | 팀이 정함 (URL) | 화면은 `/`(메인)와 `/admin`(관리자 신고 관리) 두 개, API는 `/api/` 아래(관리자는 `/api/admin/`). 목록은 `docs/URL_PLAN.md`(2026-11-17 지정). API의 요청·응답 세부는 아직 미정 |
 | 팀이 정함 (Git) | `main` / `develop` / `feature/*`. `main`은 팀장 승인 필수 |
-| **아직 미정** | API 요청·응답 세부, 관리자 접근 제한 방식, 관리자 신고 상세를 패널로 할지 별도 페이지로 할지, 처리 상태에 "처리 중" 포함 여부, 고장 종류 목록(7개 제안), 읽음 표시의 저장 방식, 첨부 파일 저장 위치, 지도를 그리는 방식(SVG / DB 값으로 직접), `svg-pan-zoom`, 글꼴, PR 병합 방식(Merge / Squash), CSS 파일 구조 |
+| **아직 미정** | API 요청·응답 세부, 관리자 신고 상세를 패널로 할지 별도 페이지로 할지, 처리 상태에 "처리 중" 포함 여부, 고장 종류 목록(7개 제안), 읽음 표시의 저장 방식, 첨부 파일 저장 위치, 지도를 그리는 방식(SVG / DB 값으로 직접), `svg-pan-zoom`, 글꼴, PR 병합 방식(Merge / Squash), CSS 파일 구조 |
 
 용어: Eclipse, Oracle, JSP 같은 제약은 "학교 규칙"이 아니라 **"수행 규칙"**(수행평가 규정)이다.
 
