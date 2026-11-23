@@ -5,9 +5,9 @@ export function el(tag, className = '', text) {
   if (text !== undefined) node.textContent = text;
   return node;
 }
-export function statusName(status) { return ({ RECEIVED: '접수', DONE: '완료', HOLD: '보류' })[status] || status || '상태 없음'; }
+export function statusName(status) { return ({ RECEIVED: '접수', PROGRESS: '처리 중', DONE: '완료', HOLD: '보류' })[status] || status || '상태 없음'; }
 export function badge(status) {
-  return el('span', 'badge ' + (({ RECEIVED: 'received', DONE: 'completed', HOLD: 'held' })[status] || ''), statusName(status));
+  return el('span', 'badge ' + (({ RECEIVED: 'received', PROGRESS: 'in-progress', DONE: 'completed', HOLD: 'held' })[status] || ''), statusName(status));
 }
 export function pin(point, label, draft = false) {
   const node = el('button', 'pin' + (draft ? ' draft' : ''));

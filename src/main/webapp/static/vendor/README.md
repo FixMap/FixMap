@@ -10,4 +10,4 @@ Pinned distribution files from jsDelivr's npm packages are served locally. Their
 
 The common user header loads the scripts with defer. Bootstrap CSS sits in a lower cascade layer. Alpine uses the CSP-friendly build and htmx disables eval and script-tag execution. No htmx request is configured.
 
-JSTL comes from the existing develop Maven configuration; this frontend PR does not change dependencies or security configuration. The frontend calls only the two GET endpoints verified in main. Report submission, category lookup, detail lookup and file transfer are not connected.
+JSTL comes from the existing develop Maven configuration; this frontend PR does not change dependencies or security configuration. The frontend uses the user-facing APIs in develop for places, floor pins, categories, multipart report creation, public detail and file viewing. It makes no administrator API calls.
