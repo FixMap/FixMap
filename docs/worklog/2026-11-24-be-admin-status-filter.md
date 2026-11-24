@@ -20,7 +20,8 @@
 
 ## 맞춘 문서
 
-- ERD 설계: `report.reporter_name`이 이미 있다(바꾸지 않음). API와 URL은 바꾸지 않았다.
+- ERD 설계: `report.reporter_name`이 이미 있다(바꾸지 않음). API는 바꾸지 않았다.
+- `docs/URL_PLAN.md`: `/admin`의 `status` 값을 실제 값 `PROGRESS`로 고쳤다(`IN_PROGRESS`, "미정" 표기 삭제).
 
 ## 확인한 방법
 
