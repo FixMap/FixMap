@@ -1,4 +1,6 @@
 import { $, el, badge, statusName } from '../user/dom.js';
+import { readBuildings, readPlaces } from '../user/api.js';
+import { drawPlaces } from '../user/places.js';
 
 const context = document.body.dataset.context;
 const drawer = $('#drawer');
@@ -93,14 +95,16 @@ function render(data) {
     files.append(link);
   }
   const mini = el('div', 'mini');
-  if (data.posX != null && data.posY != null) { const pin = el('i'); pin.style.left = data.posX * 100 + '%'; pin.style.top = data.posY * 100 + '%'; mini.append(pin); }
-  // 층 도면 없이 점만 있으면 어느 칸인지 모르니 장소 이름을 같이 보여 준다.
-  mini.append(el('span', 'mini-place', [data.building, data.floor, data.place].filter(Boolean).join(' · ') || '위치 정보 없음'));
-  mini.setAttribute('aria-label', '층 기준 핀 위치'); mini.setAttribute('role', 'img');
+  const placeName = [data.building, data.floor, data.place].filter(Boolean).join(' · ') || '위치 정보 없음';
+  mini.setAttribute('aria-label', placeName + ' 도면에서의 핀 위치'); mini.setAttribute('role', 'img');
+  mini.dataset.loading = 'true';
+  // 도면은 사용자 화면과 같은 API로 그린다. 불러오지 못하면 장소 이름만 보여 준다.
+  const request = version;
+  drawMiniMap(mini, data).catch(() => {}).finally(() => { if (request === version) delete mini.dataset.loading; });
 
   detail.replaceChildren(badge(data.status), el('h2', 'detail-title', data.title), kv, el('h4', '', '내용'), el('div', 'box', data.content));
   if (data.files.length) detail.append(el('h4', '', '첨부 파일'), files);
-  detail.append(el('h4', '', '핀 위치'), mini, el('h4', '', '답글'));
+  detail.append(el('h4', '', '핀 위치'), mini, el('p', 'mini-caption', placeName), el('h4', '', '답글'));
   if (!data.comments.length) detail.append(el('p', 'm', '아직 등록된 답글이 없습니다.'));
   for (const comment of data.comments) detail.append(commentView(comment));
   const reply = el('textarea'); reply.id = 'reply'; reply.maxLength = 2000; reply.placeholder = '처리 안내나 답변을 입력하세요';
@@ -117,6 +121,25 @@ function render(data) {
   syncSeg();
   deleteOpen.hidden = data.status !== 'DONE';
   saveForm.hidden = false;
+}
+
+let buildingsCache = null;
+
+// 신고의 층 도면 위에 저장된 핀 좌표(0~1 비율)대로 핀을 그린다. 신고가 들어간 영역은 색을 입힌다.
+async function drawMiniMap(mini, data) {
+  if (data.floorId == null || data.posX == null || data.posY == null) return;
+  buildingsCache ??= readBuildings();
+  const [buildings, places] = await Promise.all([buildingsCache.catch(error => { buildingsCache = null; throw error; }), readPlaces(data.floorId)]);
+  const floor = buildings.flatMap(building => building.floors || []).find(item => item.id === data.floorId);
+  if (!floor || !(floor.mapWidth > 0) || !(floor.mapHeight > 0)) return;
+  if (!mini.isConnected) return;
+  mini.style.aspectRatio = floor.mapWidth + ' / ' + floor.mapHeight;
+  const holder = el('div', 'mini-map');
+  drawPlaces(holder, places);
+  for (const area of holder.querySelectorAll('.place')) area.classList.toggle('here', data.placeId != null && area.dataset.placeId === String(data.placeId));
+  const pin = el('i'); pin.style.left = data.posX * 100 + '%'; pin.style.top = data.posY * 100 + '%';
+  mini.replaceChildren(...holder.childNodes, pin);
+  mini.classList.add('plan');
 }
 
 function syncSeg() {
