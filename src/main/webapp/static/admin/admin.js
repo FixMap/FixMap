@@ -1,6 +1,4 @@
 import { $, el, badge, statusName } from '../user/dom.js';
-import { readBuildings, readPlaces } from '../user/api.js';
-import { drawPlaces, fitPlaceLabels, placeAt } from '../user/places.js';
 
 const context = document.body.dataset.context;
 const drawer = $('#drawer');
@@ -14,7 +12,6 @@ let current = null;
 let confirmAction = null;
 let selectedStatus = null;
 let version = 0;
-let buildingsRequest;
 
 async function api(path, method = 'GET', body) {
   let response;
@@ -82,44 +79,6 @@ async function open(id) {
   } finally { if (request === version) detail.setAttribute('aria-busy', 'false'); }
 }
 
-async function renderMiniMap(mini, data) {
-  const location = [data.building, data.floor, data.place].filter(Boolean).join(' · ');
-  const caption = el('p', 'mini-place', location || '위치 정보 없음');
-  const message = el('p', 'muted', '층 도면을 불러오는 중입니다.');
-  mini.append(message, caption);
-  try {
-    buildingsRequest ??= readBuildings().catch(error => {
-      buildingsRequest = null;
-      throw error;
-    });
-    const [buildings, places] = await Promise.all([buildingsRequest, readPlaces(data.floorId)]);
-    if (!mini.isConnected || !drawer.open) return;
-    const floor = buildings.flatMap(building => building.floors).find(floor => floor.id === data.floorId);
-    if (!floor?.mapWidth || !floor.mapHeight || !places.length) throw new Error('층 도면 없음');
-
-    const map = el('div', 'building-map');
-    map.style.aspectRatio = floor.mapWidth + ' / ' + floor.mapHeight;
-    map.setAttribute('role', 'img');
-    map.setAttribute('aria-label', location + ' 층 도면');
-    drawPlaces(map, places);
-    message.replaceWith(map);
-    fitPlaceLabels(map);
-    document.fonts.ready.then(() => { if (map.isConnected) fitPlaceLabels(map); });
-
-    const { posX, posY } = data;
-    if (Number.isFinite(posX) && Number.isFinite(posY) && placeAt(places, posX, posY)) {
-      const pin = el('span', 'mini-pin');
-      pin.style.left = posX * 100 + '%';
-      pin.style.top = posY * 100 + '%';
-      map.append(pin);
-    } else {
-      mini.append(el('p', 'muted', '도면에 표시할 수 있는 핀 위치가 없습니다.'));
-    }
-  } catch {
-    message.textContent = '층 도면을 불러오지 못했습니다.';
-  }
-}
-
 function render(data) {
   current = data;
   const kv = el('dl', 'kv');
@@ -134,11 +93,14 @@ function render(data) {
     files.append(link);
   }
   const mini = el('div', 'mini');
+  if (data.posX != null && data.posY != null) { const pin = el('i'); pin.style.left = data.posX * 100 + '%'; pin.style.top = data.posY * 100 + '%'; mini.append(pin); }
+  // 층 도면 없이 점만 있으면 어느 칸인지 모르니 장소 이름을 같이 보여 준다.
+  mini.append(el('span', 'mini-place', [data.building, data.floor, data.place].filter(Boolean).join(' · ') || '위치 정보 없음'));
+  mini.setAttribute('aria-label', '층 기준 핀 위치'); mini.setAttribute('role', 'img');
 
   detail.replaceChildren(badge(data.status), el('h2', 'detail-title', data.title), kv, el('h4', '', '내용'), el('div', 'box', data.content));
   if (data.files.length) detail.append(el('h4', '', '첨부 파일'), files);
   detail.append(el('h4', '', '핀 위치'), mini, el('h4', '', '답글'));
-  renderMiniMap(mini, data);
   if (!data.comments.length) detail.append(el('p', 'm', '아직 등록된 답글이 없습니다.'));
   for (const comment of data.comments) detail.append(commentView(comment));
   const reply = el('textarea'); reply.id = 'reply'; reply.maxLength = 2000; reply.placeholder = '처리 안내나 답변을 입력하세요';

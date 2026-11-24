@@ -213,18 +213,5 @@ try {
   assert.equal(await page.$eval('.report-reply p', node => node.textContent), '<b>답글도 문자</b>');
   assert.equal(await page.$eval('.detail-file', node => new URL(node.href).pathname), prefix + '/api/files/1');
   assert.deepEqual(errors, []);
-  if (process.env.FIXMAP_ADMIN_KEY) {
-    const admin = await browser.newPage();
-    await admin.goto(origin + '/admin?key=' + encodeURIComponent(process.env.FIXMAP_ADMIN_KEY), { waitUntil: 'networkidle0' });
-    for (const [id, x, y] of [[1, 45.26, 41.37], [2, 63.67, 66.18]]) {
-      await admin.click('tr[data-id="' + id + '"] .row-open');
-      await admin.waitForSelector('.mini .place[data-place-id="39"]');
-      const point = await admin.$eval('.mini-pin', node => [parseFloat(node.style.left), parseFloat(node.style.top)]);
-      assert(Math.abs(point[0] - x) < .001 && Math.abs(point[1] - y) < .001);
-      await admin.click('#drawer .close');
-    }
-    await admin.goto(origin + '/admin?status=PROGRESS', { waitUntil: 'networkidle0' });
-    assert(await admin.$eval('.admin-empty', node => parseFloat(getComputedStyle(node).paddingInlineStart) >= 16));
-  }
-  console.log('PASS: map, place tooltips, pin groups, zoom, outside-map handling, report submission/detail and error handling' + (process.env.FIXMAP_ADMIN_KEY ? ', administrator floor plans and empty-state spacing.' : '.'));
+  console.log('PASS: map, place tooltips, pin groups, zoom, outside-map handling, report submission/detail and error handling.');
 } finally { await browser.close(); await rm(dir, { recursive: true, force: true }); }

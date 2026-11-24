@@ -56,7 +56,7 @@
     <label class="search"><span class="sr-only">검색</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input name="q" value="<c:out value='${q}'/>" placeholder="제목, 위치 검색"></label>
   </form>
   <c:choose>
-    <c:when test="${empty reports}"><p class="admin-empty empty muted">조건에 맞는 신고가 없습니다.</p></c:when>
+    <c:when test="${empty reports}"><p class="empty muted">조건에 맞는 신고가 없습니다.</p></c:when>
     <c:otherwise>
       <div class="table-scroll"><table>
         <thead><tr><th scope="col">상태</th><th scope="col">제목</th><th scope="col">위치</th><th scope="col">종류</th><th scope="col">접수일</th><th scope="col" class="end">작업</th></tr></thead>
