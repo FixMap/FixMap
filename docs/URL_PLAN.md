@@ -19,7 +19,7 @@ API의 요청·응답 형식은 Notion API 명세서(Backend 하위 페이지)�
 | 파라미터 | 의미 | 값 |
 | --- | --- | --- |
 | `q` | 키워드 검색 | 제목, 내용, 위치 |
-| `status` | 처리 상태 | `RECEIVED`, `HOLD`, `DONE`, `IN_PROGRESS`(처리 중은 제안, 미정) |
+| `status` | 처리 상태 | `RECEIVED`, `PROGRESS`, `HOLD`, `DONE` |
 | `building` | 건물 | `building.id` |
 | `unread` | 안 읽은 신고만 | `true` |
 | `sort` | 정렬 | `latest`(최신순), `status`(상태순) |
