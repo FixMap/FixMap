@@ -22,13 +22,15 @@
 <h1>신고 관리</h1>
 <p class="admin-sub">들어온 신고를 확인하고 답글과 처리 상태를 남겨주세요.</p>
 
+<%-- 건수가 0인 상태는 byStatus()에 키가 없어서 + 0으로 0을 표시한다 --%>
 <c:set var="maxBuilding" value="1"/>
 <c:forEach var="b" items="${summary.byBuilding()}"><c:if test="${b.count() > maxBuilding}"><c:set var="maxBuilding" value="${b.count()}"/></c:if></c:forEach>
 <section class="admin-stats" aria-label="신고 요약">
-  <div class="card stat"><span class="m">새 접수</span><strong>${summary.unread()}</strong><span class="m small">아직 열어 보지 않음</span></div>
-  <div class="card stat"><span class="m">접수</span><strong>${summary.byStatus()['RECEIVED']}</strong><span class="m small">처리 전</span></div>
-  <div class="card stat"><span class="m">완료</span><strong class="done">${summary.byStatus()['DONE']}</strong><span class="m small">처리 완료</span></div>
-  <div class="card stat"><span class="m">보류</span><strong class="held">${summary.byStatus()['HOLD']}</strong><span class="m small">처리 보류</span></div>
+  <div class="card stat"><span class="m">새 접수</span><strong id="unread-count">${summary.unread()}</strong><span class="m small">아직 열어 보지 않음</span></div>
+  <div class="card stat"><span class="m">접수</span><strong>${summary.byStatus()['RECEIVED'] + 0}</strong><span class="m small">처리 전</span></div>
+  <div class="card stat"><span class="m">처리 중</span><strong class="working">${summary.byStatus()['PROGRESS'] + 0}</strong><span class="m small">처리하는 중</span></div>
+  <div class="card stat"><span class="m">완료</span><strong class="done">${summary.byStatus()['DONE'] + 0}</strong><span class="m small">처리 완료</span></div>
+  <div class="card stat"><span class="m">보류</span><strong class="held">${summary.byStatus()['HOLD'] + 0}</strong><span class="m small">처리 보류</span></div>
   <div class="card stat buildings"><b>건물별 신고</b>
     <c:forEach var="b" items="${summary.byBuilding()}">
       <div class="bar"><span><c:out value="${b.name()}"/></span><u><i style="width:${b.count() * 100 / maxBuilding}%"></i></u><b>${b.count()}</b></div>
@@ -39,9 +41,9 @@
 <section class="card admin-list" aria-label="신고 목록">
   <form id="filter" class="admin-filter" method="get" action="<c:url value='/admin'/>" role="search">
     <nav class="chips" aria-label="상태로 거르기">
-      <c:forEach var="s" items="${['', 'RECEIVED', 'HOLD', 'DONE']}">
+      <c:forEach var="s" items="${['', 'RECEIVED', 'PROGRESS', 'HOLD', 'DONE']}">
         <c:url var="chipUrl" value="/admin"><c:param name="q" value="${q}"/><c:param name="building" value="${building}"/><c:param name="status" value="${s}"/></c:url>
-        <a href="${chipUrl}" class="${status == s ? 'on' : ''}" ${status == s ? 'aria-current="true"' : ''}>${s == '' ? '전체' : s == 'RECEIVED' ? '접수' : s == 'HOLD' ? '보류' : '완료'} ${s == '' ? summary.total() : summary.byStatus()[s]}</a>
+        <a href="${chipUrl}" class="${status == s ? 'on' : ''}" ${status == s ? 'aria-current="true"' : ''}>${s == '' ? '전체' : s == 'RECEIVED' ? '접수' : s == 'PROGRESS' ? '처리 중' : s == 'HOLD' ? '보류' : '완료'} ${s == '' ? summary.total() : summary.byStatus()[s] + 0}</a>
       </c:forEach>
     </nav>
     <input type="hidden" name="status" value="<c:out value='${status}'/>">
@@ -96,8 +98,8 @@
 </dialog>
 
 <dialog id="confirm" class="confirm" aria-labelledby="confirm-title">
-  <h3 id="confirm-title">이 신고를 삭제할까요?</h3>
-  <p>답글과 첨부 사진도 함께 지워지고, 되돌릴 수 없어요. 완료된 신고만 삭제할 수 있어요.</p>
+  <h3 id="confirm-title"></h3>
+  <p id="confirm-text"></p>
   <form method="dialog" class="a"><button value="cancel" class="button secondary">취소</button><button value="ok" class="button danger">삭제</button></form>
 </dialog>
 </body></html>

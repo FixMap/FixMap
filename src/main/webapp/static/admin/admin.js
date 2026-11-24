@@ -7,9 +7,9 @@ const saveForm = $('#save-form');
 const seg = $('#status-seg');
 const deleteOpen = $('#delete-open');
 const confirmDialog = $('#confirm');
-// "처리 중"(PROGRESS)은 팀 미정이라 목록 필터와 같은 세 상태만 둔다. 이미 PROGRESS인 신고는 그 값도 보여 준다.
-const STATUSES = ['RECEIVED', 'HOLD', 'DONE'];
+const STATUSES = ['RECEIVED', 'PROGRESS', 'HOLD', 'DONE'];
 let current = null;
+let confirmAction = null;
 let selectedStatus = null;
 let version = 0;
 
@@ -67,7 +67,10 @@ async function open(id) {
     if (request !== version) return;
     // 상세를 열면 서버가 읽음으로 바꾼다. 목록 표시도 같이 맞춘다.
     const row = document.querySelector('tr[data-id="' + CSS.escape(String(id)) + '"]');
-    if (row?.classList.contains('unread')) { row.classList.replace('unread', 'read'); row.querySelector('.title .sr-only')?.remove(); }
+    if (row?.classList.contains('unread')) {
+      row.classList.replace('unread', 'read'); row.querySelector('.title .sr-only')?.remove();
+      const unread = $('#unread-count'); unread.textContent = Math.max(0, Number(unread.textContent) - 1);
+    }
     render(data);
   } catch (error) {
     if (request !== version) return;
@@ -91,6 +94,8 @@ function render(data) {
   }
   const mini = el('div', 'mini');
   if (data.posX != null && data.posY != null) { const pin = el('i'); pin.style.left = data.posX * 100 + '%'; pin.style.top = data.posY * 100 + '%'; mini.append(pin); }
+  // 층 도면 없이 점만 있으면 어느 칸인지 모르니 장소 이름을 같이 보여 준다.
+  mini.append(el('span', 'mini-place', [data.building, data.floor, data.place].filter(Boolean).join(' · ') || '위치 정보 없음'));
   mini.setAttribute('aria-label', '층 기준 핀 위치'); mini.setAttribute('role', 'img');
 
   detail.replaceChildren(badge(data.status), el('h2', 'detail-title', data.title), kv, el('h4', '', '내용'), el('div', 'box', data.content));
@@ -132,7 +137,8 @@ function commentView(comment) {
       );
       box.replaceChildren(input, actions); input.focus();
     }),
-    button('삭제', () => confirm('답글을 삭제할까요?') && run(() => api(reportPath(current.id) + '/comments/' + comment.id, 'DELETE'), '답글을 삭제했습니다.')),
+    button('삭제', () => ask('답글을 삭제할까요?', '삭제한 답글은 되돌릴 수 없어요.',
+      () => run(() => api(reportPath(current.id) + '/comments/' + comment.id, 'DELETE'), '답글을 삭제했습니다.'))),
   );
   box.append(meta, document.createTextNode(comment.content));
   return box;
@@ -154,12 +160,19 @@ saveForm.addEventListener('submit', async event => {
   finally { submit.disabled = false; }
 });
 
-deleteOpen.addEventListener('click', () => { confirmDialog.returnValue = ''; confirmDialog.showModal(); });
-confirmDialog.addEventListener('close', async () => {
-  if (confirmDialog.returnValue !== 'ok' || !current) return;
+// 신고 삭제와 답글 삭제가 같은 확인 창을 쓴다.
+function ask(title, text, action) {
+  $('#confirm-title').textContent = title; $('#confirm-text').textContent = text;
+  confirmAction = action; confirmDialog.returnValue = ''; confirmDialog.showModal();
+}
+confirmDialog.addEventListener('close', () => {
+  const action = confirmAction; confirmAction = null;
+  if (confirmDialog.returnValue === 'ok' && action && current) action();
+});
+deleteOpen.addEventListener('click', () => ask('이 신고를 삭제할까요?', '답글과 첨부 사진도 함께 지워지고, 되돌릴 수 없어요. 완료된 신고만 삭제할 수 있어요.', async () => {
   try { await api(reportPath(current.id), 'DELETE'); location.reload(); }
   catch (error) { alert(error.message); }
-});
+}));
 
 async function run(action, message) {
   try { await action(); notify(message); open(current.id); }
