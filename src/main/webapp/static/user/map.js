@@ -1,6 +1,6 @@
 import { readBuildings, readPlaces, readPins } from './api.js';
 import { $, el, pin, badge, statusName } from './dom.js';
-import { drawPlaces, fitPlaceLabels, placeAt } from './places.js';
+import { drawPlaces, enablePlaceTooltip, fitPlaceLabels, placeAt } from './places.js';
 import { setupReportForm } from './report-form.js';
 import { setupReportDetail } from './report-detail.js';
 
@@ -16,8 +16,15 @@ async function start() {
     || buildings[0];
   let floor = floorFor(building, requestedLevel);
   const MIN_ZOOM = 100, MAX_ZOOM = 400;
-  let view, draft = null, selected = null, reports = [], version = 0, zoom = MIN_ZOOM;
+  let view, draft = null, selected = null, reports = [], activeGroup = null, version = 0, zoom = MIN_ZOOM;
   const detail = setupReportDetail(close);
+  const hideTooltip = enablePlaceTooltip(viewport);
+  $('#place-back').addEventListener('click', () => {
+    activeGroup = null;
+    rows();
+    renderPins();
+    $('#location-title').focus();
+  });
   const composer = setupReportForm({
     onCancel: close, getPosition: () => draft,
     onBusy(value) {
@@ -41,32 +48,67 @@ async function start() {
   function mode(value) { $('#location-panel').hidden = value !== 'list'; $('#selection-panel').hidden = value !== 'detail'; form.hidden = value !== 'write'; }
   function close() {
     if (composer.busy || (draft && !composer.canDiscard())) return;
-    draft = null; selected = null; detail.reset(); composer.reset(); mode('list'); renderPins(); stage.focus({ preventScroll: true });
+    draft = null; selected = null; detail.reset(); composer.reset(); mode('list'); rows(); renderPins();
+    (activeGroup ? $('#location-title') : stage).focus({ preventScroll: true });
   }
-  function chooseReport(report) {
+  function chooseReport(report, fromPin = false) {
     if (composer.busy || (draft && !composer.canDiscard())) return;
-    draft = null; composer.reset(); selected = report.id; mode('detail'); renderPins(); detail.show(report);
+    if (fromPin) activeGroup = null;
+    draft = null; composer.reset(); selected = report.id; mode('detail'); renderPins();
+    detail.show(report, activeGroup ? '이 장소의 신고로 돌아가기' : undefined);
+    revealSidebar();
+  }
+  function revealSidebar() {
     if (matchMedia('(max-width:980px)').matches) $('.campus-sidebar').scrollIntoView({ block: 'start' });
+  }
+  function choosePlace(group) {
+    if (composer.busy || (draft && !composer.canDiscard())) return;
+    activeGroup = group;
+    draft = null; selected = null; detail.reset(); composer.reset();
+    rows(); mode('list'); renderPins();
+    $('#location-title').focus({ preventScroll: true });
+    revealSidebar();
   }
   function renderPins() {
     if (!view?.ready) return;
     view.pins.replaceChildren();
-    for (const report of reports) {
-      const marker = pin(report, report.title + ', ' + statusName(report.status));
-      marker.dataset.reportId = report.id; marker.classList.toggle('selected', selected === report.id);
-      marker.addEventListener('click', event => { event.stopPropagation(); chooseReport(report); }); view.pins.append(marker);
+    for (const group of view.groups) {
+      const [report] = group.reports;
+      const count = group.reports.length;
+      const grouped = count > 1;
+      const marker = grouped
+        ? pin(center(group.place), group.place.name + ' 신고 ' + count + '건', false, count)
+        : pin(report, report.title + ', ' + statusName(report.status));
+      marker.dataset.placeId = group.place.id;
+      if (!grouped) marker.dataset.reportId = report.id;
+      marker.classList.toggle('grouped', grouped);
+      marker.classList.toggle('selected', group === activeGroup || group.reports.some(item => item.id === selected));
+      marker.addEventListener('click', event => {
+        event.stopPropagation();
+        if (grouped) choosePlace(group);
+        else chooseReport(report, true);
+      });
+      view.pins.append(marker);
     }
     if (draft) {
       const marker = pin(draft, '선택한 위치', true);
       marker.addEventListener('click', event => { event.stopPropagation(); form.elements.title.focus(); }); view.pins.append(marker);
     }
   }
+  function center(place) {
+    return { x: place.x + place.width / 2, y: place.y + place.height / 2 };
+  }
   function selectPosition(x, y, focus = false) {
     if (composer.busy || stage.classList.contains('busy') || !view?.ready) return;
+    // Match the precision used when the server decides which place contains the pin.
+    x = Math.round(x * 10000) / 10000;
+    y = Math.round(y * 10000) / 10000;
+    const place = placeAt(view.places, x, y);
+    if (!place) return;
     const first = !draft; if (first) composer.reset();
-    draft = { floorId: floor.id, x: Math.max(0, Math.min(1, x)), y: Math.max(0, Math.min(1, y)) };
-    const place = placeAt(view.places, draft.x, draft.y);
-    selected = null; detail.reset(); mode('write'); composer.open(locationName() + (place ? ' · ' + place.name : '')); renderPins();
+    draft = { floorId: floor.id, x, y };
+    activeGroup = null;
+    selected = null; detail.reset(); mode('write'); composer.open(locationName() + ' · ' + place.name); renderPins();
     $('#action-status').hidden = true; $('#map-status').textContent = locationName() + ' 위치를 선택했습니다.';
     if (first && matchMedia('(max-width:980px)').matches) $('.campus-sidebar').scrollIntoView({ block: 'start' });
     if (focus) form.elements.title.focus();
@@ -77,11 +119,23 @@ async function start() {
     const rect = map.getBoundingClientRect(); selectPosition((event.clientX - rect.left) / rect.width, (event.clientY - rect.top) / rect.height);
   });
   stage.addEventListener('keydown', event => {
-    if (event.target.closest('.pin')) return;
-    const point = draft || { x: .5, y: .5 };
+    if (event.target.closest('.pin') || !view?.ready) return;
+    const start = placeAt(view.places, .5, .5) ? { x: .5, y: .5 } : view.places[0] && center(view.places[0]);
+    const point = draft || start;
+    if (!point) return;
     if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); selectPosition(point.x, point.y, true); }
     if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) {
-      event.preventDefault(); selectPosition(point.x + (event.key === 'ArrowRight' ? .02 : event.key === 'ArrowLeft' ? -.02 : 0), point.y + (event.key === 'ArrowDown' ? .02 : event.key === 'ArrowUp' ? -.02 : 0));
+      event.preventDefault();
+      const dx = event.key === 'ArrowRight' ? .02 : event.key === 'ArrowLeft' ? -.02 : 0;
+      const dy = event.key === 'ArrowDown' ? .02 : event.key === 'ArrowUp' ? -.02 : 0;
+      const next = { x: point.x + dx, y: point.y + dy };
+      if (placeAt(view.places, next.x, next.y)) selectPosition(next.x, next.y);
+      else {
+        const closest = view.places.map(center)
+          .filter(p => (p.x - point.x) * dx + (p.y - point.y) * dy > 0)
+          .sort((a, b) => Math.hypot(a.x - next.x, a.y - next.y) - Math.hypot(b.x - next.x, b.y - next.y))[0];
+        if (closest) selectPosition(closest.x, closest.y);
+      }
     }
     if (event.key === 'Escape') close();
   });
@@ -122,19 +176,27 @@ async function start() {
     map.style.aspectRatio = floor.mapWidth + ' / ' + floor.mapHeight;
     map.append(el('p', 'map-loading muted', '영역을 불러오는 중입니다.'), pins);
     stage.append(map);
-    view = { map, pins, places: [], ready: false };
+    view = { map, pins, places: [], groups: [], ready: false };
   }
   function rows() {
-    const list = $('#location-reports'); list.replaceChildren(); $('#pin-count').textContent = reports.length;
-    if (!reports.length) list.append(el('p', 'empty muted', '이 층에 등록된 신고가 없습니다.'));
-    for (const report of reports) {
+    const shown = activeGroup?.reports || reports;
+    $('#place-back').hidden = !activeGroup;
+    $('#report-list-title').textContent = activeGroup ? activeGroup.place.name + ' 신고' : '이 층의 신고';
+    const list = $('#location-reports'); list.replaceChildren(); $('#pin-count').textContent = shown.length;
+    if (!shown.length) list.append(el('p', 'empty muted', '이 층에 등록된 신고가 없습니다.'));
+    for (const report of shown) {
       const button = el('button', 'report-card'); button.type = 'button'; button.title = report.title;
       button.append(el('strong', '', report.title), el('span', 'card-meta', report.location + ' · ' + report.category), badge(report.status));
       button.addEventListener('click', () => chooseReport(report)); list.append(button);
     }
+    list.scrollTop = 0;
   }
   async function loadLevel() {
-    const request = ++version; draft = null; selected = null; reports = []; zoom = MIN_ZOOM; detail.reset(); composer.reset(); mode('list'); tabs();
+    const request = ++version;
+    draft = null; selected = null; activeGroup = null; reports = []; zoom = MIN_ZOOM;
+    detail.reset(); composer.reset(); mode('list'); tabs(); hideTooltip();
+    $('#place-back').hidden = true;
+    $('#report-list-title').textContent = '이 층의 신고';
     try {
       buildMap(); applyZoom(); viewport.scrollTo(0, 0); stage.classList.add('busy'); stage.setAttribute('aria-busy', 'true');
       $('#map-name').textContent = locationName(); $('#pin-count').textContent = '…'; $('#location-reports').replaceChildren(el('p', 'empty muted', '지도와 신고를 불러오는 중입니다.'));
@@ -145,13 +207,20 @@ async function start() {
       history.replaceState(null, '', url);
       const [pins, areas] = await Promise.all([readPins(floor.level), readPlaces(floor.id)]);
       if (request !== version) return;
-      reports = pins.filter(report => report.floorId === floor.id).map(report => {
-        if (!Number.isFinite(report.posX) || !Number.isFinite(report.posY) || report.posX < 0 || report.posX > 1 || report.posY < 0 || report.posY > 1) throw new Error('신고 위치 데이터 형식을 확인해 주세요.');
-        return { ...report, x: report.posX, y: report.posY, location: locationName() };
-      });
+      reports = pins.filter(report => report.floorId === floor.id)
+        .map(report => ({ ...report, x: report.posX, y: report.posY, location: locationName() }));
+      const groups = new Map();
+      for (const report of reports) {
+        if (!Number.isFinite(report.x) || !Number.isFinite(report.y)) continue;
+        const place = placeAt(areas, report.x, report.y);
+        if (!place) continue;
+        if (!groups.has(place.id)) groups.set(place.id, { place, reports: [] });
+        groups.get(place.id).reports.push(report);
+      }
       drawPlaces(view.map, areas);
       view.map.querySelector('.map-loading').remove();
       view.places = areas;
+      view.groups = [...groups.values()];
       view.ready = true;
       fitPlaceLabels(view.map);
       document.fonts.ready.then(() => {
@@ -167,6 +236,7 @@ async function start() {
   }
   function applyZoom() {
     if (!view) return;
+    hideTooltip();
     const style = getComputedStyle(viewport);
     const width = viewport.offsetWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
     const height = viewport.offsetHeight - parseFloat(style.paddingTop) - parseFloat(style.paddingBottom);

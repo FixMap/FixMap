@@ -3,7 +3,7 @@
 <div class="page-heading campus-heading">
   <span class="school-tag">광주소프트웨어마이스터고등학교</span>
   <h1>고장 난 곳, 지도에서 바로 알려주세요</h1>
-  <p>건물과 층을 고르고 지도에서 신고할 위치를 선택하세요.</p>
+  <p>건물과 층을 고르고 도면에서 신고할 장소를 누르세요.</p>
 </div>
 <div class="map-grid campus-workspace">
   <section class="campus-left" aria-label="학교 배치도">
@@ -24,7 +24,12 @@
   </section>
   <aside class="panel campus-sidebar" aria-label="이 층의 신고와 작성">
     <section id="location-panel" class="campus-list-mode" aria-labelledby="location-title">
-      <div class="campus-panel-heading"><p id="map-name" class="panel-context">학교 배치도</p><h2 id="location-title">이 층의 신고 <span id="pin-count">—</span>건</h2><p class="panel-hint">핀을 누르면 위치와 처리 상태를 확인할 수 있어요.</p></div>
+      <div class="campus-panel-heading">
+        <button id="place-back" class="text-button panel-back" type="button" hidden>이 층의 신고로 돌아가기</button>
+        <p id="map-name" class="panel-context">학교 배치도</p>
+        <h2 id="location-title" tabindex="-1"><span id="report-list-title">이 층의 신고</span> <span id="pin-count">—</span>건</h2>
+        <p class="panel-hint">핀을 누르면 해당 장소의 신고를 볼 수 있어요.</p>
+      </div>
       <div id="location-reports"><p class="empty muted">신고를 불러오는 중입니다.</p></div>
     </section>
     <section id="selection-panel" class="campus-detail-mode" aria-live="polite" hidden></section>
