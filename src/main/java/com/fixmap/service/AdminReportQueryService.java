@@ -44,9 +44,9 @@ public class AdminReportQueryService {
 
     private static final DateTimeFormatter LIST_TIME = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     private static final DateTimeFormatter API_TIME = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
-    /** 상태순 정렬: 접수 → 보류 → 완료 */
+    /** 상태순 정렬: 접수 → 처리 중 → 보류 → 완료 */
     private static final List<String> STATUS_ORDER =
-            List.of(Report.STATUS_RECEIVED, Report.STATUS_HOLD, Report.STATUS_DONE);
+            List.of(Report.STATUS_RECEIVED, Report.STATUS_PROGRESS, Report.STATUS_HOLD, Report.STATUS_DONE);
 
     private final ReportRepository reportRepository;
     private final CategoryRepository categoryRepository;

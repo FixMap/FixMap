@@ -28,15 +28,21 @@ public class AdminAccessInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws IOException {
+        boolean api = request.getRequestURI().startsWith(request.getContextPath() + "/api/");
+        boolean pageGet = !api && "GET".equals(request.getMethod());
         HttpSession session = request.getSession(false);
         if (session != null && Boolean.TRUE.equals(session.getAttribute(SESSION_ATTR))) {
+            // 이미 들어와 있어도 주소에 키가 있으면 지운 주소로 되돌려 보낸다.
+            if (pageGet && request.getParameter("key") != null) {
+                response.sendRedirect(request.getContextPath() + "/admin");
+                return false;
+            }
             return true;
         }
         if (adminAccess.matches(request.getHeader("X-Admin-Key"))) {
             return true;
         }
-        boolean api = request.getRequestURI().startsWith(request.getContextPath() + "/api/");
-        if (!api && "GET".equals(request.getMethod()) && adminAccess.matches(request.getParameter("key"))) {
+        if (pageGet && adminAccess.matches(request.getParameter("key"))) {
             request.getSession(true).setAttribute(SESSION_ATTR, true);
             response.sendRedirect(request.getContextPath() + "/admin");
             return false;

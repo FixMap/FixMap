@@ -19,7 +19,6 @@ import lombok.NoArgsConstructor;
 
 /**
  * 신고. 컬럼 이름은 db/schema.sql의 report 테이블과 같다.
- * reporter_name(선택 입력)은 아직 쓰는 기능이 없어 매핑하지 않았다.
  */
 @Entity
 @Table(name = "report")
@@ -59,6 +58,10 @@ public class Report {
 
     @Column(name = "pos_y", nullable = false, precision = 5, scale = 4)
     private BigDecimal posY;
+
+    /** 선택 입력(로그인 없음). 아직 입력받는 화면은 없어서 비어 있다. */
+    @Column(name = "reporter_name", length = 30)
+    private String reporterName;
 
     /** RECEIVED(접수), PROGRESS(처리 중), DONE(완료), HOLD(보류) */
     @Column(nullable = false, length = 10)
