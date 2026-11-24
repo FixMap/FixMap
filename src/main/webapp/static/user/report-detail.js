@@ -4,9 +4,9 @@ import { $, el, badge } from './dom.js';
 export function setupReportDetail(onClose) {
   const panel = $('#selection-panel');
   let version = 0;
-  async function show(report) {
+  async function show(report, backLabel = '이 층의 신고로 돌아가기') {
     const request = ++version;
-    const back = el('button', 'text-button panel-back', '이 층의 신고로 돌아가기'); back.type = 'button'; back.addEventListener('click', onClose);
+    const back = el('button', 'text-button panel-back', backLabel); back.type = 'button'; back.addEventListener('click', onClose);
     panel.replaceChildren(back, el('h2', 'detail-title', report.title), el('p', 'empty muted', '신고를 불러오는 중입니다.'));
     panel.setAttribute('aria-busy', 'true');
     try {
@@ -35,7 +35,7 @@ export function setupReportDetail(onClose) {
       }
     } catch (error) {
       if (request !== version) return;
-      const retry = el('button', 'text-button', '다시 불러오기'); retry.type = 'button'; retry.addEventListener('click', () => show(report));
+      const retry = el('button', 'text-button', '다시 불러오기'); retry.type = 'button'; retry.addEventListener('click', () => show(report, backLabel));
       panel.replaceChildren(back, el('p', 'notice error', error.message), retry);
     } finally { if (request === version) panel.setAttribute('aria-busy', 'false'); }
   }

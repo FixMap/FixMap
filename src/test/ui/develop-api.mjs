@@ -98,7 +98,53 @@ try {
   await page.goto(origin + '/?level=2&building=geumbong', { waitUntil: 'networkidle0' }); await loaded();
   assert.equal(await page.$eval('.building-map', node => node.dataset.floorId), '6', 'building and level survive a reload');
   progress = true; await page.goto(origin + '/?level=2', { waitUntil: 'networkidle0' }); await loaded();
-  assert.deepEqual(new Set(await page.$$eval('.report-card .badge', nodes => nodes.map(node => node.textContent))), new Set(['접수', '처리 중', '완료', '보류'])); progress = false;
+  assert.deepEqual(new Set(await page.$$eval('.report-card .badge', nodes => nodes.map(node => node.textContent))), new Set(['접수', '처리 중', '완료', '보류']));
+  const place = await page.$eval('.place[data-place-id="42"]', node => {
+    const rect = node.getBoundingClientRect();
+    return { x: rect.left + rect.width / 2, top: rect.top, y: rect.top + rect.height / 2 };
+  });
+  await page.mouse.move(place.x, place.y);
+  assert(await page.$eval('.place-tooltip', (node, top) =>
+    !node.hidden && node.textContent === 'Online Study Cafe' && node.getBoundingClientRect().bottom < top
+      && getComputedStyle(node).whiteSpace === 'nowrap', place.top));
+  assert.equal(await page.$eval('.place[data-place-id="42"] span', node => node.textContent), 'Online Study Cafe');
+  const beforeGroup = calls.length;
+  await page.click('.pin.grouped[data-place-id="39"]');
+  assert(!calls.slice(beforeGroup).some(call => /^\/api\/reports\/\d+$/.test(call.route)));
+  assert.equal(await page.$eval('.pin.grouped', node => node.dataset.stateShort), '2');
+  assert.equal(await page.$$eval('.report-card', nodes => nodes.length), 2);
+  assert.equal(await page.$eval('#report-list-title', node => node.textContent), '3학년 3반 신고');
+  await page.click('.report-card'); await page.waitForFunction(() => document.querySelector('.report-content'));
+  assert(await page.$eval('.detail-title + .badge', node => node.getBoundingClientRect().top - node.previousElementSibling.getBoundingClientRect().bottom >= 7));
+  await page.click('#selection-panel .panel-back');
+  assert.equal(await page.$$eval('.report-card', nodes => nodes.length), 2);
+  await page.click('#place-back');
+  assert.equal(await page.$$eval('.report-card', nodes => nodes.length), 4);
+  progress = false;
+
+  const blank = await page.$eval('.building-map', node => {
+    const r = node.getBoundingClientRect();
+    return { x: r.left + r.width * .01, y: r.top + r.height * .02 };
+  });
+  await page.mouse.click(blank.x, blank.y);
+  assert.equal(await page.$eval('#report-form', node => node.hidden), true);
+  assert.equal(await page.$('.pin.draft'), null);
+  await openForm();
+  const draftSize = () => page.$eval('.pin.draft', node => {
+    const shell = node.offsetWidth, core = parseFloat(getComputedStyle(node, '::before').width);
+    return { shell, ratio: core / shell };
+  });
+  const small = await draftSize();
+  for (let i = 0; i < 4; i++) await page.click('#zoom-in');
+  const large = await draftSize();
+  assert(large.shell > small.shell && small.ratio < .4 && large.ratio < .4);
+  for (let i = 0; i < 4; i++) await page.click('#zoom-out');
+  assert.deepEqual(await draftSize(), small);
+  await page.click('#form-cancel');
+  await page.click('#floor-tabs [data-level="4"]'); await loaded();
+  assert.equal(await page.$('.pin[data-report-id="7"]'), null, 'legacy reports outside a place have no pin');
+  assert.match(await page.$eval('#location-reports', node => node.textContent), /4층 계단 옆 쓰레기/);
+  await page.click('#floor-tabs [data-level="2"]'); await loaded();
   slowLevel = 1;
   await page.evaluate(() => { document.querySelector('[data-level="1"]').click(); document.querySelector('[data-level="3"]').click(); });
   await loaded(); await page.waitForNetworkIdle();
@@ -157,15 +203,15 @@ try {
   }
   const publicDetail = await fetch(origin + '/api/reports/' + created.id).then(r => r.json());
   assert.equal(publicDetail.content, '실제 multipart 저장과 조회 확인'); assert.equal(publicDetail.files.length, 5); assert.equal('read' in publicDetail, false);
-  await page.click('.panel-back'); await page.click('.report-card:nth-child(2)');
+  await page.click('#selection-panel .panel-back'); await page.click('.report-card:nth-child(2)');
   await page.waitForFunction(() => document.querySelector('.report-reply') && document.querySelector('#selection-panel').getAttribute('aria-busy') === 'false');
   assert((await page.$eval('.report-reply', node => node.textContent)).includes('정수기'));
-  unsafe = true; await page.click('.panel-back'); await page.click('.report-card');
+  unsafe = true; await page.click('#selection-panel .panel-back'); await page.click('.report-card');
   await page.waitForFunction(() => document.querySelector('#selection-panel .detail-title')?.textContent === '<img src=x onerror=alert(1)>');
   assert.equal(await page.$$eval('#selection-panel img', nodes => nodes.length), 0);
   assert.equal(await page.$eval('.report-content', node => node.textContent), '<script>alert(1)</script>');
   assert.equal(await page.$eval('.report-reply p', node => node.textContent), '<b>답글도 문자</b>');
   assert.equal(await page.$eval('.detail-file', node => new URL(node.href).pathname), prefix + '/api/files/1');
   assert.deepEqual(errors, []);
-  console.log('PASS: develop level/places/floorId, single pin GET, four states, responsive layout, races/retry, multipart creation with five files, duplicate prevention, preserved errors, public detail/replies, file bytes and safe text.');
+  console.log('PASS: map, place tooltips, pin groups, zoom, outside-map handling, report submission/detail and error handling.');
 } finally { await browser.close(); await rm(dir, { recursive: true, force: true }); }

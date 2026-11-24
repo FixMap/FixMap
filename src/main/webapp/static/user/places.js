@@ -5,7 +5,7 @@ export function drawPlaces(map, places) {
   for (const place of places) {
     if (![place.x, place.y, place.width, place.height].every(Number.isFinite) || place.x < 0 || place.y < 0 || place.width <= 0 || place.height <= 0 || place.x + place.width > 1.0001 || place.y + place.height > 1.0001) throw new Error('지도 영역 데이터 형식을 확인해 주세요.');
     const area = el('div', 'place'), name = el('span', '', place.name);
-    area.dataset.placeId = place.id; area.dataset.type = place.type; area.title = place.name;
+    area.dataset.placeId = place.id; area.dataset.type = place.type;
     area.style.left = place.x * 100 + '%'; area.style.top = place.y * 100 + '%';
     area.style.width = place.width * 100 + '%'; area.style.height = place.height * 100 + '%';
     area.append(name); areas.append(area);
@@ -46,4 +46,31 @@ export function fitPlaceLabels(map) {
 export function placeAt(places, x, y) {
   return places.filter(p => x >= p.x && x <= p.x + p.width && y >= p.y && y <= p.y + p.height)
     .sort((a, b) => a.width * a.height - b.width * b.height || a.id - b.id)[0];
+}
+
+export function enablePlaceTooltip(viewport) {
+  const tooltip = el('div', 'place-tooltip');
+  tooltip.hidden = true;
+  tooltip.setAttribute('aria-hidden', 'true');
+  document.body.append(tooltip);
+  let hovered;
+
+  function hide() { hovered = null; tooltip.hidden = true; }
+  viewport.addEventListener('pointermove', event => {
+    const area = event.target.closest('.place');
+    if (!area || event.buttons || event.pointerType === 'touch') return hide();
+    if (area === hovered) return;
+    hovered = area;
+    tooltip.textContent = area.firstElementChild.textContent;
+    tooltip.hidden = false;
+    const rect = area.getBoundingClientRect();
+    const left = (rect.left + rect.right - tooltip.offsetWidth) / 2;
+    tooltip.style.left = Math.max(8, Math.min(left, innerWidth - tooltip.offsetWidth - 8)) + 'px';
+    tooltip.style.top = Math.max(8, rect.top - tooltip.offsetHeight - 8) + 'px';
+  });
+  viewport.addEventListener('pointerleave', hide);
+  viewport.addEventListener('pointerdown', hide);
+  addEventListener('scroll', hide, true);
+  addEventListener('resize', hide);
+  return hide;
 }
